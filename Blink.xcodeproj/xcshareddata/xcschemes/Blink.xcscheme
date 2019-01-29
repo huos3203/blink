@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "22FCCF4E1F0BCFB800F67B0B"
+               BuildableName = "Python_ios.framework"
+               BlueprintName = "Python_ios"
+               ReferencedContainer = "container:../python_ios/Python_ios.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "EA0BA18A1C0CC57B00719C1A"
                BuildableName = "Blink.app"
                BlueprintName = "Blink"

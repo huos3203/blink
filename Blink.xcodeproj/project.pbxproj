@@ -67,8 +67,8 @@
 		22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A9494A2067FD5E003A0666 /* tar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3332036EE86001FCC5C /* openssl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3342036EE86001FCC5C /* libssh2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8490588122000B8800CF24F7 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; };
-		8490588222000B8800CF24F7 /* Python_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		849058BD220012D400CF24F7 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849058BC220012D400CF24F7 /* Python_ios.framework */; };
+		849058BE220012D400CF24F7 /* Python_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 849058BC220012D400CF24F7 /* Python_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85047E71201F8A230090E974 /* RoundedToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E70201F8A230090E974 /* RoundedToolbar.m */; };
 		85047E77201F9B0E0090E974 /* ControlPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E76201F9B0E0090E974 /* ControlPanel.m */; };
 		85A34307200A837A009324F1 /* webfontloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 85A34303200A837A009324F1 /* webfontloader.js */; };
@@ -307,6 +307,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				849058BE220012D400CF24F7 /* Python_ios.framework in Embed Frameworks */,
 				22A9494B2067FD5E003A0666 /* files.framework in Embed Frameworks */,
 				D2A3F4FC20690D08006BB305 /* shell.framework in Embed Frameworks */,
 				22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */,
@@ -316,7 +317,6 @@
 				D2A3F4F820690CB0006BB305 /* awk.framework in Embed Frameworks */,
 				D2A3F50020690D44006BB305 /* network_ios.framework in Embed Frameworks */,
 				0732F11F1D062DDB00AB5438 /* UICKeyChainStore.framework in Embed Frameworks */,
-				8490588222000B8800CF24F7 /* Python_ios.framework in Embed Frameworks */,
 				D2A3F4FA20690CDF006BB305 /* ios_system.framework in Embed Frameworks */,
 				D2A3F50420690D7E006BB305 /* ssh_cmd.framework in Embed Frameworks */,
 				D2A3F4FE20690D23006BB305 /* text.framework in Embed Frameworks */,
@@ -410,7 +410,7 @@
 		22A9494A2067FD5E003A0666 /* tar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = tar.framework; sourceTree = "<group>"; };
 		22E1F3332036EE86001FCC5C /* openssl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = openssl.framework; sourceTree = "<group>"; };
 		22E1F3342036EE86001FCC5C /* libssh2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libssh2.framework; sourceTree = "<group>"; };
-		84196E1821B539770013FC03 /* Python_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Python_ios.framework; sourceTree = "<group>"; };
+		849058BC220012D400CF24F7 /* Python_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Python_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85047E6F201F8A230090E974 /* RoundedToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoundedToolbar.h; sourceTree = "<group>"; };
 		85047E70201F8A230090E974 /* RoundedToolbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoundedToolbar.m; sourceTree = "<group>"; };
 		85047E75201F9B0E0090E974 /* ControlPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlPanel.h; sourceTree = "<group>"; };
@@ -674,7 +674,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8490588122000B8800CF24F7 /* Python_ios.framework in Frameworks */,
+				849058BD220012D400CF24F7 /* Python_ios.framework in Frameworks */,
 				D28DB3AC210B110C008A1139 /* libcompression.tbd in Frameworks */,
 				D2512AC520BD4C3000A80257 /* (null) in Frameworks */,
 				0732F1291D06324200AB5438 /* libcurses.tbd in Frameworks */,
@@ -807,7 +807,6 @@
 		0732F04F1D062BB300AB5438 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				84196E1821B539770013FC03 /* Python_ios.framework */,
 				226ED5BD21C7FE0900A71A20 /* libpanel.tbd */,
 				D28DB3AB210B110B008A1139 /* libcompression.tbd */,
 				D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */,
@@ -1374,6 +1373,7 @@
 		EA0BA1821C0CC57B00719C1A = {
 			isa = PBXGroup;
 			children = (
+				849058BC220012D400CF24F7 /* Python_ios.framework */,
 				C9B2E0031D6B612300B89F69 /* Settings */,
 				0732F04F1D062BB300AB5438 /* Frameworks */,
 				0732F0481D062B9A00AB5438 /* Resources */,
