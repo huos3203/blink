@@ -63,27 +63,12 @@
 		07F670751D05EEE200C0A53C /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706C1D05EEE200C0A53C /* Session.m */; };
 		07F670761D05EEE200C0A53C /* SSHCopyIDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706E1D05EEE200C0A53C /* SSHCopyIDSession.m */; };
 		07F670771D05EEE200C0A53C /* SSHSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670701D05EEE200C0A53C /* SSHSession.m */; };
-		22035CD821F9DEFC007A0F60 /* freetype.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22035CD121F9DEFB007A0F60 /* freetype.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		22035CD921F9DEFC007A0F60 /* harfbuzz.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22035CD721F9DEFC007A0F60 /* harfbuzz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B021F20B7C0097B3A0 /* PythonB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137A621F20B7B0097B3A0 /* PythonB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B121F20B7C0097B3A0 /* PythonC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137A721F20B7B0097B3A0 /* PythonC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B221F20B7C0097B3A0 /* PythonA.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137A821F20B7B0097B3A0 /* PythonA.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B321F20B7C0097B3A0 /* PythonH.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137A921F20B7B0097B3A0 /* PythonH.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B421F20B7C0097B3A0 /* PythonI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AA21F20B7B0097B3A0 /* PythonI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B521F20B7C0097B3A0 /* PythonF.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AB21F20B7B0097B3A0 /* PythonF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B621F20B7C0097B3A0 /* PythonG.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AC21F20B7C0097B3A0 /* PythonG.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B721F20B7C0097B3A0 /* PythonD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AD21F20B7C0097B3A0 /* PythonD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B821F20B7C0097B3A0 /* Python3_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AE21F20B7C0097B3A0 /* Python3_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		226137B921F20B7C0097B3A0 /* PythonE.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AF21F20B7C0097B3A0 /* PythonE.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22A9494B2067FD5E003A0666 /* files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A949492067FD5E003A0666 /* files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A9494A2067FD5E003A0666 /* tar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		22E0543921864FF1008ECC05 /* lua_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E0543321864FF1008ECC05 /* lua_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		22E0543B21865000008ECC05 /* Python_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E0543A21865000008ECC05 /* Python_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3332036EE86001FCC5C /* openssl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3342036EE86001FCC5C /* libssh2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		84196E1921B539770013FC03 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; };
-		84196E1A21B5398C0013FC03 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; };
-		84196E1B21B5398C0013FC03 /* Python_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8490588122000B8800CF24F7 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; };
+		8490588222000B8800CF24F7 /* Python_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85047E71201F8A230090E974 /* RoundedToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E70201F8A230090E974 /* RoundedToolbar.m */; };
 		85047E77201F9B0E0090E974 /* ControlPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E76201F9B0E0090E974 /* ControlPanel.m */; };
 		85A34307200A837A009324F1 /* webfontloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 85A34303200A837A009324F1 /* webfontloader.js */; };
@@ -171,7 +156,6 @@
 		D23D0FAD2008DAEB00B33A9F /* TermInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D0FAC2008DAEB00B33A9F /* TermInput.m */; };
 		D23E142B20A970C3000FCF5C /* BlinkPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E142A20A970C3000FCF5C /* BlinkPaths.m */; };
 		D23E143D20A977AB000FCF5C /* Repl.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E143C20A977AB000FCF5C /* Repl.m */; };
-		D240806120BC8DF800F30099 /* tool_main.c in Sources */ = {isa = PBXBuildFile; fileRef = D240806020BC8DF800F30099 /* tool_main.c */; settings = {COMPILER_FLAGS = "-DHAVE_CONFIG_H -v -I ../ios_system/curl/curl/include/ -I ../ios_system/curl/curl/lib/ -I ../ios_system/curl/config_iphone/ -DBUILDING_LIBCURL -I Settings/Model/ -I Frameworks/libssh2.framework/Headers/ -DBLINKSHELL -I Frameworks/ios_system/"; }; };
 		D2496F3F20038B3300E75FE9 /* hterm_all.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F3B20038B3300E75FE9 /* hterm_all.min.js */; };
 		D2496F412003941B00E75FE9 /* term.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F402003941B00E75FE9 /* term.js */; };
 		D24D18C921D4CFB200239C9D /* KeyInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D24D18C821D4CFB200239C9D /* KeyInput.m */; };
@@ -300,12 +284,12 @@
 			remoteGlobalIDString = 148993CF1D8F2515000132F7;
 			remoteInfo = TestHost;
 		};
-		2230E8B420C1513300E30379 /* PBXContainerItemProxy */ = {
+		84905872220007FF00CF24F7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */;
+			containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 2219DFCF1FD73AF500675252;
-			remoteInfo = curl_ios_static;
+			remoteGlobalIDString = 1777D3DF1D757AF50037C7F1;
+			remoteInfo = "MBProgressHUD Framework tvOS";
 		};
 		EA0BA1A51C0CC57B00719C1A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -323,21 +307,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				84196E1B21B5398C0013FC03 /* Python_ios.framework in Embed Frameworks */,
-				22035CD821F9DEFC007A0F60 /* freetype.framework in Embed Frameworks */,
-				22035CD921F9DEFC007A0F60 /* harfbuzz.framework in Embed Frameworks */,
-				226137B021F20B7C0097B3A0 /* PythonB.framework in Embed Frameworks */,
-				226137B121F20B7C0097B3A0 /* PythonC.framework in Embed Frameworks */,
-				226137B221F20B7C0097B3A0 /* PythonA.framework in Embed Frameworks */,
-				226137B321F20B7C0097B3A0 /* PythonH.framework in Embed Frameworks */,
-				226137B421F20B7C0097B3A0 /* PythonI.framework in Embed Frameworks */,
-				226137B521F20B7C0097B3A0 /* PythonF.framework in Embed Frameworks */,
-				226137B621F20B7C0097B3A0 /* PythonG.framework in Embed Frameworks */,
-				226137B721F20B7C0097B3A0 /* PythonD.framework in Embed Frameworks */,
-				226137B821F20B7C0097B3A0 /* Python3_ios.framework in Embed Frameworks */,
-				226137B921F20B7C0097B3A0 /* PythonE.framework in Embed Frameworks */,
-				22E0543B21865000008ECC05 /* Python_ios.framework in Embed Frameworks */,
-				22E0543921864FF1008ECC05 /* lua_ios.framework in Embed Frameworks */,
 				22A9494B2067FD5E003A0666 /* files.framework in Embed Frameworks */,
 				D2A3F4FC20690D08006BB305 /* shell.framework in Embed Frameworks */,
 				22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */,
@@ -347,6 +316,7 @@
 				D2A3F4F820690CB0006BB305 /* awk.framework in Embed Frameworks */,
 				D2A3F50020690D44006BB305 /* network_ios.framework in Embed Frameworks */,
 				0732F11F1D062DDB00AB5438 /* UICKeyChainStore.framework in Embed Frameworks */,
+				8490588222000B8800CF24F7 /* Python_ios.framework in Embed Frameworks */,
 				D2A3F4FA20690CDF006BB305 /* ios_system.framework in Embed Frameworks */,
 				D2A3F50420690D7E006BB305 /* ssh_cmd.framework in Embed Frameworks */,
 				D2A3F4FE20690D23006BB305 /* text.framework in Embed Frameworks */,
@@ -435,23 +405,9 @@
 		07F6706E1D05EEE200C0A53C /* SSHCopyIDSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHCopyIDSession.m; sourceTree = "<group>"; };
 		07F6706F1D05EEE200C0A53C /* SSHSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHSession.h; sourceTree = "<group>"; };
 		07F670701D05EEE200C0A53C /* SSHSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHSession.m; sourceTree = "<group>"; };
-		22035CD121F9DEFB007A0F60 /* freetype.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = freetype.framework; path = Frameworks/freetype.framework; sourceTree = "<group>"; };
-		22035CD721F9DEFC007A0F60 /* harfbuzz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = harfbuzz.framework; path = Frameworks/harfbuzz.framework; sourceTree = "<group>"; };
-		226137A621F20B7B0097B3A0 /* PythonB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonB.framework; path = Frameworks/PythonB.framework; sourceTree = "<group>"; };
-		226137A721F20B7B0097B3A0 /* PythonC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonC.framework; path = Frameworks/PythonC.framework; sourceTree = "<group>"; };
-		226137A821F20B7B0097B3A0 /* PythonA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonA.framework; path = Frameworks/PythonA.framework; sourceTree = "<group>"; };
-		226137A921F20B7B0097B3A0 /* PythonH.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonH.framework; path = Frameworks/PythonH.framework; sourceTree = "<group>"; };
-		226137AA21F20B7B0097B3A0 /* PythonI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonI.framework; path = Frameworks/PythonI.framework; sourceTree = "<group>"; };
-		226137AB21F20B7B0097B3A0 /* PythonF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonF.framework; path = Frameworks/PythonF.framework; sourceTree = "<group>"; };
-		226137AC21F20B7C0097B3A0 /* PythonG.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonG.framework; path = Frameworks/PythonG.framework; sourceTree = "<group>"; };
-		226137AD21F20B7C0097B3A0 /* PythonD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonD.framework; path = Frameworks/PythonD.framework; sourceTree = "<group>"; };
-		226137AE21F20B7C0097B3A0 /* Python3_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python3_ios.framework; path = Frameworks/Python3_ios.framework; sourceTree = "<group>"; };
-		226137AF21F20B7C0097B3A0 /* PythonE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonE.framework; path = Frameworks/PythonE.framework; sourceTree = "<group>"; };
 		226ED5BD21C7FE0900A71A20 /* libpanel.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpanel.tbd; path = usr/lib/libpanel.tbd; sourceTree = SDKROOT; };
 		22A949492067FD5E003A0666 /* files.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = files.framework; sourceTree = "<group>"; };
 		22A9494A2067FD5E003A0666 /* tar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = tar.framework; sourceTree = "<group>"; };
-		22E0543321864FF1008ECC05 /* lua_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = lua_ios.framework; path = Frameworks/lua_ios.framework; sourceTree = "<group>"; };
-		22E0543A21865000008ECC05 /* Python_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python_ios.framework; path = Frameworks/Python_ios.framework; sourceTree = "<group>"; };
 		22E1F3332036EE86001FCC5C /* openssl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = openssl.framework; sourceTree = "<group>"; };
 		22E1F3342036EE86001FCC5C /* libssh2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libssh2.framework; sourceTree = "<group>"; };
 		84196E1821B539770013FC03 /* Python_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Python_ios.framework; sourceTree = "<group>"; };
@@ -608,7 +564,6 @@
 		D23E142A20A970C3000FCF5C /* BlinkPaths.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlinkPaths.m; sourceTree = "<group>"; };
 		D23E143B20A977AB000FCF5C /* Repl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Repl.h; sourceTree = "<group>"; };
 		D23E143C20A977AB000FCF5C /* Repl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Repl.m; sourceTree = "<group>"; };
-		D240806020BC8DF800F30099 /* tool_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tool_main.c; path = ../ios_system/curl/curl/src/tool_main.c; sourceTree = SOURCE_ROOT; };
 		D2496F3B20038B3300E75FE9 /* hterm_all.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = hterm_all.min.js; sourceTree = "<group>"; };
 		D2496F402003941B00E75FE9 /* term.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = term.js; sourceTree = "<group>"; };
 		D24D18C721D4CFB200239C9D /* KeyInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyInput.h; sourceTree = "<group>"; };
@@ -719,6 +674,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8490588122000B8800CF24F7 /* Python_ios.framework in Frameworks */,
 				D28DB3AC210B110C008A1139 /* libcompression.tbd in Frameworks */,
 				D2512AC520BD4C3000A80257 /* (null) in Frameworks */,
 				0732F1291D06324200AB5438 /* libcurses.tbd in Frameworks */,
@@ -726,7 +682,6 @@
 				D2A3F4F920690CDF006BB305 /* ios_system.framework in Frameworks */,
 				076FBD521DB6BE1D00F6D997 /* libprotobuf.a in Frameworks */,
 				0732F11E1D062DDB00AB5438 /* UICKeyChainStore.framework in Frameworks */,
-				84196E1A21B5398C0013FC03 /* Python_ios.framework in Frameworks */,
 				D2A3F4EC20690B71006BB305 /* shell.framework in Frameworks */,
 				D2A3F4F020690B71006BB305 /* tar.framework in Frameworks */,
 				D2A3F50320690D7E006BB305 /* ssh_cmd.framework in Frameworks */,
@@ -737,7 +692,6 @@
 				0732F1221D062DDB00AB5438 /* MBProgressHUD.framework in Frameworks */,
 				0732F0D11D062BB400AB5438 /* openssl.framework in Frameworks */,
 				0732F0BE1D062BB400AB5438 /* libssh2.framework in Frameworks */,
-				84196E1921B539770013FC03 /* Python_ios.framework in Frameworks */,
 				076FBD501DB6BD9400F6D997 /* libmoshios.framework in Frameworks */,
 				D2A3F4F120690B71006BB305 /* network_ios.framework in Frameworks */,
 				D2A3F4F220690B71006BB305 /* curl_ios.framework in Frameworks */,
@@ -907,6 +861,7 @@
 			children = (
 				0732F10B1D062BF700AB5438 /* libMBProgressHUD.a */,
 				0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */,
+				84905873220007FF00CF24F7 /* MBProgressHUD.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1059,7 +1014,6 @@
 		2230E8B120C1513300E30379 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2230E8B520C1513300E30379 /* curl_ios_static.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1401,7 +1355,6 @@
 			children = (
 				D2961968214F89060070935A /* openssh */,
 				D2334D1221495DAE00D26AC3 /* udptunnel */,
-				D240806020BC8DF800F30099 /* tool_main.c */,
 				D2F330D320A6F1DF0074ADD7 /* clear.m */,
 				D2F330CB20A6D98C0074ADD7 /* config.m */,
 				D2F330C920A6CB840074ADD7 /* help.m */,
@@ -1421,20 +1374,6 @@
 		EA0BA1821C0CC57B00719C1A = {
 			isa = PBXGroup;
 			children = (
-				22035CD121F9DEFB007A0F60 /* freetype.framework */,
-				22035CD721F9DEFC007A0F60 /* harfbuzz.framework */,
-				226137AE21F20B7C0097B3A0 /* Python3_ios.framework */,
-				226137A821F20B7B0097B3A0 /* PythonA.framework */,
-				226137A621F20B7B0097B3A0 /* PythonB.framework */,
-				226137A721F20B7B0097B3A0 /* PythonC.framework */,
-				226137AD21F20B7C0097B3A0 /* PythonD.framework */,
-				226137AF21F20B7C0097B3A0 /* PythonE.framework */,
-				226137AB21F20B7B0097B3A0 /* PythonF.framework */,
-				226137AC21F20B7C0097B3A0 /* PythonG.framework */,
-				226137A921F20B7B0097B3A0 /* PythonH.framework */,
-				226137AA21F20B7B0097B3A0 /* PythonI.framework */,
-				22E0543A21865000008ECC05 /* Python_ios.framework */,
-				22E0543321864FF1008ECC05 /* lua_ios.framework */,
 				C9B2E0031D6B612300B89F69 /* Settings */,
 				0732F04F1D062BB300AB5438 /* Frameworks */,
 				0732F0481D062B9A00AB5438 /* Resources */,
@@ -1624,18 +1563,11 @@
 			remoteRef = 0747D63D2018182D00CF8F0C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D2A3F4DD206909A8006BB305 /* MBProgressHUD.framework */ = {
+		84905873220007FF00CF24F7 /* MBProgressHUD.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = MBProgressHUD.framework;
-			remoteRef = D2A3F4DC206909A8006BB305 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D2E4F92E20B2BB4500B30F7B /* curl_ios_static.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = curl_ios_static.framework;
-			remoteRef = D2E4F92D20B2BB4500B30F7B /* PBXContainerItemProxy */;
+			remoteRef = 84905872220007FF00CF24F7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1718,7 +1650,6 @@
 				D23742CA21106ADF00366359 /* bench.m in Sources */,
 				D2071B83215101DC000156D7 /* blink-compat.c in Sources */,
 				D239710820A07B9100881637 /* windows.cxx in Sources */,
-				D240806120BC8DF800F30099 /* tool_main.c in Sources */,
 				D29619AD214FB5EA0070935A /* ssh-ed25519.c in Sources */,
 				B7D6A6291E2D43A800EDF7B0 /* BKSmartKeysConfigViewController.m in Sources */,
 				D239710420A07B9100881637 /* inputbuffer.cxx in Sources */,
