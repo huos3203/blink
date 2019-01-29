@@ -42,13 +42,17 @@
 #define BOLD_AS_BRIGHT_TAG 2004
 #define LIGHT_KEYBOARD_TAG 2005
 #define ENABLE_BOLD_TAG 2006
+#define APP_ICON_ALTERNATE_TAG 2007
+#define LAYOUT_MODE_TAG 2008
 
 typedef NS_ENUM(NSInteger, BKAppearanceSections) {
   BKAppearance_Terminal = 0,
     BKAppearance_Themes,
     BKAppearance_Fonts,
     BKAppearance_FontSize,
-    BKAppearance_KeyboardAppearance
+    BKAppearance_KeyboardAppearance,
+    BKAppearance_AppIcon,
+    BKAppearance_Layout,
 };
 
 NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
@@ -75,6 +79,12 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
   
   UISegmentedControl *_enableBoldSegmentedControl;
   NSUInteger _enableBoldValue;
+  
+  UISwitch *_alternateAppIconSwitch;
+  BOOL _alternateAppIconValue;
+  
+  UISegmentedControl *_defaultLayoutModeSegmentedControl;
+  BKLayoutMode _defaultLayoutModeValue;
 }
 
 - (void)viewDidLoad
@@ -82,9 +92,8 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
   [self loadDefaultValues];
   [super viewDidLoad];
   
-  _termView = [[TermView alloc] initWithFrame:self.view.bounds];
+  _termView = [[TermView alloc] initWithFrame:self.view.bounds andBgColor:UIColor.groupTableViewBackgroundColor];
   _termView.device = self;
-  _termView.backgroundColor = [UIColor blackColor];
   [_termView loadWith:nil];
 }
 
@@ -93,6 +102,7 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
   if (self.isMovingFromParentViewController) {
     [self saveDefaultValues];
   }
+  [super viewWillDisappear:animated];
 }
 
 - (void)loadDefaultValues
@@ -119,6 +129,8 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
   _boldAsBrightValue = [BKDefaults isBoldAsBright];
   _lightKeyboardValue = [BKDefaults isLightKeyboard];
   _enableBoldValue = [BKDefaults enableBold];
+  _alternateAppIconValue = [BKDefaults isAlternateAppIcon];
+  _defaultLayoutModeValue = BKDefaults.layoutMode;
 }
 
 - (void)saveDefaultValues
@@ -136,7 +148,9 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
   [BKDefaults setCursorBlink:_cursorBlinkValue];
   [BKDefaults setBoldAsBright:_boldAsBrightValue];
   [BKDefaults setLightKeyboard:_lightKeyboardValue];
+  [BKDefaults setAlternateAppIcon:_alternateAppIconValue];
   [BKDefaults setEnableBold: _enableBoldValue];
+  [BKDefaults setLayoutMode:_defaultLayoutModeValue];
 
   [BKDefaults saveDefaults];
   [[NSNotificationCenter defaultCenter]
@@ -148,7 +162,7 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-  return 5;
+  return 7;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -160,6 +174,10 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
   } else if (section == BKAppearance_Fonts) {
     return [[BKFont all] count] + 1;
   } else if (section == BKAppearance_KeyboardAppearance) {
+    return 1;
+  } else if (section == BKAppearance_AppIcon) {
+    return 1;
+  } else if (section == BKAppearance_Layout) {
     return 1;
   } else {
     return 4;
@@ -222,7 +240,12 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
     }
   } else if (section == BKAppearance_KeyboardAppearance) {
     cellIdentifier = @"lightKeyboardCell";
+  } else if (section == BKAppearance_AppIcon) {
+    cellIdentifier = @"alternateAppIconCell";
+  } else if (section == BKAppearance_Layout) {
+    cellIdentifier = @"defaultLayoutCell";
   }
+  
   
   return cellIdentifier;
 }
@@ -244,6 +267,10 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
     return @"FONTS";
   case BKAppearance_KeyboardAppearance:
     return @"Keyboard Appearance";
+  case BKAppearance_AppIcon:
+    return @"APP ICON";
+    case BKAppearance_Layout:
+      return @"Layout";
   default:
     return nil;
   }
@@ -284,8 +311,41 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
   } else if (indexPath.section == BKAppearance_KeyboardAppearance && indexPath.row == 0) {
     _lightKeyboardSwitch = [cell viewWithTag:LIGHT_KEYBOARD_TAG];
     _lightKeyboardSwitch.on = _lightKeyboardValue;
+  } else if (indexPath.section == BKAppearance_AppIcon && indexPath.row == 0) {
+    _alternateAppIconSwitch = [cell viewWithTag:APP_ICON_ALTERNATE_TAG];
+    _alternateAppIconSwitch.on = _alternateAppIconValue;
+  } else if (indexPath.section == BKAppearance_Layout && indexPath.row == 0) {
+    _defaultLayoutModeSegmentedControl = [cell viewWithTag:LAYOUT_MODE_TAG];
+    _defaultLayoutModeSegmentedControl.selectedSegmentIndex = [self _layoutModeToIndex:_defaultLayoutModeValue];
   }
   return cell;
+}
+
+- (NSInteger)_layoutModeToIndex:(BKLayoutMode) mode {
+  switch (mode) {
+    case BKLayoutModeCover:
+      return 0;
+    case BKLayoutModeSafeFit:
+      return 1;
+    case BKLayoutModeFill:
+      return 2;
+    default:
+      return UISegmentedControlNoSegment;
+  }
+}
+
+- (BKLayoutMode)_layoutModeFromIndex:(NSInteger) index {
+  if (index == 0) {
+    return BKLayoutModeCover;
+  }
+  if (index == 1) {
+    return BKLayoutModeSafeFit;
+  }
+  if (index == 2) {
+    return BKLayoutModeFill;
+  }
+  
+  return BKLayoutModeDefault;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -353,6 +413,11 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if (indexPath.section == BKAppearance_AppIcon
+      || indexPath.section == BKAppearance_KeyboardAppearance
+      || indexPath.section == BKAppearance_Layout) {
+    return NO;
+  }
   return indexPath.section != BKAppearance_FontSize;
 }
 
@@ -410,11 +475,25 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
   [_termView setBoldEnabled:_enableBoldValue];
 }
 
+- (IBAction)defaultLayoutChanged:(UISegmentedControl *)sender
+{
+  _defaultLayoutModeValue = [self _layoutModeFromIndex:sender.selectedSegmentIndex];
+}
+
 - (IBAction)lightKeyboardSwitchChanged:(id)sender
 {
   _lightKeyboardValue = _lightKeyboardSwitch.on;
 }
 
+- (IBAction)alternateAppIconSwitchChanged:(id)sender
+{
+  _alternateAppIconValue = _alternateAppIconSwitch.on;
+  NSString *appIcon = nil;
+  if (_alternateAppIconValue) {
+    appIcon = @"DarkAppIcon";
+  }
+  [[UIApplication sharedApplication] setAlternateIconName:appIcon completionHandler:nil];
+}
 
 #pragma mark - TermViewDeviceProtocol
 
@@ -451,6 +530,18 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
 - (BOOL)handleControl:(NSString *)control
 {
   return NO;
+}
+
+- (void)viewShowAlert:(NSString *)title andMessage:(NSString *)message {
+  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                           message:message
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+  __weak UIAlertController *weakAlertController = alertController;
+  [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [weakAlertController dismissViewControllerAnimated:YES completion:nil];
+  }]];
+  
+  [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)_writeColorShowcase

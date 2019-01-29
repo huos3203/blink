@@ -31,6 +31,7 @@
 
 #import "BKTouchIDAuthManager.h"
 #import "BKUserConfigurationManager.h"
+#import "ScreenController.h"
 #import "Blink-Swift.h"
 
 const NSNotificationName BKUserAuthenticated = @"BKUserAuthenticated";
@@ -122,27 +123,28 @@ static BOOL authRequired = NO;
     return;
   }
   
-  UIApplication *app = [UIApplication sharedApplication];
+  [[ScreenController shared] switchToTouchScreen];
+  UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
   
   PasscodeLockViewController *ctrl = [[PasscodeLockViewController alloc] initWithStateString:@"EnterPassCode"];
 
   __weak BKTouchIDAuthManager *weakSelf = self;
   
   ctrl.dismissCompletionCallback = ^{
-    authRequired = NO;
-    [[app keyWindow] setRootViewController:weakSelf.rootViewController];
-    
-    weakSelf.lockViewController = nil;
-    weakSelf.rootViewController = nil;
-    
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      authRequired = NO;
+      [keyWindow setRootViewController:weakSelf.rootViewController];
+      
+      weakSelf.lockViewController = nil;
+      weakSelf.rootViewController = nil;
+      
       [[NSNotificationCenter defaultCenter] postNotificationName:BKUserAuthenticated object:nil];
     }];
   };
   
   _lockViewController = ctrl;
-  _rootViewController = [[app keyWindow] rootViewController];
-  [[app keyWindow] setRootViewController:_lockViewController];
+  _rootViewController = [keyWindow rootViewController];
+  [keyWindow setRootViewController:_lockViewController];
 }
 
 

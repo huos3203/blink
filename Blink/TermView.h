@@ -48,6 +48,7 @@
 - (void)viewWinSizeChanged:(struct winsize)win;
 - (void)viewSendString:(NSString *)data;
 - (void)viewCopyString:(NSString *)text;
+- (void)viewShowAlert:(NSString *)title andMessage:(NSString *)message;
 
 @end
 
@@ -63,8 +64,14 @@
 @property (nonatomic, readonly) NSURL *detectedLink;
 @property (nonatomic, readonly) NSString *selectedText;
 @property (nonatomic) id<TermViewDeviceProtocol> device;
+@property (nonatomic) UIEdgeInsets additionalInsets;
+@property (nonatomic) BOOL layoutLocked;
+@property (nonatomic) CGRect layoutLockedFrame;
 
-- (id)initWithFrame:(CGRect)frame;
+
+
+- (id)initWithFrame:(CGRect)frame andBgColor: (UIColor *)bgColor;
+- (CGRect)webViewFrame;
 - (void)loadWith:(MCPSessionParameters *)params;
 - (void)reloadWith:(MCPSessionParameters *)params;
 - (void)clear;
@@ -79,6 +86,7 @@
 - (void)pasteSelection:(id _Nullable)sender;
 - (void)terminate;
 - (void)reset;
+- (void)restore;
 
 - (void)blur;
 - (void)focus;

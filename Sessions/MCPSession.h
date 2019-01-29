@@ -34,11 +34,18 @@
 #import "Repl.h"
 #import "Session.h"
 #import "MCPSessionParameters.h"
+#import "SSHClient.h"
+
 
 @interface MCPSession : Session
 
 @property (strong) MCPSessionParameters *sessionParameters;
 @property (strong, readonly) Repl *repl;
+
+- (void)registerSSHClient:(SSHClient *)sshClient;
+- (void)unregisterSSHClient:(SSHClient *)sshClient;
+
+- (bool)isRunningCmd;
 
 - (void)updateAllowedPaths;
 

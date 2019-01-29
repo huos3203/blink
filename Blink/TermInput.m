@@ -37,6 +37,7 @@
 #import "BKUserConfigurationManager.h"
 #import "BKKeyboardModifierViewController.h"
 #import "TermDevice.h"
+#import "KeyInput.h"
 
 static NSDictionary *bkModifierMaps = nil;
 
@@ -235,6 +236,7 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   NSString *_specialFKeysRow;
   NSSet<NSString *> *_imeLangSet;
 
+  NSMutableArray<UIKeyCommand *> *_rawAdditionalKbdCommands;
   NSMutableArray<UIKeyCommand *> *_kbdCommands;
   NSMutableArray<UIKeyCommand *> *_kbdCommandsWithoutAutoRepeat;
   SmartKeysController *_smartKeys;
@@ -263,6 +265,7 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   self = [super initWithFrame:frame];
   
   if (self) {
+    
     self.inputAssistantItem.leadingBarButtonGroups = @[];
     self.inputAssistantItem.trailingBarButtonGroups = @[];
     
@@ -375,8 +378,27 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 - (BOOL)becomeFirstResponder
 {
   BOOL res = [super becomeFirstResponder];
+  
   if (res) {
+    // This is hack to fix https://github.com/blinksh/blink/issues/401 iOS kb layout bug
+    // we set dummy bar buttons group to leadingBarButtonGroups and set it back to empty array
+    // so iOS relayout kb
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                             style:UIBarButtonItemStyleDone
+                                                            target:self
+                                                            action:@selector(resignFirstResponder)];
+    
+    UIBarButtonItemGroup *group = [[UIBarButtonItemGroup alloc] initWithBarButtonItems:@[item]
+                                                                    representativeItem:nil];
+    
+    
+    self.inputAssistantItem.leadingBarButtonGroups = @[group];
+    self.inputAssistantItem.leadingBarButtonGroups = @[];
+    
     // reload input views to get rid of kb input views from other apps.
+    // also we should reload input views on next event loop. Otherwise inputs messed up
+    // with multiple screens
     dispatch_async(dispatch_get_main_queue(), ^{
       [self reloadInputViews];
     });
@@ -387,14 +409,22 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   return res;
 }
 
+- (BOOL)canResignFirstResponder {
+  return UIApplication.sharedApplication.applicationState == UIApplicationStateActive;
+}
+
 - (BOOL)resignFirstResponder
 {
+  if (UIApplication.sharedApplication.applicationState == UIApplicationStateInactive) {
+    return NO;
+  }
   [_device blur];
   return [super resignFirstResponder];
 }
 
 - (void)reset
 {
+  _skipTextStorageDelete = YES;
   self.text = @"";
   self.alpha = 1;
   [_device.view setIme: @"" completionHandler:nil];
@@ -407,7 +437,9 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   // Discard CAPS on characters when caps are mapped and there is no SW keyboard.
   BOOL capsWithoutSWKeyboard = !self.softwareKB && [self _capsMapped];
   if (capsWithoutSWKeyboard && text.length == 1 && [text characterAtIndex:0] > 0x1F) {
-    text = [text lowercaseString];
+    if (!_markedText) {
+      text = [text lowercaseString];
+    }
   }
   
   if  (_device.view.hasSelection) {
@@ -504,6 +536,11 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   }
 }
 
+// Delete forward. See https://github.com/blinksh/blink/issues/559
+- (void)_deleteForwardAndNotify:(bool)notify {
+  [_device write:@"\x1b\x5b\x33\x7e"];
+}
+
 - (void)deleteBackward
 {
   if (_markedText.length == 1) {
@@ -542,9 +579,15 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
     [_device write:[CC ESC:input]];
   }
 }
+
 - (void)escSeq:(UIKeyCommand *)cmd
 {
   [self _escSeqWithInput:cmd.input];
+}
+
+- (void)escSeqNoInput:(UIKeyCommand *)cmd
+{
+  [self _escSeqWithInput:@""];
 }
 
 - (void)arrowSeq:(UIKeyCommand *)cmd
@@ -580,7 +623,13 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 
 - (void)ctrlSeq:(UIKeyCommand *)cmd
 {
-  [self _ctrlSeqWithInput:cmd.input];
+  if ([cmd.input length]) {
+    [self _ctrlSeqWithInput:cmd.input];
+  }
+}
+
+- (void)dummySeq:(UIKeyCommand *)cmd
+{
 }
 
 - (void)_escCtrlSeqWithInput:(NSString *)input
@@ -773,11 +822,11 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
     return NO;
   }
   
-  UIApplicationState appState = [[UIApplication sharedApplication] applicationState];
-  
-  if (appState != UIApplicationStateActive) {
-    return NO;
-  }
+//  UIApplicationState appState = [[UIApplication sharedApplication] applicationState];
+//  
+//  if (appState != UIApplicationStateActive) {
+//    return NO;
+//  }
   
   // super returns NO (No text?), so we check ourselves.
   if (action == @selector(paste:) ||
@@ -802,33 +851,50 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 - (void)_setKbdCommands
 {
   _kbdCommands = [NSMutableArray array];
+  _kbdCommandsWithoutAutoRepeat = [NSMutableArray array];
   
   for (NSNumber *modifier in _functionKeys.allKeys) {
     [_kbdCommands addObjectsFromArray:_functionKeys[modifier]];
+    if (modifier.integerValue == UIKeyModifierAlphaShift || modifier.integerValue == UIKeyModifierShift) {
+      continue;
+    }
+    [_kbdCommandsWithoutAutoRepeat addObjectsFromArray:_functionKeys[modifier]];
   }
   for (NSNumber *modifier in _functionTriggerKeys.allKeys) {
     [_kbdCommands addObjectsFromArray:_functionTriggerKeys[modifier]];
+    [_kbdCommandsWithoutAutoRepeat addObjectsFromArray:_functionTriggerKeys[modifier]];
   }
+  
+  [_kbdCommands addObjectsFromArray:_rawAdditionalKbdCommands];
+  [_kbdCommandsWithoutAutoRepeat addObjectsFromArray:_rawAdditionalKbdCommands];
   
   [_kbdCommands addObjectsFromArray:self._functionModifierKeys];
+  [_kbdCommandsWithoutAutoRepeat addObjectsFromArray:self._functionModifierKeys];
 
   // This dummy command to hand stuck cmd key
-  [_kbdCommands addObject:[UIKeyCommand keyCommandWithInput:@""
-                                              modifierFlags:UIKeyModifierCommand
-                                                     action:@selector(_kbCmd:)]];
+  UIKeyCommand *cmdCommand = [UIKeyCommand keyCommandWithInput:@""
+                                                 modifierFlags:UIKeyModifierCommand
+                                                        action:@selector(_kbCmd:)];
+  [_kbdCommands addObject:cmdCommand];
+  [_kbdCommandsWithoutAutoRepeat addObject:cmdCommand];
+
+  UIKeyCommand *altEnterCommand = [UIKeyCommand keyCommandWithInput:@"\r"
+                                                      modifierFlags:UIKeyModifierAlternate
+                                                             action:@selector(_altEnter:)];
+  [_kbdCommands addObject:altEnterCommand];
+  [_kbdCommandsWithoutAutoRepeat addObject:altEnterCommand];
   
-  [_kbdCommands addObject:[UIKeyCommand keyCommandWithInput:@"\t"
-                                              modifierFlags:UIKeyModifierShift
-                                                     action:@selector(_shiftTab:)]];
+  UIKeyCommand *shiftTabCommand = [UIKeyCommand keyCommandWithInput:@"\t"
+                                                      modifierFlags:UIKeyModifierShift
+                                                             action:@selector(_shiftTab:)];
+  [_kbdCommands addObject:shiftTabCommand];
+  [_kbdCommandsWithoutAutoRepeat addObject:shiftTabCommand];
   
-  if (_controlKeys != _controlKeysWithoutAutoRepeat) {
-    _kbdCommandsWithoutAutoRepeat = [_kbdCommands mutableCopy];
-    for (NSNumber *modifier in _controlKeysWithoutAutoRepeat.allKeys) {
-      [_kbdCommandsWithoutAutoRepeat addObjectsFromArray:_controlKeys[modifier]];
-    }
-  } else {
-    _kbdCommandsWithoutAutoRepeat = _kbdCommands;
+
+  for (NSNumber *modifier in _controlKeysWithoutAutoRepeat.allKeys) {
+    [_kbdCommandsWithoutAutoRepeat addObjectsFromArray:_controlKeys[modifier]];
   }
+  
   for (NSNumber *modifier in _controlKeys.allKeys) {
     [_kbdCommands addObjectsFromArray:_controlKeys[modifier]];
   }
@@ -841,6 +907,12 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
     [self resignFirstResponder];
   }
 }
+
+- (void)_altEnter:(UIKeyCommand *)cmd
+{
+  [self escSeq:cmd];
+}
+
 
 - (void)_shiftTab:(UIKeyCommand *)cmd
 {
@@ -860,12 +932,16 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   NSMutableArray *cmds = [NSMutableArray array];
   NSString *charset;
   NSString *shiftCharset = nil;
-  if (seq == TermViewCtrlSeq || seq == TermViewEscCtrlSeq) {
-    charset = @"2345678qwertyuiopasdfghjklzxcvbnm[\\]^/_ \t";
+  if (seq == TermViewCtrlSeq) {
+    charset = @"2345678qwertyuiopasdfghjklzxcvbnm[\\]^/_\t";
+    if (BKDefaults.grabCtrlSpace) {
+      charset = [charset stringByAppendingString:@" "];
+    }
+  } else if (seq == TermViewEscCtrlSeq) {
+    charset = @"2345678qwertyuiopasdfghjklzxcvbnm[\\]^/_\t ";
   } else if (seq == TermViewEscSeq) {
     shiftCharset = @"qwertyuiopasdfghjklzxcvbnm";
     charset = [shiftCharset stringByAppendingString:@"1234567890`~!@#$%^&*()_=+[]{}\\|;':\",./<>?\t"];
-    
   } else if (seq == TermViewAutoRepeateSeq) {
     charset = @"qwertyuiopasdfghjklzxcvbnm1234567890";
   } else {
@@ -1070,9 +1146,11 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 - (void)_resetDefaultControlKeys
 {
   _controlKeys = [[NSMutableDictionary alloc] init];
+  _controlKeysWithoutAutoRepeat = [[NSMutableDictionary alloc] init];
   _functionKeys = [[NSMutableDictionary alloc] init];
   _functionTriggerKeys = [[NSMutableDictionary alloc] init];
   _specialFKeysRow = @"1234567890";
+  _rawAdditionalKbdCommands = [[NSMutableArray alloc] init];
   [self _setKbdCommands];
 }
 
@@ -1128,9 +1206,21 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   if ([BKDefaults isShiftAsEsc]) {
     [self _assignKey:UIKeyInputEscape toModifier:UIKeyModifierShift];
   }
-
+  
+  if ([BKDefaults isBackquoteAsEsc]) {
+    [_rawAdditionalKbdCommands addObject:[UIKeyCommand keyCommandWithInput:@"`" modifierFlags:0 action:@selector(escSeqNoInput:)]];
+  }
+  
   if ([BKDefaults isCapsAsEsc]) {
     [self _assignKey:UIKeyInputEscape toModifier:UIKeyModifierAlphaShift];
+  }
+  
+  if ([BKDefaults isCapsAsCtrl]) {
+    NSMutableArray *cmds = [[NSMutableArray alloc] init];
+    [cmds addObject:[UIKeyCommand keyCommandWithInput:@""
+                                       modifierFlags:UIKeyModifierAlphaShift action:@selector(dummySeq:)]];
+    [_functionKeys setObject:cmds forKey:[NSNumber numberWithInteger:UIKeyModifierAlphaShift]];
+    [self _assignSequence:TermViewCtrlSeq toModifier:UIKeyModifierAlphaShift];
   }
 
   for (NSString *func in [BKDefaults keyboardFuncTriggers].allKeys) {
@@ -1149,5 +1239,11 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   
   [self _setKbdCommands];
 }
+
+//- (void)_handleKeyUIEvent:(id)event {
+//  KeyInput *input = [KeyInput buildKeyInputFrom:event];
+//  NSLog(@"%@", input);
+//  [super _handleKeyUIEvent:event];
+//}
 
 @end

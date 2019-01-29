@@ -29,8 +29,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import "SpaceController.h"
 #import "BKDefaults.h"
+#import "SpaceController.h"
 #import "BKSettingsNotifications.h"
 #import "BKUserConfigurationManager.h"
 #import "MBProgressHUD/MBProgressHUD.h"
@@ -41,6 +41,7 @@
 #import "MusicManager.h"
 #import "TouchOverlay.h"
 #import "BKTouchIDAuthManager.h"
+#import "GeoManager.h"
 
 @interface SpaceController () <
   UIPageViewControllerDataSource,
@@ -67,24 +68,42 @@
 
   NSMutableArray<UIKeyCommand *> *_kbdCommands;
   NSMutableArray<UIKeyCommand *> *_kbdCommandsWithoutDiscoverability;
-  UIEdgeInsets _rootLayoutMargins;
   TermInput *_termInput;
   BOOL _unfocused;
+  NSTimer *_activeTimer;
+  NSTimer *_restoreLayoutTimer;
+  CGFloat _proposedKBBottomInset;
+  BOOL _active;
 }
 
 #pragma mark Setup
-- (void)loadView
+
+- (void)viewDidLayoutSubviews {
+  [super viewDidLayoutSubviews];
+
+  if (self.view.window.screen == UIScreen.mainScreen) {
+    UIEdgeInsets insets =  UIEdgeInsetsMake(0, 0, _proposedKBBottomInset, 0);
+    _touchOverlay.frame = UIEdgeInsetsInsetRect(self.view.bounds, insets);
+  } else {
+    _touchOverlay.frame = self.view.bounds;
+  }
+}
+
+- (void)viewSafeAreaInsetsDidChange {
+  [super viewSafeAreaInsetsDidChange];
+  [self updateDeviceSafeMarings:self.view.safeAreaInsets];
+}
+
+- (void)viewDidLoad
 {
-  [super loadView];
-  
-  
+  [super viewDidLoad];
   
   self.view.opaque = YES;
   
   NSDictionary *options = [NSDictionary dictionaryWithObject:
                            [NSNumber numberWithInt:UIPageViewControllerSpineLocationMid]
-                                            forKey:UIPageViewControllerOptionSpineLocationKey];
-
+                                                      forKey:UIPageViewControllerOptionSpineLocationKey];
+  
   _viewportsController = [[UIPageViewController alloc]
                           initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
                           navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
@@ -94,13 +113,13 @@
   _viewportsController.delegate = self;
   
   [self addChildViewController:_viewportsController];
+  _viewportsController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   _viewportsController.view.layoutMargins = UIEdgeInsetsZero;
   _viewportsController.view.frame = self.view.bounds;
   [self.view addSubview:_viewportsController.view];
   [_viewportsController didMoveToParentViewController:self];
   
   _touchOverlay = [[TouchOverlay alloc] initWithFrame:self.view.bounds];
-  
   [self.view addSubview:_touchOverlay];
   _touchOverlay.touchDelegate = self;
   _touchOverlay.controlPanel.controlPanelDelegate = self;
@@ -109,33 +128,6 @@
   _termInput = [[TermInput alloc] init];
   [self.view addSubview:_termInput];
   [self registerForNotifications];
-  
-}
-
-- (void)viewWillLayoutSubviews
-{
-  [super viewWillLayoutSubviews];
-  
-  CGRect rect = self.view.bounds;
-  
-  if (@available(iOS 11.0, *)) {
-    UIEdgeInsets insets = self.view.safeAreaInsets;
-    insets.bottom = MAX(_rootLayoutMargins.bottom, insets.bottom);
-    if (insets.bottom == 0) {
-      insets.bottom = 1;
-    }
-    rect = UIEdgeInsetsInsetRect(rect, insets);
-  } else {
-    rect = UIEdgeInsetsInsetRect(rect, _rootLayoutMargins);
-  }
-  
-  _viewportsController.view.frame = rect;
-  _touchOverlay.frame = rect;
-}
-
-- (void)viewDidLoad
-{
-  [super viewDidLoad];
 
   [self setKbdCommands];
   if (_viewports == nil) {
@@ -151,6 +143,20 @@
   }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+
+  if ([_termInput isFirstResponder]) {
+    [self _attachInputToCurrentTerm];
+    return;
+  }
+
+  if (!_unfocused) {
+    [self _focusOnShell];
+  }
+}
+
 - (BOOL)canBecomeFirstResponder
 {
   return YES;
@@ -161,6 +167,10 @@
   return YES;
 }
 
+- (BOOL)prefersHomeIndicatorAutoHidden {
+  return YES;
+}
+
 - (void)_attachInputToCurrentTerm
 {
   [self.currentDevice attachInput:_termInput];
@@ -168,6 +178,7 @@
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder andStateManager: (StateManager *)stateManager
 {
+  UIColor * bgColor = [coder decodeObjectForKey:@"bgColor"] ?: [UIColor blackColor];
   _unfocused = [coder decodeBoolForKey:@"_unfocused"];
   NSArray *sessionStateKeys = [coder decodeObjectForKey:@"sessionStateKeys"];
   
@@ -179,6 +190,7 @@
     [stateManager restoreState:term];
     term.delegate = self;
     term.userActivity = nil;
+    term.bgColor = bgColor;
     
     [_viewports addObject:term];
   }
@@ -187,6 +199,7 @@
   TermController *term = _viewports[idx];
   
   [self loadViewIfNeeded];
+  self.view.backgroundColor = bgColor;
   
   __weak typeof(self) weakSelf = self;
   [_viewportsController setViewControllers:@[term]
@@ -217,6 +230,20 @@
   [coder encodeInteger:idx forKey:@"idx"];
   [coder encodeObject:sessionStateKeys forKey:@"sessionStateKeys"];
   [coder encodeBool:_unfocused forKey:@"_unfocused"];
+  [coder encodeObject:self.view.backgroundColor forKey:@"bgColor"];
+}
+
+//applicationFinishedRestoringState
+
+- (void)applicationFinishedRestoringState {
+    if ([_termInput isFirstResponder]) {
+      [self _attachInputToCurrentTerm];
+      return;
+    }
+  
+    if (!_unfocused) {
+      [self _focusOnShell];
+    }
 }
 
 - (void)registerForNotifications
@@ -250,30 +277,59 @@
 		    selector:@selector(keyboardFuncTriggerChanged:)
 			name:BKKeyboardFuncTriggerChanged
 		      object:nil];
+  
+  [defaultCenter addObserver:self
+                    selector:@selector(_onGeoLock)
+                        name:BLGeoLockNotification
+                      object:nil];
 }
 
 - (void)_appDidBecomeActive
 {
-  if ([_termInput isFirstResponder]) {
-    [self _attachInputToCurrentTerm];
-    return;
-  }
-
-  if (!_unfocused) {
-    [self _focusOnShell];
-  }
+  [_activeTimer invalidate];
+  _activeTimer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(_delayedDidBecomeActive) userInfo:nil repeats:NO];
 }
 
-- (void)_focusOnShell
+- (void)_delayedDidBecomeActive
 {
-  [_termInput becomeFirstResponder];
-  [self _attachInputToCurrentTerm];
+  [_activeTimer invalidate];
+  _activeTimer = nil;
+  
+  _active = YES;
+  _restoreLayoutTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(_restoreLayoutAfterBecomeActive) userInfo:nil repeats:NO];
+}
+
+- (void)_restoreLayoutAfterBecomeActive {
+  [_restoreLayoutTimer invalidate];
+  _restoreLayoutTimer = nil;
+  [self updateKbBottomSafeMargins:_proposedKBBottomInset];
+  [self.view setNeedsLayout];
 }
 
 -(void)_appWillResignActive
 {
+  if (_activeTimer) {
+    [_activeTimer invalidate];
+    _activeTimer = nil;
+    return;
+  }
+  
+  if (_restoreLayoutTimer) {
+    [_restoreLayoutTimer invalidate];
+    _restoreLayoutTimer = nil;
+  }
+  
+  _active = NO;
   _unfocused = ![_termInput isFirstResponder];
 }
+
+- (void)_focusOnShell
+{
+  _active = YES;
+  [_termInput becomeFirstResponder];
+  [self _attachInputToCurrentTerm];
+}
+
 
 
 #pragma mark Events
@@ -286,7 +342,7 @@
   CGFloat bottomInset = 0;
   
   CGRect kbFrame = [sender.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-  NSTimeInterval duration = [sender.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+//  NSTimeInterval duration = [sender.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
   
   CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
   if (CGRectGetMaxY(kbFrame) >= viewHeight) {
@@ -295,8 +351,7 @@
   
   UIView *accessoryView = _termInput.inputAccessoryView;
   CGFloat accessoryHeight = accessoryView.frame.size.height;
-  
-  if (bottomInset > accessoryHeight) {
+  if (bottomInset > 80) {
     accessoryView.hidden = NO;
     _termInput.softwareKB = YES;
   } else if (bottomInset == accessoryHeight) {
@@ -312,22 +367,19 @@
   
   if (accessoryView.hidden) {
     bottomInset -= accessoryHeight;
+    if (bottomInset < 0) {
+      bottomInset = 0;
+    }
     _termInput.softwareKB = NO;
   }
   
-  if (_rootLayoutMargins.bottom != bottomInset) {
-    _rootLayoutMargins.bottom = bottomInset;
-    
+  _proposedKBBottomInset = bottomInset;
+  
+  if (!_active) {
     [self.view setNeedsLayout];
-    [self.view layoutIfNeeded];
-    
-    // Workaround broken KB... suspend tap recognizers for a little bit;
-    _touchOverlay.oneFingerTapGestureRecognizer.enabled = NO;
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (duration + 0.3) * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-      _touchOverlay.oneFingerTapGestureRecognizer.enabled = YES;
-    });
+    return;
   }
+  [self updateKbBottomSafeMargins:bottomInset];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
@@ -352,7 +404,7 @@
   }
   NSInteger idx = [_viewports indexOfObject:viewController];
 
-  if (idx <= 0) {
+  if (idx <= 0 || idx == NSNotFound) {
     return nil;
   }
   return _viewports[idx - 1];
@@ -395,7 +447,7 @@
 
   [_hud hideAnimated:NO];
 
-  _musicHUD = [MBProgressHUD showHUDAddedTo:_viewportsController.view animated:YES];
+  _musicHUD = [MBProgressHUD showHUDAddedTo:_touchOverlay animated:YES];
   _musicHUD.mode = MBProgressHUDModeCustomView;
   _musicHUD.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
   _musicHUD.bezelView.color = [UIColor clearColor];
@@ -421,13 +473,13 @@
   
   TermController *currentTerm = self.currentTerm;
   
-  if (currentTerm.view.backgroundColor != [UIColor clearColor]) {
+  if (currentTerm.view.backgroundColor && currentTerm.view.backgroundColor != [UIColor clearColor]) {
     self.view.backgroundColor = currentTerm.view.backgroundColor;
     _viewportsController.view.backgroundColor = currentTerm.view.backgroundColor;
     self.view.window.backgroundColor = currentTerm.view.backgroundColor;
   }
 
-  _hud = [MBProgressHUD showHUDAddedTo:_viewportsController.view animated:_hud == nil];
+  _hud = [MBProgressHUD showHUDAddedTo:_touchOverlay animated:_hud == nil];
   _hud.mode = MBProgressHUDModeCustomView;
   _hud.bezelView.color = [UIColor darkGrayColor];
   _hud.contentColor = [UIColor whiteColor];
@@ -456,6 +508,8 @@
   }
 
   [_hud hideAnimated:YES afterDelay:1.f];
+  
+  [_touchOverlay.controlPanel updateLayoutBar];
 }
 
 - (void)closeCurrentSpace
@@ -515,6 +569,8 @@
   term.sessionStateKey = sessionStateKey;
   term.delegate = self;
   term.userActivity = userActivity;
+  term.bgColor = self.view.backgroundColor ?: [UIColor blackColor];
+  
 
   if (_viewports == nil) {
     _viewports = [[NSMutableArray alloc] init];
@@ -592,6 +648,7 @@
 - (void)setKbdCommands
 {
   UIKeyModifierFlags modifierFlags = [BKUserConfigurationManager shortCutModifierFlags];
+  UIKeyModifierFlags prevNextShellModifierFlags = [BKUserConfigurationManager shortCutModifierFlagsForNextPrevShell];
   
   _kbdCommands = [[NSMutableArray alloc] initWithObjects:
                   [UIKeyCommand keyCommandWithInput: @"t" modifierFlags:modifierFlags
@@ -600,19 +657,26 @@
                   [UIKeyCommand keyCommandWithInput: @"w" modifierFlags: modifierFlags
                                              action: @selector(closeShell:)
                                discoverabilityTitle: @"Close shell"],
-                  [UIKeyCommand keyCommandWithInput: @"]" modifierFlags: [BKUserConfigurationManager shortCutModifierFlagsForNextPrevShell]
+                  [UIKeyCommand keyCommandWithInput: @"]" modifierFlags: prevNextShellModifierFlags
                                              action: @selector(nextShell:)
                                discoverabilityTitle: @"Next shell"],
-                  [UIKeyCommand keyCommandWithInput: @"[" modifierFlags: [BKUserConfigurationManager shortCutModifierFlagsForNextPrevShell]
+                  [UIKeyCommand keyCommandWithInput: @"[" modifierFlags: prevNextShellModifierFlags
                                              action: @selector(prevShell:)
                                discoverabilityTitle: @"Previous shell"],
+                  // Alternative key commands for keyboard layouts having problems to access
+                  // some of the default ones (e.g. the German keyboard layout)
+                  [UIKeyCommand keyCommandWithInput: UIKeyInputRightArrow modifierFlags: prevNextShellModifierFlags
+                                             action: @selector(nextShell:)],
+                  [UIKeyCommand keyCommandWithInput: UIKeyInputLeftArrow modifierFlags: prevNextShellModifierFlags
+                                             action: @selector(prevShell:)],
+                  
                   
                   [UIKeyCommand keyCommandWithInput: @"o" modifierFlags: modifierFlags
                                              action: @selector(otherScreen:)
                                discoverabilityTitle: @"Other Screen"],
-                  [UIKeyCommand keyCommandWithInput: @"o" modifierFlags: modifierFlags
+                  [UIKeyCommand keyCommandWithInput: @"o" modifierFlags: prevNextShellModifierFlags
                                              action: @selector(moveToOtherScreen:)
-                               discoverabilityTitle: @"Move schell to other Screen"],
+                               discoverabilityTitle: @"Move shell to other Screen"],
                   [UIKeyCommand keyCommandWithInput: @"," modifierFlags: modifierFlags
                                              action: @selector(showConfig:)
                                discoverabilityTitle: @"Show config"],
@@ -676,6 +740,14 @@
 
 - (void)otherScreen:(UIKeyCommand *)cmd
 {
+  if ([UIScreen screens].count == 1) {
+    if (_termInput.isFirstResponder) {
+      [_termInput resignFirstResponder];
+    } else {
+      [self _focusOnShell];
+    }
+    return;
+  }
   [[ScreenController shared] switchToOtherScreen];
 }
 
@@ -838,32 +910,56 @@
     return;
   }
 
-  // 1. Try find term with same activity key
+
+  // 1. Find terminal with excact command that is running right now
   NSInteger targetIdx = [_viewports indexOfObjectPassingTest:^BOOL(TermController *term, NSUInteger idx, BOOL * _Nonnull stop) {
-    return [activity.title isEqualToString:term.activityKey];
+    return [activity.title isEqualToString:term.activityKey] && [term isRunningCmd];
   }];
-
-  // 2. No term with same activity key, so we create one or use current
-  if (targetIdx == NSNotFound) {
-    if (self.currentTerm.activityKey == nil) {
-      [self.currentTerm restoreUserActivityState:activity];
+  
+  if (targetIdx != NSNotFound) {
+    // current terminal is running this command, so just stay here.
+    if (idx == targetIdx) {
       [self _attachInputToCurrentTerm];
-    } else {
-      [self _createShellWithUserActivity:activity sessionStateKey:nil animated:YES completion:nil];
+      return;
     }
+    
+    // switch to terminal that is running command.
+    UIPageViewControllerNavigationDirection direction =
+    idx < targetIdx ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
+    
+    [self switchShellIdx: targetIdx
+               direction: direction
+                animated: NO];
     return;
   }
 
-  // 3. We are already showing required term. So do nothing.
-  if (idx == targetIdx) {
+  // 2. Check if current term can run command.
+  if ([self.currentTerm canRestoreUserActivityState:activity]) {
     [self _attachInputToCurrentTerm];
+    [self.currentTerm.termDevice focus];
+    [self.currentTerm restoreUserActivityState:activity];
     return;
   }
-
-  // 4. Switch to found term index.
+  
+  // 3. Find terminal that can run this command.
+  targetIdx = [_viewports indexOfObjectPassingTest:^BOOL(TermController *term, NSUInteger idx, BOOL * _Nonnull stop) {
+    return [term canRestoreUserActivityState:activity];
+  }];
+  
+  // No running terminals can run this command, so we creating new one.
+  if (targetIdx == NSNotFound) {
+    [self _createShellWithUserActivity:activity sessionStateKey:nil animated:YES completion:nil];
+    return;
+  }
+  
+  // Switch to terminal and run command.
   UIPageViewControllerNavigationDirection direction =
   idx < targetIdx ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
-
+  
+  TermController *term = _viewports[targetIdx];
+  [term.termDevice attachInput:_termInput];
+  [term.termDevice focus];
+  [term restoreUserActivityState:activity];
   [self switchShellIdx: targetIdx
              direction: direction
               animated: NO];
@@ -999,6 +1095,13 @@ API_AVAILABLE(ios(11.0)){
   _termInput.frame = CGRectZero;
   _termInput.hidden = YES;
   [_termInput reset];
+}
+
+- (void)_onGeoLock {
+  NSUInteger count = _viewports.count;
+  for (int i = 0; i < count; i++) {
+    [self removeCurrentSpace];
+  }
 }
 
 @end

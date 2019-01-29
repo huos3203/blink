@@ -32,14 +32,21 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+extern const NSString *BK_KEYTYPE_RSA;
+extern const NSString *BK_KEYTYPE_DSA;
+extern const NSString *BK_KEYTYPE_ECDSA;
+extern const NSString *BK_KEYTYPE_Ed25519;
 
-@interface SshRsa : NSObject
+@interface Pki : NSObject
 
-- (SshRsa *)initWithLength:(int)bits;
-- (SshRsa *)initFromPrivateKey:(NSString *)privateKey passphrase:(NSString *)passphrase;
+- (Pki *)initRSAWithLength:(int)bits;
+- (Pki *)initWithType:(NSString *)type andBits:(int)bits;
 - (NSString *)privateKey;
-- (NSString *)privateKeyWithPassphrase:(NSString *)passphrase;
 - (NSString *)publicKeyWithComment:(NSString*)comment;
+- (const NSString *)keyTypeName;
+
++ (NSArray<NSString *> *)supportedKeyTypes;
++ (void)importPrivateKey:(NSString *)privateKey controller:(UIViewController *)controller andCallback: (void(^)(Pki *))callback;
 
 @end
 
@@ -56,10 +63,10 @@
 + (id)saveCard:(NSString *)ID privateKey:(NSString *)privateKey publicKey:(NSString *)publicKey;
 + (NSMutableArray *)all;
 + (NSInteger)count;
+- (BOOL)isEncrypted;
 
 - (NSString *)publicKey;
 - (NSString *)privateKey;
-- (BOOL)isEncrypted;
 
 @end
 

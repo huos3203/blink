@@ -40,18 +40,26 @@
 #import "SSHCopyIDSession.h"
 #import "SSHSession.h"
 
-//#import "SSHSession2.h"
-
 #import "BKUserConfigurationManager.h"
 #import "BlinkPaths.h"
 
-
 #include <ios_system/ios_system.h>
+
 #include "ios_error.h"
+
+@interface WeakSSHClient : NSObject
+@property (weak) SSHClient *value;
+@end
+
+@implementation WeakSSHClient
+
+@end
+
 
 @implementation MCPSession {
   Session *_childSession;
   NSString *_currentCmd;
+  NSMutableArray<WeakSSHClient *> *_sshClients;
 }
 
 @dynamic sessionParameters;
@@ -59,7 +67,8 @@
 - (id)initWithDevice:(TermDevice *)device andParametes:(SessionParameters *)parameters
 {
   if (self = [super initWithDevice:device andParametes:parameters]) {
-    _repl = [[Repl alloc] initWithDevice:device];
+    _repl = [[Repl alloc] initWithDevice:device andStream: _stream];
+    _sshClients = [[NSMutableArray alloc] init];
   }
   
   return self;
@@ -71,31 +80,20 @@
   ios_setMiniRoot([BlinkPaths documents]);
   ios_setStreams(_stream.in, _stream.out, _stream.err);
   ios_setContext((__bridge void*)self);
+  [self updateAllowedPaths];
+  [[NSFileManager defaultManager] changeCurrentDirectoryPath:[BlinkPaths documents]];
   
   if ([@"mosh" isEqualToString:self.sessionParameters.childSessionType]) {
     _childSession = [[MoshSession alloc] initWithDevice:_device andParametes:self.sessionParameters.childSessionParameters];
     [_childSession executeAttachedWithArgs:@""];
     _childSession = nil;
+    if (self.sessionParameters.hasEncodedState) {
+      return 0;
+    }
   }
   
-  replaceCommand(@"curl", @"curl_static_main", true); // replace curl in ios_system with our own, accessing Blink keys.
-  replaceCommand(@"help", @"help_main", true);
-  replaceCommand(@"config", @"config_main", true);
-  replaceCommand(@"music", @"music_main", true);
-  replaceCommand(@"clear", @"clear_main", true);
-  replaceCommand(@"showkey", @"showkey_main", true);
-  replaceCommand(@"history", @"history_main", true);
-  replaceCommand(@"open", @"open_main", true);
-  replaceCommand(@"theme", @"theme_main", true);
-  replaceCommand(@"link-files", @"link_files_main", true);
-  
-  
-  [self updateAllowedPaths];
-  
-  [[NSFileManager defaultManager] changeCurrentDirectoryPath:[BlinkPaths documents]];
-
   [_repl loopWithCallback:^BOOL(NSString *cmdline) {
-    
+  
     NSArray *arr = [cmdline componentsSeparatedByString:@" "];
     NSString *cmd = arr[0];
     
@@ -103,33 +101,53 @@
       return NO;
     } else if ([cmd isEqualToString:@"mosh"]) {
       [self _runMoshWithArgs:cmdline];
-    } else if ([cmd isEqualToString:@"ssh"]) {
+      if (self.sessionParameters.hasEncodedState) {
+        return NO;
+      }
+    } else if ([cmd isEqualToString:@"ssh2"]) {
       [self _runSSHWithArgs:cmdline];
-      //    } else if ([cmd isEqualToString:@"ssh2"]) {
-      //      [self :cmdline];
     } else if ([cmd isEqualToString:@"ssh-copy-id"]) {
       [self _runSSHCopyIDWithArgs:cmdline];
     } else {
+      [self.delegate indexCommand:cmdline];
       _currentCmd = cmdline;
       thread_stdout = nil;
       thread_stdin = nil;
       thread_stderr = nil;
+      
       // Re-evalute column number before each command
       setenv("COLUMNS", [@(_device->win.ws_col) stringValue].UTF8String, 1); // force rewrite of value
-      int result = ios_system(cmdline.UTF8String);
+      ios_system(cmdline.UTF8String);
       _currentCmd = nil;
-      // TODO: find meanful exit code for reload
-      if (result == 10 && [cmd isEqualToString:@"theme"]) {
-        return NO;
-      }
+      _sshClients = [[NSMutableArray alloc] init];
     }
     
     return YES;
   }];
-
-  puts("Bye!");
   
   return 0;
+}
+
+- (void)registerSSHClient:(SSHClient *)sshClient {
+  WeakSSHClient *client = [[WeakSSHClient alloc] init];
+  client.value = sshClient;
+  [_sshClients addObject:client];
+}
+
+- (void)unregisterSSHClient:(SSHClient *)sshClient {
+  WeakSSHClient *foundClient = nil;
+  for (WeakSSHClient *client in _sshClients) {
+    if ([client.value isEqual:sshClient]) {
+      foundClient = client;
+      break;
+    }
+  }
+  
+  [_sshClients removeObject:foundClient];
+}
+
+- (bool)isRunningCmd {
+  return _childSession != nil || _currentCmd != nil;
 }
 
 - (NSArray<NSString *> *)_symlinksInHomeDirectory
@@ -184,7 +202,6 @@
   self.sessionParameters.childSessionType = @"mosh";
   _childSession = [[MoshSession alloc] initWithDevice:_device andParametes:self.sessionParameters.childSessionParameters];
   [_childSession executeAttachedWithArgs:args];
-  
   _childSession = nil;
 }
 
@@ -198,38 +215,31 @@
   _childSession = nil;
 }
 
-//- (void)_runSSH2WithArgs:(NSString *)args
-//{
-//  self.sessionParameters.childSessionParameters = nil;
-//  [self.delegate indexCommand:args];
-//  _childSession = [[SSHSession2 alloc] initWithDevice:_device andParametes:self.sessionParameters.childSessionParameters];
-//  self.sessionParameters.childSessionType = @"ssh2";
-//  [_childSession executeAttachedWithArgs:args];
-//  _childSession = nil;
-//}
-
-
 - (void)sigwinch
 {
   [_repl sigwinch];
   [_childSession sigwinch];
+  for (WeakSSHClient *client in _sshClients) {
+    [client.value sigwinch];
+  }
 }
 
 - (void)kill
 {
   [_childSession kill];
 
-  // Close stdin to end the linenoise loop.
-  if (_stream.in) {
-    fclose(_stream.in);
-    _stream.in = NULL;
-  }
-  [_repl kill];
   ios_kill();
-  
   
   // Instruct ios_system to release the data for this shell:
   ios_closeSession((__bridge void*)self);
+  ios_setContext(nil);
+  
+  if (_device.stream.in) {
+    fclose(_device.stream.in);
+    _device.stream.in = NULL;
+  }
+  _repl = nil;
+  _sshClients = nil;
 }
 
 - (void)suspend
@@ -247,8 +257,13 @@
     if ([_device rawMode]) {
       return NO;
     }
-
-    ios_kill();
+    if (_sshClients.count > 0) {
+      for (WeakSSHClient *client in _sshClients) {
+        [client.value kill];
+      }
+    } else {
+      ios_kill();
+    }
     return YES;
   }
 
@@ -266,6 +281,12 @@
   stdout = savedStdOut;
   stderr = savedStdErr;
   stdin = savedStdIn;
+}
+
+- (void)dealloc {
+  _repl = nil;
+  _childSession = nil;
+  _sshClients = nil;
 }
 
 @end

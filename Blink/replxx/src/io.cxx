@@ -47,11 +47,11 @@ static WORD oldDisplayAttribute;
 static UINT const inputCodePage( GetConsoleCP() );
 static UINT const outputCodePage( GetConsoleOutputCP() );
 #else
-static struct termios orig_termios; /* in order to restore at exit */
+__thread static struct termios orig_termios; /* in order to restore at exit */
 #endif
 
-static int rawmode = 0; /* for atexit() function to check if restore is needed*/
-static int atexit_registered = 0; /* register atexit just 1 time */
+__thread static int rawmode = 0; /* for atexit() function to check if restore is needed*/
+__thread static int atexit_registered = 0; /* register atexit just 1 time */
 // At exit we'll try to fix the terminal to the initial conditions
 static void repl_at_exit(void) { disableRawMode(); }
 
@@ -259,8 +259,8 @@ void disableRawMode(void) {
  * @return	char32_t Unicode character
  */
 char32_t readUnicodeCharacter(void) {
-	static char8_t utf8String[5];
-	static size_t utf8Count = 0;
+	__thread static char8_t utf8String[5];
+	__thread static size_t utf8Count = 0;
 	while (true) {
 		char8_t c;
 
@@ -509,6 +509,7 @@ void clear_screen( CLEAR_SCREEN clearScreen_ ) {
 	if ( clearScreen_ == CLEAR_SCREEN::WHOLE ) {
 		char const clearCode[] = "\033c\033[H\033[2J\033[0m";
 		static_cast<void>( fwrite(clearCode, 1, sizeof ( clearCode ) - 1, __thread_stdout) >= 0);
+    fprintf(__thread_stdout, "\x1b]1337;BlinkAutoCR=1\x07");
 	} else {
 		char const clearCode[] = "\033[J";
 		static_cast<void>( fwrite(clearCode, 1, sizeof ( clearCode ) - 1, __thread_stdout) >= 0 );

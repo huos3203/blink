@@ -1,3 +1,33 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// B L I N K
+//
+// Copyright (C) 2016-2018 Blink Mobile Shell Project
+//
+// This file is part of Blink.
+//
+// Blink is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Blink is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Blink. If not, see <http://www.gnu.org/licenses/>.
+//
+// In addition, Blink is also subject to certain additional terms under
+// GNU GPL version 3 section 7.
+//
+// You should have received a copy of these additional terms immediately
+// following the terms and conditions of the GNU General Public License
+// which accompanied the Blink Source Code. If not, see
+// <http://www.github.com/blinksh/blink>.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #import "TermDevice.h"
 
@@ -50,58 +80,60 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
                                      }
                                    });
     dispatch_io_set_low_water(_channel, 1);
-    dispatch_io_read(_channel, 0, SIZE_MAX, queue,
-                     ^(bool done, dispatch_data_t data, int error) {
-                       [self _processStream:data];
-                     });
+    dispatch_io_read(_channel, 0, SIZE_MAX, queue, [self _streamHandler]);
   }
   return self;
 }
 
-- (void)_processStream:(dispatch_data_t)data
-{
-  if (_splitChar) {
-    data = dispatch_data_create_concat(_splitChar, data);
-    _splitChar = nil;
-  }
-  
-  NSData * nsData = (NSData *)data;
-  
-  NSString *output =  [[NSString alloc] initWithData:nsData encoding:NSUTF8StringEncoding];
-  
-  // Best case. We got good utf8 seq.
-  if (output) {
-    [_view write:output];
-    return;
-  }
-  
-  // May be we have incomplete utf8 seq at the end;
-  const char *buffer = [nsData bytes];
-  size_t len = nsData.length;
-  int incompleteSize = __sizeOfIncompleteSequenceAtTheEnd(buffer, len);
-  
-  if (incompleteSize == 0) {
-    // No, we didn't find any incomplete seq at the end.
-    // We have wrong seq in the middle. Pass base64 data. JS will heal it.
-    [_view writeB64:nsData];
-    return;
-  }
-  
-  // Save splitted sequences
-  _splitChar = dispatch_data_create_subrange(data, len - incompleteSize, incompleteSize);
-  
-  // We stripped incomplete seq.
-  // Let's try to create string again with range
-  
-  output = [[NSString alloc] initWithBytes:buffer length:len - incompleteSize encoding:NSUTF8StringEncoding];
-  if (output) {
-    // Good seq. Write it as string.
-    [_view write:output];
-    return;
-  }
-  
-  // Nope, fallback to base64
-  [_view writeB64:[nsData subdataWithRange:NSMakeRange(0, len - incompleteSize)]];
+- (dispatch_io_handler_t)_streamHandler {
+  return ^(bool done, dispatch_data_t data, int error) {
+    if (!data) {
+      return;
+    }
+
+    if (_splitChar) {
+      data = dispatch_data_create_concat(_splitChar, data);
+      _splitChar = nil;
+    }
+    
+    const void * buffer;
+    size_t len;
+    data = dispatch_data_create_map(data, &buffer, &len);
+    
+    NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSUTF8StringEncoding];
+    
+    // Best case. We got good utf8 seq.
+    if (output) {
+      [_view write:output];
+      return;
+    }
+    
+    // May be we have incomplete utf8 seq at the end;
+    int incompleteSize = __sizeOfIncompleteSequenceAtTheEnd(buffer, len);
+    
+    if (incompleteSize == 0) {
+      // No, we didn't find any incomplete seq at the end.
+      // We have wrong seq in the middle. Pass base64 data. JS will heal it.
+      [_view writeB64:[NSData dataWithBytes:buffer length:len]];
+      return;
+    }
+    
+    // Save splitted sequences
+    _splitChar = dispatch_data_create_subrange(data, len - incompleteSize, incompleteSize);
+    
+    // We stripped incomplete seq.
+    // Let's try to create string again with range
+    
+    output = [[NSString alloc] initWithBytes:buffer length:len - incompleteSize encoding:NSUTF8StringEncoding];
+    if (output) {
+      // Good seq. Write it as string.
+      [_view write:output];
+      return;
+    }
+    
+    // Nope, fallback to base64
+    [_view writeB64:[NSData dataWithBytes:buffer length:len - incompleteSize]];
+  };
 }
 
 - (void) close {
@@ -144,9 +176,9 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
     // TODO: Change the interface
     // Initialize on the stream
     _stream = [[TermStream alloc] init];
-    _stream.in = fdopen(_pinput[0], "r");
-    _stream.out = fdopen(_poutput[1], "w");
-    _stream.err = fdopen(_perror[1], "w");
+    _stream.in = fdopen(_pinput[0], "rb");
+    _stream.out = fdopen(_poutput[1], "wb");
+    _stream.err = fdopen(_perror[1], "wb");
     setvbuf(_stream.out, NULL, _IONBF, 0);
     setvbuf(_stream.err, NULL, _IONBF, 0);
     setvbuf(_stream.in, NULL, _IONBF, 0);
@@ -164,7 +196,22 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
 
 - (void)write:(NSString *)input
 {
-  write(_pinput[1], [input UTF8String], [input lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+  NSUInteger len = [input lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+  write(_pinput[1], input.UTF8String, len);
+  if (_echoMode) {
+    if ([input isEqualToString:@"\n"] || [input isEqualToString:@"\r"]) {
+      return;
+    }
+    write(_poutput[1], input.UTF8String, len);
+  }
+}
+
+- (void)writeOut:(NSString *)output {
+  fprintf(_stream.out, "%s", output.UTF8String);
+}
+
+- (void)writeOutLn:(NSString *)output {
+  fprintf(_stream.out, "%s\n", output.UTF8String);
 }
 
 - (void)close
@@ -302,6 +349,18 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
 - (BOOL)handleControl:(NSString *)control
 {
   return NO;
+}
+
+- (void)viewShowAlert:(NSString *)title andMessage:(NSString *)message {
+  UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                           message:message
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+  __weak UIAlertController *weakAlertController = alertController;
+  [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [weakAlertController dismissViewControllerAnimated:YES completion:nil];
+  }]];
+  
+  [_delegate.viewController presentViewController:alertController animated:YES completion:nil];
 }
 
 

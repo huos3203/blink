@@ -32,6 +32,7 @@
 #import "BKDefaults.h"
 #import "UIDevice+DeviceName.h"
 #import "BlinkPaths.h"
+#import "LayoutManager.h"
 
 BKDefaults *defaults;
 
@@ -64,12 +65,17 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   _fontSize = [coder decodeObjectForKey:@"fontSize"];
   _defaultUser = [coder decodeObjectForKey:@"defaultUser"];
   _capsAsEsc = [coder decodeBoolForKey:@"capsAsEsc"];
+  _capsAsCtrl = [coder decodeBoolForKey:@"capsAsCtrl"];
   _shiftAsEsc = [coder decodeBoolForKey:@"shiftAsEsc"];
+  _backquoteAsEsc = [coder decodeBoolForKey:@"backquoteAsEsc"];
   _autoRepeatKeys = [coder decodeBoolForKey:@"autoRepeatKeys"];
+  _grabCtrlSpace = [coder decodeBoolForKey:@"grabCtrlSpace"];
   _cursorBlink = [coder decodeBoolForKey:@"cursorBlink"];
   _enableBold = [coder decodeIntegerForKey:@"enableBold"];
   _boldAsBright = [coder decodeBoolForKey:@"boldAsBright"];
   _lightKeyboard = [coder decodeBoolForKey:@"lightKeyboard"];
+  _alternateAppIcon = [coder decodeBoolForKey:@"alternateAppIcon"];
+  _layoutMode = (BKLayoutMode)[coder decodeIntegerForKey:@"layoutMode"];
   return self;
 }
 
@@ -82,12 +88,17 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   [encoder encodeObject:_fontSize forKey:@"fontSize"];
   [encoder encodeObject:_defaultUser forKey:@"defaultUser"];
   [encoder encodeBool:_capsAsEsc forKey:@"capsAsEsc"];
+  [encoder encodeBool:_capsAsCtrl forKey:@"capsAsCtrl"];
   [encoder encodeBool:_shiftAsEsc forKey:@"shiftAsEsc"];
+  [encoder encodeBool:_backquoteAsEsc forKey:@"backquoteAsEsc"];
   [encoder encodeBool:_autoRepeatKeys forKey:@"autoRepeatKeys"];
+  [encoder encodeBool:_grabCtrlSpace forKey:@"grabCtrlSpace"];
   [encoder encodeBool:_cursorBlink forKey:@"cursorBlink"];
   [encoder encodeInteger:_enableBold forKey:@"enableBold"];
   [encoder encodeBool:_boldAsBright forKey:@"boldAsBright"];
   [encoder encodeBool:_lightKeyboard forKey:@"lightKeyboard"];
+  [encoder encodeBool:_alternateAppIcon forKey:@"alternateAppIcon"];
+  [encoder encodeInteger:_layoutMode forKey:@"layoutMode"];
 }
 
 + (void)loadDefaults
@@ -97,6 +108,7 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   if (!defaults) {
     // Initialize the structure if it doesn't exist
     defaults = [[BKDefaults alloc] init];
+    defaults.autoRepeatKeys = YES;
   }
   
   if (!defaults.keyboardMaps) {
@@ -105,6 +117,10 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   if (!defaults.keyboardFuncTriggers) {
     [defaults setDefaultKeyboardFuncTriggers];
   }
+  
+  if (defaults.layoutMode == BKLayoutModeDefault) {
+    defaults.layoutMode = [LayoutManager deviceDefaultLayoutMode];
+  }
 
   if (!defaults.fontName) {
     [defaults setFontName:@"Source Code Pro"];
@@ -112,8 +128,13 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   if (!defaults.themeName) {
     [defaults setThemeName:@"Default"];
   }
+  
   if (!defaults.fontSize) {
-    [defaults setFontSize:[NSNumber numberWithInt:10]];
+    if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+      [defaults setFontSize:[NSNumber numberWithInt:18]];
+    } else {
+      [defaults setFontSize:[NSNumber numberWithInt:10]];
+    }
   }
   if(!defaults.defaultUser || ![[defaults.defaultUser stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]){
     [defaults setDefaultUser:[UIDevice getInfoTypeFromDeviceName:BKDeviceInfoTypeUserName]];
@@ -136,7 +157,9 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
                                    @[BKKeyboardModifierCmd], BKKeyboardFuncShortcutTriggers, nil];
   
   defaults.capsAsEsc = NO;
+  defaults.capsAsCtrl = NO;
   defaults.shiftAsEsc = NO;
+  defaults.backquoteAsEsc = NO;
 }
 
 + (BOOL)saveDefaults
@@ -157,14 +180,29 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   defaults.capsAsEsc = state;
 }
 
++ (void)setCapsAsCtrl:(BOOL)state
+{
+  defaults.capsAsCtrl = state;
+}
+
 + (void)setShiftAsEsc:(BOOL)state
 {
   defaults.shiftAsEsc = state;
 }
 
++ (void)setBackquoteAsEsc:(BOOL)state
+{
+  defaults.backquoteAsEsc = state;
+}
+
 + (void)setAutoRepeatKeys:(BOOL)state
 {
   defaults.autoRepeatKeys = state;
+}
+
++ (void)setGrabCtrlSpace:(BOOL)state
+{
+  defaults.grabCtrlSpace = state;
 }
 
 + (void)setCursorBlink:(BOOL)state
@@ -180,6 +218,11 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
 + (void)setLightKeyboard:(BOOL)state
 {
   defaults.lightKeyboard = state;
+}
+
++ (void)setAlternateAppIcon:(BOOL)state
+{
+  defaults.alternateAppIcon = state;
 }
 
 + (void)setEnableBold:(NSUInteger)state
@@ -212,6 +255,10 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
 + (void)setDefaultUserName:(NSString*)name
 {
   defaults.defaultUser = name;
+}
+
++ (void)setLayoutMode:(BKLayoutMode)mode {
+  defaults.layoutMode = mode;
 }
 
 + (NSString *)selectedFontName
@@ -259,14 +306,29 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   return defaults.capsAsEsc;
 }
 
++ (BOOL)isCapsAsCtrl
+{
+  return defaults.capsAsCtrl;
+}
+
 + (BOOL)isShiftAsEsc
 {
   return defaults.shiftAsEsc;
 }
 
++ (BOOL)isBackquoteAsEsc
+{
+  return defaults.backquoteAsEsc;
+}
+
 + (BOOL)autoRepeatKeys
 {
   return defaults.autoRepeatKeys;
+}
+
++ (BOOL)grabCtrlSpace
+{
+  return defaults.grabCtrlSpace;
 }
 
 + (BOOL)isCursorBlink
@@ -289,9 +351,19 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   return defaults.lightKeyboard;
 }
 
++ (BOOL)isAlternateAppIcon
+{
+  return defaults.alternateAppIcon;
+}
+
 + (NSString*)defaultUserName
 {
   return defaults.defaultUser;
+}
+
++ (BKLayoutMode)layoutMode
+{
+  return defaults.layoutMode;
 }
 
 @end

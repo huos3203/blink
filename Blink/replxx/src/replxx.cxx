@@ -148,7 +148,7 @@ namespace replxx {
 
 #ifndef _WIN32
 
-bool gotResize = false;
+__thread bool gotResize = false;
 
 #endif
 
@@ -365,6 +365,7 @@ char const* Replxx::ReplxxImpl::input( std::string const& prompt ) {
 			if (count == -1) {
 				return NULL;
 			}
+      
 			assert( ib.length() < _maxLineLength );
 			printf("\n");
       size_t bufferSize = sizeof(char32_t) * ib.length() + 1;
@@ -389,6 +390,11 @@ char const* Replxx::ReplxxImpl::input( std::string const& prompt ) {
 void Replxx::ReplxxImpl::clear_screen( void ) {
 	replxx::clear_screen( CLEAR_SCREEN::WHOLE );
 }
+  
+void Replxx::ReplxxImpl::clear_screen_to_end( void ) {
+  replxx::clear_screen( CLEAR_SCREEN::TO_END );
+}
+
 
 int Replxx::ReplxxImpl::install_window_change_handler( void ) {
 #ifndef _WIN32
@@ -604,6 +610,11 @@ void replxx_end( ::Replxx* replxx_ ) {
 void replxx_clear_screen( ::Replxx* replxx_ ) {
 	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	return ( replxx->clear_screen() );
+}
+
+void replxx_clear_screen_to_end( ::Replxx* replxx_ ) {
+  replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+  return ( replxx->clear_screen_to_end() );
 }
 
 /**

@@ -51,10 +51,15 @@
 @property (strong, nonatomic) NSString* activityKey;
 @property (strong) NSString* sessionStateKey;
 @property (strong) MCPSessionParameters *sessionParameters;
+@property (strong, nonatomic) UIColor *bgColor;
 
+- (void)lockLayout;
+- (void)unlockLayout;
 - (void)terminate;
 - (void)suspend;
 - (void)resume;
 - (void)scaleWithPich:(UIPinchGestureRecognizer *)pinch;
+- (bool)canRestoreUserActivityState:(NSUserActivity *)activity;
+- (bool)isRunningCmd;
 
 @end

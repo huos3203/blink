@@ -1,10 +1,33 @@
+////////////////////////////////////////////////////////////////////////////////
 //
-//  Repl.m
-//  Blink
+// B L I N K
 //
-//  Created by Yury Korolev on 5/14/18.
-//  Copyright © 2018 Carlos Cabañero Projects SL. All rights reserved.
+// Copyright (C) 2016-2018 Blink Mobile Shell Project
 //
+// This file is part of Blink.
+//
+// Blink is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Blink is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Blink. If not, see <http://www.gnu.org/licenses/>.
+//
+// In addition, Blink is also subject to certain additional terms under
+// GNU GPL version 3 section 7.
+//
+// You should have received a copy of these additional terms immediately
+// following the terms and conditions of the GNU General Public License
+// which accompanied the Blink Source Code. If not, see
+// <http://www.github.com/blinksh/blink>.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #import "Repl.h"
 #import "replxx.h"
@@ -93,6 +116,7 @@ NSArray<NSString *> *__historyActionsByPrefix(NSString *prefix)
 @implementation Repl {
   Replxx* _replxx;
   TermDevice *_device;
+  TermStream *_stream;
 }
 
 void __hints(char const* line, int bp, replxx_hints* lc, ReplxxColor* color, void* ud) {
@@ -105,11 +129,12 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
   [repl _completion: line bp:bp lc: lc ud: ud];
 }
 
-- (instancetype)initWithDevice:(TermDevice *)device
+- (instancetype)initWithDevice:(TermDevice *)device andStream: (TermStream *)stream
 {
   if (self = [super init]) {
     _device = device;
-    _replxx = replxx_init();
+    _replxx = nil;
+    _stream = stream;
   }
   
   return self;
@@ -316,7 +341,7 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
         [result addObject:folder];
       }
     }
-    return result;
+    return [self _escapePaths:result];
   }
   return @[];
 }
@@ -347,19 +372,22 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
       NSString *file = deeper ? [directory stringByAppendingPathComponent:fileOrFolder] : fileOrFolder;
       [result addObject:file];
     }
-    return result;
+    return [self _escapePaths:result];
   }
   return @[];
 }
 
-
--(NSArray<NSString *> *)_allBlinkThemes
-{
-  NSMutableArray *themeNames = [[NSMutableArray alloc] init];
-  for (BKTheme *theme in [BKTheme all]) {
-    [themeNames addObject:theme.name];
+- (NSArray<NSString *> *)_escapePaths:(NSArray<NSString *> *)paths {
+  NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:paths.count];
+  for (NSString * path in paths) {
+    if ([path containsString:@" "]) {
+      NSString *escapedPath = [path stringByReplacingOccurrencesOfString:@" " withString:@"\\ "];
+      [result addObject:escapedPath];
+    } else {
+      [result addObject:path];
+    }
   }
-  return themeNames;
+  return result;
 }
 
 -(NSArray<NSString *> *)_completionsByType:(NSString *)completionType andPrefix:(NSString *)prefix {
@@ -371,10 +399,10 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
     completions = [self _allBlinkHosts];
   } else if ([@"host" isEqualToString:completionType]) {
     completions = [self _allHosts];
-  } else if ([@"blink-theme" isEqualToString:completionType]) {
-    completions = [self _allBlinkThemes];
   } else if ([@"blink-music" isEqualToString:completionType]) {
     completions = [[MusicManager shared] commands];
+  } else if ([@"blink-geo" isEqualToString:completionType]) {
+    completions = @[@"track", @"lock", @"stop", @"current", @"authorize", @"last"];
   } else if ([@"file" isEqualToString:completionType]) {
     completions = [self _allFiles:prefix];
   } else if ([@"directory" isEqualToString:completionType]) {
@@ -390,18 +418,18 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
 }
 
 -(NSString *)_commandCompletionType:(NSString *)command {
-  if ([@[@"ssh", @"mosh"] indexOfObject:command] != NSNotFound) {
+  if ([@[@"ssh", @"mosh", @"ssh2"] indexOfObject:command] != NSNotFound) {
     return @"blink-host";
   } else if ([@"ping" isEqualToString:command]) {
     return @"host";
-  } else if ([@"theme" isEqualToString:command]) {
-    return @"blink-theme";
   } else if ([@"ls" isEqualToString:command]) {
     return @"directory";
   } else if ([@"open" isEqualToString:command]) {
     return @"file";
   } else if ([@"music" isEqualToString:command]) {
     return @"blink-music";
+  } else if ([@"geo" isEqualToString:command]) {
+    return @"blink-geo";
   } else if ([@[@"help", @"exit", @"whoami", @"config", @"clear", @"history", @"link-files"] indexOfObject:command] != NSNotFound) {
     return @"";
   }
@@ -494,6 +522,7 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
 - (void)loopWithCallback:(BOOL(^)(NSString *cmd)) callback
 {
   const char *history = [[BlinkPaths historyFile] UTF8String];
+  _replxx = replxx_init();
   replxx_set_max_history_size(_replxx, MCP_MAX_HISTORY);
   replxx_history_load(_replxx, history);
   replxx_set_completion_callback(_replxx, __completion, (__bridge void*)self);
@@ -504,7 +533,7 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
   NSString *cmdline = nil;
   [_device setRawMode:NO];
   
-  while ((cmdline = [self _input:"\x1b[1;32mblink\x1b[0m> "]) != nil) {
+  while ((cmdline = [self _input:"blink> "]) != nil) {
     cmdline = [cmdline stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ([cmdline length] == 0) {
@@ -517,40 +546,30 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
     if (!callback(cmdline)) {
       break;
     }
-
+    
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      [_device.view restore];
+    });
+    
+    replxx_clear_screen_to_end(_replxx);
+    
     printf("\033]0;blink\007");
     [_device setRawMode:NO];
   }
   
-  replxx_end(_replxx);
-  _replxx = nil;
+//  replxx_end(_replxx);
+//  _replxx = nil;
 }
 
 - (NSString *)_input:(char *)prompt
 {
-  if (_replxx == nil || _device.stream.in == NULL) {
+  if (_replxx == nil || _stream.in == NULL) {
     return nil;
   }
   
-  FILE * savedStdIn = stdin;
-  FILE * savedStdOut = stdout;
-  FILE * savedStdErr = stderr;
-  
-  stdin = _device.stream.in;
-  stdout = _device.stream.out;
-  stderr = _device.stream.err;
-  
-  thread_stdin = _device.stream.in;
-  thread_stdout = _device.stream.out;
-  thread_stderr = _device.stream.err;
-  
   char const* result = NULL;
-  blink_replxx_replace_streams(_replxx, thread_stdin, thread_stdout, thread_stderr, &_device->win);
+  blink_replxx_replace_streams(_replxx, _stream.in, _stream.out, _stream.err, &_device->win);
   result = replxx_input(_replxx, prompt);
-  
-  stdin = savedStdIn;
-  stdout = savedStdOut;
-  stderr = savedStdErr;
   
   if ( result == NULL ) {
     return nil;
@@ -559,12 +578,14 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
   return [NSString stringWithUTF8String:result];
 }
 
-- (void)kill
+- (void)dealloc
 {
   if (_replxx) {
     replxx_end(_replxx);
     _replxx = nil;
   }
+  _device = nil;
+  _stream = nil;
 }
 
 - (void)sigwinch
@@ -576,6 +597,9 @@ void __completion(char const* line, int bp, replxx_completions* lc, void* ud) {
 
 - (int)clear_main:(int)argc argv:(char **)argv
 {
+  if (!_replxx) {
+    return -1;
+  }
   blink_replxx_replace_streams(_replxx, thread_stdin, thread_stdout, thread_stderr, &_device->win);
   replxx_clear_screen(_replxx);
   return 0;

@@ -39,12 +39,13 @@
 #import "BKHosts.h"
 #import "MoshSession.h"
 #import "SSHSession.h"
+#import <ios_system/ios_system.h>
 
 
 static NSDictionary *predictionModeStrings = nil;
 
 static const char *usage_format =
-"Usage: mosh [options] [user@]host [--] [command]"
+"Usage: mosh [options] [user@]host|IP [--] [command]"
 "\r\n"
 "        --server=PATH        mosh server on remote machine\r\n"
 "                             (default: mosh-server)\r\n"
@@ -52,8 +53,11 @@ static const char *usage_format =
 "-a      --predict=always     use local echo even on fast links\r\n"
 "-n      --predict=never      never use local echo\r\n"
 "\r\n"
+"-k      --key=<MOSH_KEY>     MOSH_KEY to connect without ssh\r\n"
 "-p NUM  --port=NUM           server-side UDP port\r\n"
 "-P NUM                       ssh connection port\r\n"
+"-T                           do not allocate a pseudo tty on ssh connection\r\n"
+"-2                           use ssh2 command\r\n"
 "-I id                        ssh authentication identity name\r\n"
 //  "        --ssh=COMMAND        ssh command to run when setting up session\r\n"
 //  "                                (example: \"ssh -p 2222\")\r\n"
@@ -96,6 +100,8 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
 - (int)initParamaters:(int)argc argv:(char **)argv
 {
   NSString *ssh, *sshPort, *sshIdentity;
+  BOOL sshTTY = YES;
+  BOOL useSSH2 = NO;
   int help = 0;
   NSString *colors;
   
@@ -104,6 +110,8 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
     {"server", required_argument, 0, 's'},
     {"predict", required_argument, 0, 'r'},
     {"port", required_argument, 0, 'p'},
+    {"ip", optional_argument, 0, 'i'},
+    {"key", optional_argument, 0, 'k'},
     //{"ssh", required_argument, 0, 'S'},
     {"verbose", no_argument, &_debug, 1},
     {"help", no_argument, &help, 1},
@@ -116,7 +124,7 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
   
   while (1) {
     int option_index = 0;
-    int c = getopt_long(argc, argv, "anp:I:P:", long_options, &option_index);
+    int c = getopt_long(argc, argv, "anp:I:P:k:T2", long_options, &option_index);
     if (c == -1) {
       break;
     }
@@ -130,11 +138,17 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
       case 's':
       self.sessionParameters.serverPath = [NSString stringWithFormat:@"%s", optarg];
       break;
+      case '2':
+      useSSH2 = YES;
+      break;
       case 'r':
       self.sessionParameters.predictionMode = [NSString stringWithFormat:@"%s", optarg];
       break;
       case 'p':
       self.sessionParameters.port = [NSString stringWithFormat:@"%s", optarg];
+      break;
+      case 'k':
+      self.sessionParameters.key = [NSString stringWithFormat:@"%s", optarg];
       break;
       //      case 'S':
       //        param = optarg;
@@ -151,6 +165,9 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
       break;
       case 'I':
       sshIdentity = [NSString stringWithFormat:@"%s", optarg];
+      break;
+      case 'T':
+        sshTTY = NO;
       break;
       default:
       return [self dieMsg:@(usage_format)];
@@ -187,13 +204,24 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
   
   [self processMoshSettings:hostCfg];
   
-  NSString *moshServerCmd = [self getMoshServerStringCmd:self.sessionParameters.serverPath port:self.sessionParameters.port withColors:colors run:self.sessionParameters.startupCmd];
-  [self debugMsg:moshServerCmd];
-  
-  NSError *error;
-  [self setConnParamsWithSsh:ssh userHost:userhost port:sshPort identity:sshIdentity moshCommand:moshServerCmd error:&error];
-  if (error) {
-    return [self dieMsg:error.localizedDescription];
+  if (self.sessionParameters.key) {
+    self.sessionParameters.ip = hostCfg.hostName ?: userhost;
+    if (self.sessionParameters.port == nil) {
+      return [self dieMsg:@"If MOSH_KEY is set port is required. (-p)"];
+    }
+  } else  {
+    NSString *moshServerCmd = [self getMoshServerStringCmd:self.sessionParameters.serverPath port:self.sessionParameters.port withColors:colors run:self.sessionParameters.startupCmd];
+    [self debugMsg:moshServerCmd];
+    
+    NSError *error;
+    if (useSSH2) {
+      [self setConnParamsWithSsh2:ssh userHost:userhost port:sshPort identity:sshIdentity moshCommand:moshServerCmd error:&error];
+    } else {
+      [self setConnParamsWithSsh:ssh userHost:userhost port:sshPort identity:sshIdentity sshTTY:sshTTY moshCommand:moshServerCmd error:&error];
+    }
+    if (error) {
+      return [self dieMsg:error.localizedDescription];
+    }
   }
   
   // Validate prediction mode
@@ -206,7 +234,8 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
 
 - (int)main:(int)argc argv:(char **)argv
 {
-  if (self.sessionParameters.encodedState == nil) {
+  NSData *encodedState = self.sessionParameters.encodedState;
+  if (encodedState == nil) {
     int code = [self initParamaters:argc argv:argv];
     if ( code < 0) {
       return code;
@@ -217,6 +246,8 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
   setenv("PATH_LOCALE", [locales_path cStringUsingEncoding:1], 1);
   
   [_device setRawMode:YES];
+
+  [self.sessionParameters cleanEncodedState];
   
   mosh_main(
             _stream.in, _stream.out, &_device->win,
@@ -225,8 +256,8 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
             [self.sessionParameters.port UTF8String],
             [self.sessionParameters.key UTF8String],
             [self.sessionParameters.predictionMode UTF8String],
-            self.sessionParameters.encodedState.bytes,
-            self.sessionParameters.encodedState.length
+            encodedState.bytes,
+            encodedState.length
             );
   
   [_device setRawMode:NO];
@@ -274,9 +305,73 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
   return [NSString stringWithFormat:@"%@", [moshServerArgs componentsJoinedByString:@" "]];
 }
 
-- (void)setConnParamsWithSsh:(NSString *)ssh userHost:(NSString *)userHost port:(NSString *)port identity:(NSString *)identity moshCommand:(NSString *)command error:(NSError **)error
+- (void)setConnParamsWithSsh:(NSString *)ssh userHost:(NSString *)userHost port:(NSString *)port identity:(NSString *)identity sshTTY:(BOOL)sshTTY moshCommand:(NSString *)command error:(NSError **)error
 {
   ssh = ssh ? ssh : @"ssh";
+  
+  NSMutableArray*sshArgs = [@[ssh, @"-o _printaddress=yes", @"-o compression=no", sshTTY ? @"-t" : @"-T", userHost, command] mutableCopy];
+  if (port) {
+    [sshArgs insertObject:[NSString stringWithFormat:@"-p %@", port] atIndex:1];
+  }
+  if (identity) {
+    [sshArgs insertObject:[NSString stringWithFormat:@"-i %@", identity] atIndex:1];
+  }
+  if (_debug) {
+    [sshArgs insertObject:@"-v" atIndex:1];
+  }
+  
+  NSString *sshCmd = [sshArgs componentsJoinedByString:@" "];
+  [self debugMsg:sshCmd];
+
+  FILE *term_r = ios_popen(sshCmd.UTF8String, "r");
+  
+  // Capture ssh output and process parameters for Mosh connection
+  char *buf = NULL;
+  size_t buf_sz = 0;
+  NSString *line;
+  
+  NSString *ipPattern = @"Connected to (\\S*)$";
+  NSRegularExpression *ipFormat = [NSRegularExpression regularExpressionWithPattern:ipPattern options:0 error:nil];
+  
+  NSString *connPattern = @"MOSH CONNECT (\\d+) (\\S*)$";
+  NSRegularExpression *connFormat = [NSRegularExpression regularExpressionWithPattern:connPattern options:0 error:nil];
+  
+  NSTextCheckingResult *match;
+  
+  ssize_t n = 0;
+  
+  while ((n = getline(&buf, &buf_sz, term_r)) >= 0) {
+    line = [NSString stringWithFormat:@"%.*s", (int)n, buf];
+    if ((match = [ipFormat firstMatchInString:line options:0 range:NSMakeRange(0, line.length)])) {
+      NSRange matchRange = [match rangeAtIndex:1];
+      self.sessionParameters.ip = [line substringWithRange:matchRange];
+    } else if ((match = [connFormat firstMatchInString:line options:0 range:NSMakeRange(0, line.length)])) {
+      NSRange matchRange = [match rangeAtIndex:1];
+      self.sessionParameters.port = [line substringWithRange:matchRange];
+      matchRange = [match rangeAtIndex:2];
+      self.sessionParameters.key = [line substringWithRange:matchRange];
+      break;
+    } else {
+      fwrite(buf, 1, n, _stream.out);
+    }
+  }
+  
+  fclose(term_r);
+  
+  if (!self.sessionParameters.ip) {
+    *error = [NSError errorWithDomain:@"blink.mosh.ssh" code:0 userInfo:@{ NSLocalizedDescriptionKey : @"Did not find remote IP address" }];
+    return;
+  }
+  
+  if (self.sessionParameters.key == nil || self.sessionParameters.port == nil) {
+    *error = [NSError errorWithDomain:@"blink.mosh.ssh" code:0 userInfo:@{ NSLocalizedDescriptionKey : @"Did not find remote IP address" }];
+    return;
+  }
+}
+
+- (void)setConnParamsWithSsh2:(NSString *)ssh userHost:(NSString *)userHost port:(NSString *)port identity:(NSString *)identity moshCommand:(NSString *)command error:(NSError **)error
+{
+  ssh = ssh ? ssh : @"ssh2";
   
   NSMutableArray*sshArgs = [NSMutableArray arrayWithObjects:ssh, @"-t", userHost, @"--", command, nil];
   if (port) {
@@ -291,9 +386,9 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
   
   NSString *sshCmd = [sshArgs componentsJoinedByString:@" "];
   [self debugMsg:sshCmd];
-
+  
   SSHSession *sshSession = [[SSHSession alloc] initWithDevice:_device andParametes:nil];
-
+  
   int poutput[2];
   pipe(poutput);
   FILE *term_w = fdopen(poutput[1], "w");
@@ -346,6 +441,7 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
     return;
   }
 }
+
 
 - (void)debugMsg:(NSString *)msg
 {

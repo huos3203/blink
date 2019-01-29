@@ -158,7 +158,7 @@ void *run_session(void *params)
 
   if (self) {
     _device = device;
-    _stream = [_device.stream dublicate];
+    _stream = [_device.stream duplicate];
     _sessionParameters = parameters;
   }
 
@@ -214,6 +214,11 @@ void *run_session(void *params)
 }
 
 - (void)setActiveSession {
+}
+
+- (void)dealloc {
+  _device = nil;
+  _stream = nil;
 }
 
 @end

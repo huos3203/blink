@@ -150,7 +150,7 @@ static void kbd_callback(const char *name, int name_len,
   size_t size = 0;
   ssize_t sz = 0;
 
-  FILE *termin = _stream.in;
+  FILE *termin = _device.stream.in;
   if ((sz = getdelim(resp, &size, '\n', termin)) == -1) {
     return -1;
   } else {
@@ -524,7 +524,7 @@ static void kbd_callback(const char *name, int name_len,
       fprintf(_device.stream.out, "%s@%s's password: ", user, _options.hostname);
       [_device setSecureTextEntry:YES];
       [self promptUser:&password];
-      fprintf(_device.stream.out, "\r\n");
+      fprintf(_device.stream.out, "\n");
       [_device setSecureTextEntry:NO];
     }
     
@@ -551,8 +551,10 @@ static void kbd_callback(const char *name, int name_len,
   int rc;
   
   [self debugMsg:@"Attempting interactive authentication."];
+  [_device setSecureTextEntry:YES];
   while ((rc = libssh2_userauth_keyboard_interactive(_session, user, &kbd_callback)) == LIBSSH2_ERROR_EAGAIN)
   ;
+  [_device setSecureTextEntry:NO];
   
   if (rc == 0) {
     [self debugMsg:@"Authentication succeeded."];
@@ -578,7 +580,7 @@ static void kbd_callback(const char *name, int name_len,
     }
     
     char *passphrase = NULL;
-    
+
     // Request passphrase from user
     if ([pk isEncrypted]) {
       [_device setSecureTextEntry:YES];
@@ -701,6 +703,10 @@ static void kbd_callback(const char *name, int name_len,
   }
   
   return 0;
+}
+
+void trace(void* ptr, const char *mess, size_t size) {
+  NSLog(@"trace %@", @(mess));
 }
 
 - (int)ssh_session_start
@@ -884,12 +890,12 @@ static void kbd_callback(const char *name, int name_len,
       char c;
       ssize_t n;
 
-      if ((n = read(fileno(_stream.in), &c, 1)) <= 0) {
+      if ((n = read(fileno(_device.stream.in), &c, 1)) <= 0) {
 	break;
       }
       
       if (c == '\n' || c == '\r') {
-        fprintf(_stream.err, "\r\n");
+        fprintf(_stream.err, "\n");
         break;
       }
       fprintf(_stream.err, "%c", c);

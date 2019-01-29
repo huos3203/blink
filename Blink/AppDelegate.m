@@ -39,6 +39,7 @@
 #import "BKPubKey.h"
 #import "BKHosts.h"
 #import <ios_system/ios_system.h>
+#include <libssh/callbacks.h>
 
 
 @import CloudKit;
@@ -67,13 +68,15 @@ void __setupProcessEnv() {
   setenv("LC_CTYPE", "UTF-8", forceOverwrite);
   setlocale(LC_CTYPE, "UTF-8");
   setlocale(LC_ALL, "UTF-8");
+  setenv("TERM", "xterm-256color", forceOverwrite);
+  
+  ssh_threads_set_callbacks(ssh_threads_get_pthread());
+  ssh_init();
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   signal(SIGPIPE, __on_pipebroken_signal);
-  
-  __setupProcessEnv();
   
   [BlinkPaths linkICloudDriveIfNeeded];
   
@@ -81,6 +84,8 @@ void __setupProcessEnv() {
 
   sideLoading = true; // false = Turn off extra commands from iOS system (required for AppStore)
   initializeEnvironment(); // initialize environment variables for iOS system
+  addCommandList([[NSBundle mainBundle] pathForResource:@"blinkCommandsDictionary" ofType:@"plist"]); // Load blink commands to ios_system
+  __setupProcessEnv(); // we should call this after ios_system initializeEnvironment to override its defaults.
   
   [[ScreenController shared] setup];
   return YES;
@@ -102,9 +107,15 @@ void __setupProcessEnv() {
 
 // MARK: NSUserActivity
 
-- (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType {
+- (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType 
+{
   return YES;
 }
+
+//- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler {
+//    restorationHandler(@[[[ScreenController shared] mainScreenRootViewController]]);
+//    return YES;
+//}
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
@@ -116,13 +127,11 @@ void __setupProcessEnv() {
 
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application
 {
-  
   [self _suspendApplicationOnProtectedDataWillBecomeUnavailable];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-
   [self _suspendApplicationOnWillTerminate];
 }
 
@@ -146,8 +155,6 @@ void __setupProcessEnv() {
   if (_suspendedMode) {
     return;
   }
-  
-  NSLog(@"_startMonitoringForSuspending");
   
   UIApplication *application = [UIApplication sharedApplication];
   
@@ -196,25 +203,21 @@ void __setupProcessEnv() {
 // Simple wrappers to get the reason of failure from call stack
 - (void)_suspendApplicationWithSuspendTimer
 {
-  NSLog(@"_suspendApplicationWithSuspendTimer");
   [self _suspendApplication];
 }
 
 - (void)_suspendApplicationWithExpirationHandler
 {
-  NSLog(@"_suspendApplicationWithExpirationHandler");
   [self _suspendApplication];
 }
 
 - (void)_suspendApplicationOnWillTerminate
 {
-  NSLog(@"_suspendApplicationOnWillTerminate");
   [self _suspendApplication];
 }
 
 - (void)_suspendApplicationOnProtectedDataWillBecomeUnavailable
 {
-  NSLog(@"_suspendApplicationOnProtectedDataWillBecomeUnavailable");
   [self _suspendApplication];
 }
 

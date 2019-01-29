@@ -23,7 +23,6 @@
 		0732F1231D062DDB00AB5438 /* MBProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0732F1271D06323A00AB5438 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1261D06323A00AB5438 /* libz.tbd */; };
 		0732F1291D06324200AB5438 /* libcurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1281D06324200AB5438 /* libcurses.tbd */; };
-		0732F12B1D06324B00AB5438 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F12A1D06324B00AB5438 /* libstdc++.tbd */; };
 		073D26BC1DC4137000965AB2 /* SKButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26B21DC4137000965AB2 /* SKButton.m */; };
 		073D26BD1DC4137000965AB2 /* SKModifierButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26B41DC4137000965AB2 /* SKModifierButton.m */; };
 		073D26BE1DC4137000965AB2 /* SKNonModifierButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26B61DC4137000965AB2 /* SKNonModifierButton.m */; };
@@ -64,8 +63,22 @@
 		07F670751D05EEE200C0A53C /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706C1D05EEE200C0A53C /* Session.m */; };
 		07F670761D05EEE200C0A53C /* SSHCopyIDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706E1D05EEE200C0A53C /* SSHCopyIDSession.m */; };
 		07F670771D05EEE200C0A53C /* SSHSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670701D05EEE200C0A53C /* SSHSession.m */; };
+		22035CD821F9DEFC007A0F60 /* freetype.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22035CD121F9DEFB007A0F60 /* freetype.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		22035CD921F9DEFC007A0F60 /* harfbuzz.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22035CD721F9DEFC007A0F60 /* harfbuzz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B021F20B7C0097B3A0 /* PythonB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137A621F20B7B0097B3A0 /* PythonB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B121F20B7C0097B3A0 /* PythonC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137A721F20B7B0097B3A0 /* PythonC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B221F20B7C0097B3A0 /* PythonA.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137A821F20B7B0097B3A0 /* PythonA.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B321F20B7C0097B3A0 /* PythonH.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137A921F20B7B0097B3A0 /* PythonH.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B421F20B7C0097B3A0 /* PythonI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AA21F20B7B0097B3A0 /* PythonI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B521F20B7C0097B3A0 /* PythonF.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AB21F20B7B0097B3A0 /* PythonF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B621F20B7C0097B3A0 /* PythonG.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AC21F20B7C0097B3A0 /* PythonG.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B721F20B7C0097B3A0 /* PythonD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AD21F20B7C0097B3A0 /* PythonD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B821F20B7C0097B3A0 /* Python3_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AE21F20B7C0097B3A0 /* Python3_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		226137B921F20B7C0097B3A0 /* PythonE.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 226137AF21F20B7C0097B3A0 /* PythonE.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22A9494B2067FD5E003A0666 /* files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A949492067FD5E003A0666 /* files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A9494A2067FD5E003A0666 /* tar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		22E0543921864FF1008ECC05 /* lua_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E0543321864FF1008ECC05 /* lua_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		22E0543B21865000008ECC05 /* Python_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E0543A21865000008ECC05 /* Python_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3332036EE86001FCC5C /* openssl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3342036EE86001FCC5C /* libssh2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		84196E1921B539770013FC03 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; };
@@ -110,8 +123,37 @@
 		C9B2E0331D6B612400B89F69 /* BKHosts.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00E1D6B612300B89F69 /* BKHosts.m */; };
 		C9B2E0341D6B612400B89F69 /* BKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0101D6B612300B89F69 /* BKTheme.m */; };
 		C9B2E0351D6B612400B89F69 /* BKSettingsFileDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0131D6B612300B89F69 /* BKSettingsFileDownloader.m */; };
+		D2060A5420E2644400CF5122 /* SSHClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D2060A5320E2644400CF5122 /* SSHClient.m */; };
+		D2071B732150E4AA000156D7 /* ssh-add.m in Sources */ = {isa = PBXBuildFile; fileRef = D2071B722150E4AA000156D7 /* ssh-add.m */; };
+		D2071B7B2150EBC1000156D7 /* authfile.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B7A2150EBC1000156D7 /* authfile.c */; };
+		D2071B7E2150EE77000156D7 /* authfd.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B7C2150EE77000156D7 /* authfd.c */; };
+		D2071B812150FFD1000156D7 /* match.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B7F2150FFD0000156D7 /* match.c */; };
+		D2071B83215101DC000156D7 /* blink-compat.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B82215101DC000156D7 /* blink-compat.c */; };
+		D2071B86215135A9000156D7 /* openssl-compat.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B84215135A9000156D7 /* openssl-compat.c */; };
 		D2094662204D3FC5003C4F72 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D209465B204D3FC5003C4F72 /* cacert.pem */; };
 		D20A28BE1E185BDB00055791 /* ScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = D20A28BD1E185BDB00055791 /* ScreenController.m */; };
+		D2179F2D2136A5DC00B0850A /* GeoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2179F2C2136A5DC00B0850A /* GeoManager.m */; };
+		D2179F2F2136DBC600B0850A /* geo.m in Sources */ = {isa = PBXBuildFile; fileRef = D2179F2E2136DBC600B0850A /* geo.m */; };
+		D21A3FD721943BE200269705 /* dark-settings-ipad-29pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC621943BE200269705 /* dark-settings-ipad-29pt.png */; };
+		D21A3FD821943BE200269705 /* dark-notification-ipad-20pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC721943BE200269705 /* dark-notification-ipad-20pt.png */; };
+		D21A3FD921943BE200269705 /* dark-settings-iphone-29pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC821943BE200269705 /* dark-settings-iphone-29pt@3x.png */; };
+		D21A3FDA21943BE200269705 /* dark-app-iphone-60pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC921943BE200269705 /* dark-app-iphone-60pt@2x.png */; };
+		D21A3FDB21943BE200269705 /* dark-settings-ipad-29pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCA21943BE200269705 /* dark-settings-ipad-29pt@2x.png */; };
+		D21A3FDC21943BE200269705 /* dark-app-iphone-60pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCB21943BE200269705 /* dark-app-iphone-60pt@3x.png */; };
+		D21A3FDD21943BE200269705 /* dark-settings-iphone-29pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCC21943BE200269705 /* dark-settings-iphone-29pt@2x.png */; };
+		D21A3FDE21943BE200269705 /* dark-app-ipad-76pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCD21943BE200269705 /* dark-app-ipad-76pt.png */; };
+		D21A3FDF21943BE200269705 /* dark-app-ipad-pro-83.5pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCE21943BE200269705 /* dark-app-ipad-pro-83.5pt@2x.png */; };
+		D21A3FE021943BE200269705 /* dark-notification-iphone-20pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCF21943BE200269705 /* dark-notification-iphone-20pt@3x.png */; };
+		D21A3FE121943BE200269705 /* dark-notification-iphone-20pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD021943BE200269705 /* dark-notification-iphone-20pt@2x.png */; };
+		D21A3FE221943BE200269705 /* dark-spotlight-ipad-40pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD121943BE200269705 /* dark-spotlight-ipad-40pt.png */; };
+		D21A3FE321943BE200269705 /* dark-notification-ipad-20pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD221943BE200269705 /* dark-notification-ipad-20pt@2x.png */; };
+		D21A3FE421943BE200269705 /* dark-spotlight-ipad-40pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD321943BE200269705 /* dark-spotlight-ipad-40pt@2x.png */; };
+		D21A3FE521943BE200269705 /* dark-spotlight-iphone-40pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD421943BE200269705 /* dark-spotlight-iphone-40pt@2x.png */; };
+		D21A3FE621943BE200269705 /* dark-spotlight-iphone-40pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD521943BE200269705 /* dark-spotlight-iphone-40pt@3x.png */; };
+		D21A3FE721943BE200269705 /* dark-app-ipad-76pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD621943BE200269705 /* dark-app-ipad-76pt@2x.png */; };
+		D2334D1C21495DAE00D26AC3 /* udptunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2334D1321495DAE00D26AC3 /* udptunnel.m */; };
+		D2334D1D21495DAE00D26AC3 /* host2ip.c in Sources */ = {isa = PBXBuildFile; fileRef = D2334D1421495DAE00D26AC3 /* host2ip.c */; };
+		D23742CA21106ADF00366359 /* bench.m in Sources */ = {isa = PBXBuildFile; fileRef = D23742C921106ADF00366359 /* bench.m */; };
 		D23970FF20A07B9100881637 /* prompt.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970E820A07B9100881637 /* prompt.cxx */; };
 		D239710020A07B9100881637 /* conversion.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970EC20A07B9100881637 /* conversion.cxx */; };
 		D239710120A07B9100881637 /* replxx.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970ED20A07B9100881637 /* replxx.cxx */; };
@@ -129,15 +171,41 @@
 		D23D0FAD2008DAEB00B33A9F /* TermInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D0FAC2008DAEB00B33A9F /* TermInput.m */; };
 		D23E142B20A970C3000FCF5C /* BlinkPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E142A20A970C3000FCF5C /* BlinkPaths.m */; };
 		D23E143D20A977AB000FCF5C /* Repl.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E143C20A977AB000FCF5C /* Repl.m */; };
-		D240806120BC8DF800F30099 /* tool_main.c in Sources */ = {isa = PBXBuildFile; fileRef = D240806020BC8DF800F30099 /* tool_main.c */; settings = {COMPILER_FLAGS = "-DHAVE_CONFIG_H -I Frameworks/ios_system/curl/curl/include/ -I Frameworks/ios_system/curl/curl/lib/ -I Frameworks/ios_system/curl/config_iphone/ -DBUILDING_LIBCURL -I Settings/Model/ -I Frameworks/libssh2.framework/Headers/ -DBLINKSHELL -I Frameworks/ios_system/"; }; };
+		D240806120BC8DF800F30099 /* tool_main.c in Sources */ = {isa = PBXBuildFile; fileRef = D240806020BC8DF800F30099 /* tool_main.c */; settings = {COMPILER_FLAGS = "-DHAVE_CONFIG_H -v -I ../ios_system/curl/curl/include/ -I ../ios_system/curl/curl/lib/ -I ../ios_system/curl/config_iphone/ -DBUILDING_LIBCURL -I Settings/Model/ -I Frameworks/libssh2.framework/Headers/ -DBLINKSHELL -I Frameworks/ios_system/"; }; };
 		D2496F3F20038B3300E75FE9 /* hterm_all.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F3B20038B3300E75FE9 /* hterm_all.min.js */; };
 		D2496F412003941B00E75FE9 /* term.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F402003941B00E75FE9 /* term.js */; };
-		D2512AC520BD4C3000A80257 /* curl_ios_static.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E4F92E20B2BB4500B30F7B /* curl_ios_static.framework */; };
+		D24D18C921D4CFB200239C9D /* KeyInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D24D18C821D4CFB200239C9D /* KeyInput.m */; };
+		D2512AC520BD4C3000A80257 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D263489720BEBFE000A8E89F /* libsshd.a */; };
 		D27BBA1C20529FFF00AEA303 /* TermStream.m in Sources */ = {isa = PBXBuildFile; fileRef = D27BBA1B20529FFF00AEA303 /* TermStream.m */; };
+		D28DB3AC210B110C008A1139 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D28DB3AB210B110B008A1139 /* libcompression.tbd */; };
+		D28F301A21AD8A6B00E5259F /* DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F301921AD8A6B00E5259F /* DeviceInfo.m */; };
 		D29392B72004D785001FB2AA /* hterm_all.patches.js in Resources */ = {isa = PBXBuildFile; fileRef = D29392B62004D785001FB2AA /* hterm_all.patches.js */; };
+		D29568B921BE629100480A83 /* bk_getopts.c in Sources */ = {isa = PBXBuildFile; fileRef = D29568B821BE629100480A83 /* bk_getopts.c */; };
+		D2961970214F89360070935A /* ssh-agent.m in Sources */ = {isa = PBXBuildFile; fileRef = D296196F214F89210070935A /* ssh-agent.m */; };
+		D2961975214F8A580070935A /* sshbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961972214F8A580070935A /* sshbuf.c */; };
+		D296197C214F8ABE0070935A /* atomicio.c in Sources */ = {isa = PBXBuildFile; fileRef = D296197A214F8ABD0070935A /* atomicio.c */; };
+		D296197F214F91550070935A /* sshkey.c in Sources */ = {isa = PBXBuildFile; fileRef = D296197D214F91550070935A /* sshkey.c */; };
+		D2961983214F968A0070935A /* cipher.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961981214F96890070935A /* cipher.c */; };
+		D2961989214F96A10070935A /* chacha.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961987214F96A10070935A /* chacha.c */; };
+		D296198A214F96A10070935A /* poly1305.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961988214F96A10070935A /* poly1305.c */; };
+		D296198D214F96D50070935A /* digest-openssl.c in Sources */ = {isa = PBXBuildFile; fileRef = D296198B214F96D50070935A /* digest-openssl.c */; };
+		D296199A214F995D0070935A /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = D296198F214F995D0070935A /* blocks.c */; };
+		D296199B214F995D0070935A /* ge25519_base.data in Resources */ = {isa = PBXBuildFile; fileRef = D2961990214F995D0070935A /* ge25519_base.data */; };
+		D296199C214F995D0070935A /* ed25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961991214F995D0070935A /* ed25519.c */; };
+		D296199D214F995D0070935A /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961995214F995D0070935A /* hash.c */; };
+		D296199E214F995D0070935A /* sc25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961996214F995D0070935A /* sc25519.c */; };
+		D296199F214F995D0070935A /* ge25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961997214F995D0070935A /* ge25519.c */; };
+		D29619A0214F995D0070935A /* fe25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961999214F995D0070935A /* fe25519.c */; };
+		D29619A4214F99A30070935A /* rsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619A3214F99A30070935A /* rsa.c */; };
+		D29619A7214FA7D40070935A /* bcrypt-pbkdf.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619A6214FA7D30070935A /* bcrypt-pbkdf.c */; };
+		D29619A9214FB4110070935A /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619A8214FB4110070935A /* base64.c */; };
+		D29619AD214FB5EA0070935A /* ssh-ed25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AA214FB5EA0070935A /* ssh-ed25519.c */; };
+		D29619AE214FB5EA0070935A /* ssh-rsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AB214FB5EA0070935A /* ssh-rsa.c */; };
+		D29619AF214FB5EA0070935A /* ssh-ecdsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AC214FB5EA0070935A /* ssh-ecdsa.c */; };
+		D298D67D2110803600992CA4 /* SSHClientPortListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D298D67C2110803600992CA4 /* SSHClientPortListener.m */; };
 		D29FE54A208DC860004679D0 /* commandDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE548208DC860004679D0 /* commandDictionary.plist */; };
 		D29FE54B208DC860004679D0 /* extraCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */; };
-		D2A0C63D20AAD1ED001CF38F /* theme.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A0C63C20AAD1EC001CF38F /* theme.m */; };
 		D2A3F4EA20690B71006BB305 /* text.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E120690B70006BB305 /* text.framework */; };
 		D2A3F4EC20690B71006BB305 /* shell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E320690B70006BB305 /* shell.framework */; };
 		D2A3F4F020690B71006BB305 /* tar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E720690B71006BB305 /* tar.framework */; };
@@ -153,11 +221,16 @@
 		D2A3F50320690D7E006BB305 /* ssh_cmd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E620690B71006BB305 /* ssh_cmd.framework */; };
 		D2A3F50420690D7E006BB305 /* ssh_cmd.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E620690B71006BB305 /* ssh_cmd.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D2A3F50620690D8A006BB305 /* curl_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2A86D6920EB86F2000DF1DA /* SSHClientOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A86D6820EB86F2000DF1DA /* SSHClientOptions.m */; };
 		D2A8C154201F377D002F415A /* TouchOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8C153201F377D002F415A /* TouchOverlay.m */; };
+		D2A90AE220D277E00073BF3D /* ssh.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A90ADB20D277DF0073BF3D /* ssh.m */; };
 		D2A92352201732B600043596 /* MusicManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A92351201732B600043596 /* MusicManager.m */; };
+		D2C0F31020E64FAD00E48F3A /* SSHClientConnectedChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C0F30F20E64FAD00E48F3A /* SSHClientConnectedChannel.m */; };
+		D2C21F3920FCD7B800F125E0 /* blinkCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2C21F3220FCD6CD00F125E0 /* blinkCommandsDictionary.plist */; };
+		D2C8D30A21B544B100AC39C3 /* say.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C8D30921B544B100AC39C3 /* say.m */; };
 		D2D0AD081FFB7A74007EC56A /* MCPSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D0AD071FFB7A74007EC56A /* MCPSessionParameters.m */; };
 		D2D6D78620527651003CBEC4 /* TermDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D78520527651003CBEC4 /* TermDevice.m */; };
-		D2D6D78E20529081003CBEC4 /* SSHSession2.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D78D20529081003CBEC4 /* SSHSession2.m */; };
+		D2D75EE021AFDA10007336B6 /* LayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D75EDF21AFDA10007336B6 /* LayoutManager.m */; };
 		D2E4F91B20B0537D00B30F7B /* Migrator.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4F91A20B0537D00B30F7B /* Migrator.m */; };
 		D2EFE1F520B7FAFC0087888B /* link_files.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EFE1EE20B7FAFC0087888B /* link_files.m */; };
 		D2F30EAD205009CD008C5F35 /* base64js.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2F30EAC205009CD008C5F35 /* base64js.min.js */; };
@@ -227,14 +300,7 @@
 			remoteGlobalIDString = 148993CF1D8F2515000132F7;
 			remoteInfo = TestHost;
 		};
-		D2A3F4DC206909A8006BB305 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1777D3DF1D757AF50037C7F1;
-			remoteInfo = "MBProgressHUD Framework tvOS";
-		};
-		D2E4F92D20B2BB4500B30F7B /* PBXContainerItemProxy */ = {
+		2230E8B420C1513300E30379 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */;
 			proxyType = 2;
@@ -258,6 +324,20 @@
 			dstSubfolderSpec = 10;
 			files = (
 				84196E1B21B5398C0013FC03 /* Python_ios.framework in Embed Frameworks */,
+				22035CD821F9DEFC007A0F60 /* freetype.framework in Embed Frameworks */,
+				22035CD921F9DEFC007A0F60 /* harfbuzz.framework in Embed Frameworks */,
+				226137B021F20B7C0097B3A0 /* PythonB.framework in Embed Frameworks */,
+				226137B121F20B7C0097B3A0 /* PythonC.framework in Embed Frameworks */,
+				226137B221F20B7C0097B3A0 /* PythonA.framework in Embed Frameworks */,
+				226137B321F20B7C0097B3A0 /* PythonH.framework in Embed Frameworks */,
+				226137B421F20B7C0097B3A0 /* PythonI.framework in Embed Frameworks */,
+				226137B521F20B7C0097B3A0 /* PythonF.framework in Embed Frameworks */,
+				226137B621F20B7C0097B3A0 /* PythonG.framework in Embed Frameworks */,
+				226137B721F20B7C0097B3A0 /* PythonD.framework in Embed Frameworks */,
+				226137B821F20B7C0097B3A0 /* Python3_ios.framework in Embed Frameworks */,
+				226137B921F20B7C0097B3A0 /* PythonE.framework in Embed Frameworks */,
+				22E0543B21865000008ECC05 /* Python_ios.framework in Embed Frameworks */,
+				22E0543921864FF1008ECC05 /* lua_ios.framework in Embed Frameworks */,
 				22A9494B2067FD5E003A0666 /* files.framework in Embed Frameworks */,
 				D2A3F4FC20690D08006BB305 /* shell.framework in Embed Frameworks */,
 				22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */,
@@ -298,7 +378,6 @@
 		0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UICKeyChainStore.xcodeproj; path = UICKeyChainStore/Lib/UICKeyChainStore.xcodeproj; sourceTree = "<group>"; };
 		0732F1261D06323A00AB5438 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		0732F1281D06324200AB5438 /* libcurses.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurses.tbd; path = usr/lib/libcurses.tbd; sourceTree = SDKROOT; };
-		0732F12A1D06324B00AB5438 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		073D26B11DC4137000965AB2 /* SKButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKButton.h; sourceTree = "<group>"; };
 		073D26B21DC4137000965AB2 /* SKButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKButton.m; sourceTree = "<group>"; };
 		073D26B31DC4137000965AB2 /* SKModifierButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKModifierButton.h; sourceTree = "<group>"; };
@@ -356,8 +435,23 @@
 		07F6706E1D05EEE200C0A53C /* SSHCopyIDSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHCopyIDSession.m; sourceTree = "<group>"; };
 		07F6706F1D05EEE200C0A53C /* SSHSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHSession.h; sourceTree = "<group>"; };
 		07F670701D05EEE200C0A53C /* SSHSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHSession.m; sourceTree = "<group>"; };
+		22035CD121F9DEFB007A0F60 /* freetype.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = freetype.framework; path = Frameworks/freetype.framework; sourceTree = "<group>"; };
+		22035CD721F9DEFC007A0F60 /* harfbuzz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = harfbuzz.framework; path = Frameworks/harfbuzz.framework; sourceTree = "<group>"; };
+		226137A621F20B7B0097B3A0 /* PythonB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonB.framework; path = Frameworks/PythonB.framework; sourceTree = "<group>"; };
+		226137A721F20B7B0097B3A0 /* PythonC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonC.framework; path = Frameworks/PythonC.framework; sourceTree = "<group>"; };
+		226137A821F20B7B0097B3A0 /* PythonA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonA.framework; path = Frameworks/PythonA.framework; sourceTree = "<group>"; };
+		226137A921F20B7B0097B3A0 /* PythonH.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonH.framework; path = Frameworks/PythonH.framework; sourceTree = "<group>"; };
+		226137AA21F20B7B0097B3A0 /* PythonI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonI.framework; path = Frameworks/PythonI.framework; sourceTree = "<group>"; };
+		226137AB21F20B7B0097B3A0 /* PythonF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonF.framework; path = Frameworks/PythonF.framework; sourceTree = "<group>"; };
+		226137AC21F20B7C0097B3A0 /* PythonG.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonG.framework; path = Frameworks/PythonG.framework; sourceTree = "<group>"; };
+		226137AD21F20B7C0097B3A0 /* PythonD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonD.framework; path = Frameworks/PythonD.framework; sourceTree = "<group>"; };
+		226137AE21F20B7C0097B3A0 /* Python3_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python3_ios.framework; path = Frameworks/Python3_ios.framework; sourceTree = "<group>"; };
+		226137AF21F20B7C0097B3A0 /* PythonE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PythonE.framework; path = Frameworks/PythonE.framework; sourceTree = "<group>"; };
+		226ED5BD21C7FE0900A71A20 /* libpanel.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpanel.tbd; path = usr/lib/libpanel.tbd; sourceTree = SDKROOT; };
 		22A949492067FD5E003A0666 /* files.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = files.framework; sourceTree = "<group>"; };
 		22A9494A2067FD5E003A0666 /* tar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = tar.framework; sourceTree = "<group>"; };
+		22E0543321864FF1008ECC05 /* lua_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = lua_ios.framework; path = Frameworks/lua_ios.framework; sourceTree = "<group>"; };
+		22E0543A21865000008ECC05 /* Python_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python_ios.framework; path = Frameworks/Python_ios.framework; sourceTree = "<group>"; };
 		22E1F3332036EE86001FCC5C /* openssl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = openssl.framework; sourceTree = "<group>"; };
 		22E1F3342036EE86001FCC5C /* libssh2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libssh2.framework; sourceTree = "<group>"; };
 		84196E1821B539770013FC03 /* Python_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Python_ios.framework; sourceTree = "<group>"; };
@@ -434,10 +528,48 @@
 		C9B2E0101D6B612300B89F69 /* BKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKTheme.m; sourceTree = "<group>"; };
 		C9B2E0121D6B612300B89F69 /* BKSettingsFileDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKSettingsFileDownloader.h; sourceTree = "<group>"; };
 		C9B2E0131D6B612300B89F69 /* BKSettingsFileDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKSettingsFileDownloader.m; sourceTree = "<group>"; };
+		D2060A5220E2644400CF5122 /* SSHClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHClient.h; sourceTree = "<group>"; };
+		D2060A5320E2644400CF5122 /* SSHClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHClient.m; sourceTree = "<group>"; };
+		D2071B722150E4AA000156D7 /* ssh-add.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ssh-add.m"; sourceTree = "<group>"; };
+		D2071B742150E51F000156D7 /* pathnames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pathnames.h; sourceTree = "<group>"; };
+		D2071B752150E5A3000156D7 /* blink-compat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "blink-compat.h"; sourceTree = "<group>"; };
+		D2071B792150EBC1000156D7 /* authfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = authfile.h; sourceTree = "<group>"; };
+		D2071B7A2150EBC1000156D7 /* authfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = authfile.c; sourceTree = "<group>"; };
+		D2071B7C2150EE77000156D7 /* authfd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = authfd.c; sourceTree = "<group>"; };
+		D2071B7D2150EE77000156D7 /* authfd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = authfd.h; sourceTree = "<group>"; };
+		D2071B7F2150FFD0000156D7 /* match.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = match.c; sourceTree = "<group>"; };
+		D2071B802150FFD0000156D7 /* match.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = match.h; sourceTree = "<group>"; };
+		D2071B82215101DC000156D7 /* blink-compat.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "blink-compat.c"; sourceTree = "<group>"; };
+		D2071B84215135A9000156D7 /* openssl-compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "openssl-compat.c"; sourceTree = "<group>"; };
+		D2071B87215135EF000156D7 /* openssl-compat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openssl-compat.h"; sourceTree = "<group>"; };
 		D209465B204D3FC5003C4F72 /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cacert.pem; sourceTree = "<group>"; };
 		D20A28BC1E185BDB00055791 /* ScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenController.h; sourceTree = "<group>"; };
 		D20A28BD1E185BDB00055791 /* ScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenController.m; sourceTree = "<group>"; };
 		D215E59B2010C77E00D893EB /* TermJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermJS.h; sourceTree = "<group>"; };
+		D2179F2B2136A5DC00B0850A /* GeoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeoManager.h; sourceTree = "<group>"; };
+		D2179F2C2136A5DC00B0850A /* GeoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeoManager.m; sourceTree = "<group>"; };
+		D2179F2E2136DBC600B0850A /* geo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = geo.m; sourceTree = "<group>"; };
+		D21A3FC621943BE200269705 /* dark-settings-ipad-29pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-settings-ipad-29pt.png"; sourceTree = "<group>"; };
+		D21A3FC721943BE200269705 /* dark-notification-ipad-20pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-notification-ipad-20pt.png"; sourceTree = "<group>"; };
+		D21A3FC821943BE200269705 /* dark-settings-iphone-29pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-settings-iphone-29pt@3x.png"; sourceTree = "<group>"; };
+		D21A3FC921943BE200269705 /* dark-app-iphone-60pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-app-iphone-60pt@2x.png"; sourceTree = "<group>"; };
+		D21A3FCA21943BE200269705 /* dark-settings-ipad-29pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-settings-ipad-29pt@2x.png"; sourceTree = "<group>"; };
+		D21A3FCB21943BE200269705 /* dark-app-iphone-60pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-app-iphone-60pt@3x.png"; sourceTree = "<group>"; };
+		D21A3FCC21943BE200269705 /* dark-settings-iphone-29pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-settings-iphone-29pt@2x.png"; sourceTree = "<group>"; };
+		D21A3FCD21943BE200269705 /* dark-app-ipad-76pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-app-ipad-76pt.png"; sourceTree = "<group>"; };
+		D21A3FCE21943BE200269705 /* dark-app-ipad-pro-83.5pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-app-ipad-pro-83.5pt@2x.png"; sourceTree = "<group>"; };
+		D21A3FCF21943BE200269705 /* dark-notification-iphone-20pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-notification-iphone-20pt@3x.png"; sourceTree = "<group>"; };
+		D21A3FD021943BE200269705 /* dark-notification-iphone-20pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-notification-iphone-20pt@2x.png"; sourceTree = "<group>"; };
+		D21A3FD121943BE200269705 /* dark-spotlight-ipad-40pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-spotlight-ipad-40pt.png"; sourceTree = "<group>"; };
+		D21A3FD221943BE200269705 /* dark-notification-ipad-20pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-notification-ipad-20pt@2x.png"; sourceTree = "<group>"; };
+		D21A3FD321943BE200269705 /* dark-spotlight-ipad-40pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-spotlight-ipad-40pt@2x.png"; sourceTree = "<group>"; };
+		D21A3FD421943BE200269705 /* dark-spotlight-iphone-40pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-spotlight-iphone-40pt@2x.png"; sourceTree = "<group>"; };
+		D21A3FD521943BE200269705 /* dark-spotlight-iphone-40pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-spotlight-iphone-40pt@3x.png"; sourceTree = "<group>"; };
+		D21A3FD621943BE200269705 /* dark-app-ipad-76pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-app-ipad-76pt@2x.png"; sourceTree = "<group>"; };
+		D2334D1321495DAE00D26AC3 /* udptunnel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = udptunnel.m; sourceTree = "<group>"; };
+		D2334D1421495DAE00D26AC3 /* host2ip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = host2ip.c; sourceTree = "<group>"; };
+		D2334D1521495DAE00D26AC3 /* host2ip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = host2ip.h; sourceTree = "<group>"; };
+		D23742C921106ADF00366359 /* bench.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bench.m; sourceTree = "<group>"; };
 		D23970E420A07B8300881637 /* replxx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = replxx.h; sourceTree = "<group>"; };
 		D23970E520A07B8300881637 /* replxx.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = replxx.hxx; sourceTree = "<group>"; };
 		D23970E720A07B9100881637 /* escape.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = escape.hxx; sourceTree = "<group>"; };
@@ -476,15 +608,69 @@
 		D23E142A20A970C3000FCF5C /* BlinkPaths.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlinkPaths.m; sourceTree = "<group>"; };
 		D23E143B20A977AB000FCF5C /* Repl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Repl.h; sourceTree = "<group>"; };
 		D23E143C20A977AB000FCF5C /* Repl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Repl.m; sourceTree = "<group>"; };
-		D240806020BC8DF800F30099 /* tool_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tool_main.c; path = Frameworks/ios_system/curl/curl/src/tool_main.c; sourceTree = SOURCE_ROOT; };
+		D240806020BC8DF800F30099 /* tool_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tool_main.c; path = ../ios_system/curl/curl/src/tool_main.c; sourceTree = SOURCE_ROOT; };
 		D2496F3B20038B3300E75FE9 /* hterm_all.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = hterm_all.min.js; sourceTree = "<group>"; };
 		D2496F402003941B00E75FE9 /* term.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = term.js; sourceTree = "<group>"; };
+		D24D18C721D4CFB200239C9D /* KeyInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyInput.h; sourceTree = "<group>"; };
+		D24D18C821D4CFB200239C9D /* KeyInput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyInput.m; sourceTree = "<group>"; };
+		D263488A20BEBF5800A8E89F /* libsshpp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = libsshpp.hpp; sourceTree = "<group>"; };
+		D263488B20BEBF5800A8E89F /* legacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = legacy.h; sourceTree = "<group>"; };
+		D263488C20BEBF5800A8E89F /* callbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = callbacks.h; sourceTree = "<group>"; };
+		D263488D20BEBF5800A8E89F /* libssh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh.h; sourceTree = "<group>"; };
+		D263488E20BEBF5800A8E89F /* sftp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sftp.h; sourceTree = "<group>"; };
+		D263488F20BEBF5800A8E89F /* ssh2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssh2.h; sourceTree = "<group>"; };
+		D263489020BEBF5800A8E89F /* server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server.h; sourceTree = "<group>"; };
+		D263489720BEBFE000A8E89F /* libsshd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsshd.a; sourceTree = "<group>"; };
 		D27BBA1A20529FFF00AEA303 /* TermStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermStream.h; sourceTree = "<group>"; };
 		D27BBA1B20529FFF00AEA303 /* TermStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TermStream.m; sourceTree = "<group>"; };
+		D28DB3AB210B110B008A1139 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		D28F301821AD8A6B00E5259F /* DeviceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceInfo.h; sourceTree = "<group>"; };
+		D28F301921AD8A6B00E5259F /* DeviceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceInfo.m; sourceTree = "<group>"; };
 		D29392B62004D785001FB2AA /* hterm_all.patches.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = hterm_all.patches.js; sourceTree = "<group>"; };
+		D29568B721BE629100480A83 /* bk_getopts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bk_getopts.h; sourceTree = "<group>"; };
+		D29568B821BE629100480A83 /* bk_getopts.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = bk_getopts.c; sourceTree = "<group>"; };
+		D296196F214F89210070935A /* ssh-agent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ssh-agent.m"; sourceTree = "<group>"; };
+		D2961971214F8A580070935A /* sshbuf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sshbuf.h; sourceTree = "<group>"; };
+		D2961972214F8A580070935A /* sshbuf.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sshbuf.c; sourceTree = "<group>"; };
+		D2961974214F8A580070935A /* ssherr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ssherr.h; sourceTree = "<group>"; };
+		D2961978214F8AA30070935A /* authfd-old.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "authfd-old.c"; sourceTree = "<group>"; };
+		D296197A214F8ABD0070935A /* atomicio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = atomicio.c; sourceTree = "<group>"; };
+		D296197B214F8ABE0070935A /* atomicio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atomicio.h; sourceTree = "<group>"; };
+		D296197D214F91550070935A /* sshkey.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sshkey.c; sourceTree = "<group>"; };
+		D296197E214F91550070935A /* sshkey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sshkey.h; sourceTree = "<group>"; };
+		D2961980214F94110070935A /* crypto_api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crypto_api.h; sourceTree = "<group>"; };
+		D2961981214F96890070935A /* cipher.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cipher.c; sourceTree = "<group>"; };
+		D2961982214F968A0070935A /* cipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cipher.h; sourceTree = "<group>"; };
+		D2961985214F96A10070935A /* chacha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chacha.h; sourceTree = "<group>"; };
+		D2961986214F96A10070935A /* poly1305.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poly1305.h; sourceTree = "<group>"; };
+		D2961987214F96A10070935A /* chacha.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chacha.c; sourceTree = "<group>"; };
+		D2961988214F96A10070935A /* poly1305.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = poly1305.c; sourceTree = "<group>"; };
+		D296198B214F96D50070935A /* digest-openssl.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "digest-openssl.c"; sourceTree = "<group>"; };
+		D296198C214F96D50070935A /* digest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = digest.h; sourceTree = "<group>"; };
+		D296198F214F995D0070935A /* blocks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = blocks.c; sourceTree = "<group>"; };
+		D2961990214F995D0070935A /* ge25519_base.data */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ge25519_base.data; sourceTree = "<group>"; };
+		D2961991214F995D0070935A /* ed25519.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ed25519.c; sourceTree = "<group>"; };
+		D2961992214F995D0070935A /* sc25519.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sc25519.h; sourceTree = "<group>"; };
+		D2961993214F995D0070935A /* ge25519.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ge25519.h; sourceTree = "<group>"; };
+		D2961994214F995D0070935A /* fe25519.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fe25519.h; sourceTree = "<group>"; };
+		D2961995214F995D0070935A /* hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hash.c; sourceTree = "<group>"; };
+		D2961996214F995D0070935A /* sc25519.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sc25519.c; sourceTree = "<group>"; };
+		D2961997214F995D0070935A /* ge25519.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ge25519.c; sourceTree = "<group>"; };
+		D2961998214F995D0070935A /* crypto_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_api.h; sourceTree = "<group>"; };
+		D2961999214F995D0070935A /* fe25519.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fe25519.c; sourceTree = "<group>"; };
+		D29619A1214F99750070935A /* blf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blf.h; sourceTree = "<group>"; };
+		D29619A2214F99A30070935A /* rsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rsa.h; sourceTree = "<group>"; };
+		D29619A3214F99A30070935A /* rsa.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa.c; sourceTree = "<group>"; };
+		D29619A5214FA0C40070935A /* ssh2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ssh2.h; sourceTree = "<group>"; };
+		D29619A6214FA7D30070935A /* bcrypt-pbkdf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "bcrypt-pbkdf.c"; sourceTree = "<group>"; };
+		D29619A8214FB4110070935A /* base64.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
+		D29619AA214FB5EA0070935A /* ssh-ed25519.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ssh-ed25519.c"; sourceTree = "<group>"; };
+		D29619AB214FB5EA0070935A /* ssh-rsa.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ssh-rsa.c"; sourceTree = "<group>"; };
+		D29619AC214FB5EA0070935A /* ssh-ecdsa.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ssh-ecdsa.c"; sourceTree = "<group>"; };
+		D298D67B2110803600992CA4 /* SSHClientPortListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHClientPortListener.h; sourceTree = "<group>"; };
+		D298D67C2110803600992CA4 /* SSHClientPortListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHClientPortListener.m; sourceTree = "<group>"; };
 		D29FE548208DC860004679D0 /* commandDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = commandDictionary.plist; sourceTree = "<group>"; };
 		D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = extraCommandsDictionary.plist; sourceTree = "<group>"; };
-		D2A0C63C20AAD1EC001CF38F /* theme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = theme.m; sourceTree = "<group>"; };
 		D2A0C63E20AAD98D001CF38F /* ios_error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ios_error.h; sourceTree = "<group>"; };
 		D2A3F4E120690B70006BB305 /* text.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = text.framework; sourceTree = "<group>"; };
 		D2A3F4E220690B70006BB305 /* awk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = awk.framework; sourceTree = "<group>"; };
@@ -495,19 +681,26 @@
 		D2A3F4E920690B71006BB305 /* curl_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = curl_ios.framework; sourceTree = "<group>"; };
 		D2A3F4F320690BE6006BB305 /* ios_system.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ios_system.framework; sourceTree = "<group>"; };
 		D2A3F4F520690C24006BB305 /* awk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = awk.framework; sourceTree = "<group>"; };
+		D2A86D6720EB86F2000DF1DA /* SSHClientOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHClientOptions.h; sourceTree = "<group>"; };
+		D2A86D6820EB86F2000DF1DA /* SSHClientOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHClientOptions.m; sourceTree = "<group>"; };
 		D2A8C152201F377D002F415A /* TouchOverlay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TouchOverlay.h; sourceTree = "<group>"; };
 		D2A8C153201F377D002F415A /* TouchOverlay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TouchOverlay.m; sourceTree = "<group>"; };
+		D2A90ADB20D277DF0073BF3D /* ssh.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ssh.m; sourceTree = "<group>"; };
 		D2A92350201732B600043596 /* MusicManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MusicManager.h; sourceTree = "<group>"; };
 		D2A92351201732B600043596 /* MusicManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MusicManager.m; sourceTree = "<group>"; };
+		D2C0F30E20E64FAD00E48F3A /* SSHClientConnectedChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHClientConnectedChannel.h; sourceTree = "<group>"; };
+		D2C0F30F20E64FAD00E48F3A /* SSHClientConnectedChannel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHClientConnectedChannel.m; sourceTree = "<group>"; };
+		D2C21F3220FCD6CD00F125E0 /* blinkCommandsDictionary.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = blinkCommandsDictionary.plist; sourceTree = "<group>"; };
+		D2C8D30921B544B100AC39C3 /* say.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = say.m; sourceTree = "<group>"; };
 		D2D0AD061FFB7A74007EC56A /* MCPSessionParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCPSessionParameters.h; sourceTree = "<group>"; };
 		D2D0AD071FFB7A74007EC56A /* MCPSessionParameters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCPSessionParameters.m; sourceTree = "<group>"; };
 		D2D6D78420527651003CBEC4 /* TermDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermDevice.h; sourceTree = "<group>"; };
 		D2D6D78520527651003CBEC4 /* TermDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TermDevice.m; sourceTree = "<group>"; };
-		D2D6D78C20529081003CBEC4 /* SSHSession2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHSession2.h; sourceTree = "<group>"; };
-		D2D6D78D20529081003CBEC4 /* SSHSession2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHSession2.m; sourceTree = "<group>"; };
+		D2D75EDE21AFDA10007336B6 /* LayoutManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutManager.h; sourceTree = "<group>"; };
+		D2D75EDF21AFDA10007336B6 /* LayoutManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayoutManager.m; sourceTree = "<group>"; };
 		D2E4F91920B0537D00B30F7B /* Migrator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Migrator.h; sourceTree = "<group>"; };
 		D2E4F91A20B0537D00B30F7B /* Migrator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Migrator.m; sourceTree = "<group>"; };
-		D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl_ios_static.xcodeproj; path = ios_system/curl_ios_static.xcodeproj; sourceTree = "<group>"; };
+		D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl_ios_static.xcodeproj; path = ../../ios_system/curl_ios_static.xcodeproj; sourceTree = "<group>"; };
 		D2EFE1EE20B7FAFC0087888B /* link_files.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = link_files.m; sourceTree = "<group>"; };
 		D2F30EAC205009CD008C5F35 /* base64js.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = base64js.min.js; sourceTree = "<group>"; };
 		D2F330C920A6CB840074ADD7 /* help.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = help.m; sourceTree = "<group>"; };
@@ -526,8 +719,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2512AC520BD4C3000A80257 /* curl_ios_static.framework in Frameworks */,
-				0732F12B1D06324B00AB5438 /* libstdc++.tbd in Frameworks */,
+				D28DB3AC210B110C008A1139 /* libcompression.tbd in Frameworks */,
+				D2512AC520BD4C3000A80257 /* (null) in Frameworks */,
 				0732F1291D06324200AB5438 /* libcurses.tbd in Frameworks */,
 				0732F1271D06323A00AB5438 /* libz.tbd in Frameworks */,
 				D2A3F4F920690CDF006BB305 /* ios_system.framework in Frameworks */,
@@ -540,6 +733,7 @@
 				B700AED81DD0F2C200100EBF /* CloudKit.framework in Frameworks */,
 				D2A3F4EA20690B71006BB305 /* text.framework in Frameworks */,
 				D2A3F4F620690C24006BB305 /* awk.framework in Frameworks */,
+				D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */,
 				0732F1221D062DDB00AB5438 /* MBProgressHUD.framework in Frameworks */,
 				0732F0D11D062BB400AB5438 /* openssl.framework in Frameworks */,
 				0732F0BE1D062BB400AB5438 /* libssh2.framework in Frameworks */,
@@ -603,6 +797,24 @@
 				D23E142A20A970C3000FCF5C /* BlinkPaths.m */,
 				D2E4F91920B0537D00B30F7B /* Migrator.h */,
 				D2E4F91A20B0537D00B30F7B /* Migrator.m */,
+				D2060A5220E2644400CF5122 /* SSHClient.h */,
+				D2060A5320E2644400CF5122 /* SSHClient.m */,
+				D2C0F30E20E64FAD00E48F3A /* SSHClientConnectedChannel.h */,
+				D2C0F30F20E64FAD00E48F3A /* SSHClientConnectedChannel.m */,
+				D2A86D6720EB86F2000DF1DA /* SSHClientOptions.h */,
+				D2A86D6820EB86F2000DF1DA /* SSHClientOptions.m */,
+				D298D67B2110803600992CA4 /* SSHClientPortListener.h */,
+				D298D67C2110803600992CA4 /* SSHClientPortListener.m */,
+				D2179F2B2136A5DC00B0850A /* GeoManager.h */,
+				D2179F2C2136A5DC00B0850A /* GeoManager.m */,
+				D28F301821AD8A6B00E5259F /* DeviceInfo.h */,
+				D28F301921AD8A6B00E5259F /* DeviceInfo.m */,
+				D2D75EDE21AFDA10007336B6 /* LayoutManager.h */,
+				D2D75EDF21AFDA10007336B6 /* LayoutManager.m */,
+				D29568B721BE629100480A83 /* bk_getopts.h */,
+				D29568B821BE629100480A83 /* bk_getopts.c */,
+				D24D18C721D4CFB200239C9D /* KeyInput.h */,
+				D24D18C821D4CFB200239C9D /* KeyInput.m */,
 			);
 			path = Blink;
 			sourceTree = "<group>";
@@ -619,7 +831,9 @@
 		0732F0481D062B9A00AB5438 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D21A3FC521943BE200269705 /* DarkAppIcon */,
 				D29FE548208DC860004679D0 /* commandDictionary.plist */,
+				D2C21F3220FCD6CD00F125E0 /* blinkCommandsDictionary.plist */,
 				D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */,
 				D209465B204D3FC5003C4F72 /* cacert.pem */,
 				D2F30EAC205009CD008C5F35 /* base64js.min.js */,
@@ -640,6 +854,8 @@
 			isa = PBXGroup;
 			children = (
 				84196E1821B539770013FC03 /* Python_ios.framework */,
+				226ED5BD21C7FE0900A71A20 /* libpanel.tbd */,
+				D28DB3AB210B110B008A1139 /* libcompression.tbd */,
 				D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */,
 				D2A3F4F520690C24006BB305 /* awk.framework */,
 				D2A3F4F320690BE6006BB305 /* ios_system.framework */,
@@ -657,7 +873,6 @@
 				07AA06321E08B12E008310B7 /* PasscodeLock */,
 				B700AED71DD0F2C200100EBF /* CloudKit.framework */,
 				076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */,
-				0732F12A1D06324B00AB5438 /* libstdc++.tbd */,
 				0732F1281D06324200AB5438 /* libcurses.tbd */,
 				0732F1261D06323A00AB5438 /* libz.tbd */,
 				0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */,
@@ -673,6 +888,7 @@
 		0732F0541D062BB300AB5438 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				D263488920BEBF5800A8E89F /* libssh */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -680,6 +896,7 @@
 		0732F0561D062BB300AB5438 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				D263489720BEBFE000A8E89F /* libsshd.a */,
 				076FBD511DB6BE1D00F6D997 /* libprotobuf.a */,
 			);
 			path = lib;
@@ -690,7 +907,6 @@
 			children = (
 				0732F10B1D062BF700AB5438 /* libMBProgressHUD.a */,
 				0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */,
-				D2A3F4DD206909A8006BB305 /* MBProgressHUD.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -836,11 +1052,17 @@
 				07F6706E1D05EEE200C0A53C /* SSHCopyIDSession.m */,
 				07F6706F1D05EEE200C0A53C /* SSHSession.h */,
 				07F670701D05EEE200C0A53C /* SSHSession.m */,
-				D2D6D78C20529081003CBEC4 /* SSHSession2.h */,
-				D2D6D78D20529081003CBEC4 /* SSHSession2.m */,
 			);
 			path = Sessions;
 			sourceTree = SOURCE_ROOT;
+		};
+		2230E8B120C1513300E30379 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2230E8B520C1513300E30379 /* curl_ios_static.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
 		};
 		B75112C71DE4A7680040C693 /* UserConfiguration */ = {
 			isa = PBXGroup;
@@ -1004,6 +1226,40 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		D21A3FC521943BE200269705 /* DarkAppIcon */ = {
+			isa = PBXGroup;
+			children = (
+				D21A3FC621943BE200269705 /* dark-settings-ipad-29pt.png */,
+				D21A3FC721943BE200269705 /* dark-notification-ipad-20pt.png */,
+				D21A3FC821943BE200269705 /* dark-settings-iphone-29pt@3x.png */,
+				D21A3FC921943BE200269705 /* dark-app-iphone-60pt@2x.png */,
+				D21A3FCA21943BE200269705 /* dark-settings-ipad-29pt@2x.png */,
+				D21A3FCB21943BE200269705 /* dark-app-iphone-60pt@3x.png */,
+				D21A3FCC21943BE200269705 /* dark-settings-iphone-29pt@2x.png */,
+				D21A3FCD21943BE200269705 /* dark-app-ipad-76pt.png */,
+				D21A3FCE21943BE200269705 /* dark-app-ipad-pro-83.5pt@2x.png */,
+				D21A3FCF21943BE200269705 /* dark-notification-iphone-20pt@3x.png */,
+				D21A3FD021943BE200269705 /* dark-notification-iphone-20pt@2x.png */,
+				D21A3FD121943BE200269705 /* dark-spotlight-ipad-40pt.png */,
+				D21A3FD221943BE200269705 /* dark-notification-ipad-20pt@2x.png */,
+				D21A3FD321943BE200269705 /* dark-spotlight-ipad-40pt@2x.png */,
+				D21A3FD421943BE200269705 /* dark-spotlight-iphone-40pt@2x.png */,
+				D21A3FD521943BE200269705 /* dark-spotlight-iphone-40pt@3x.png */,
+				D21A3FD621943BE200269705 /* dark-app-ipad-76pt@2x.png */,
+			);
+			path = DarkAppIcon;
+			sourceTree = SOURCE_ROOT;
+		};
+		D2334D1221495DAE00D26AC3 /* udptunnel */ = {
+			isa = PBXGroup;
+			children = (
+				D2334D1321495DAE00D26AC3 /* udptunnel.m */,
+				D2334D1421495DAE00D26AC3 /* host2ip.c */,
+				D2334D1521495DAE00D26AC3 /* host2ip.h */,
+			);
+			path = udptunnel;
+			sourceTree = "<group>";
+		};
 		D23970DC20A07B5800881637 /* replxx */ = {
 			isa = PBXGroup;
 			children = (
@@ -1053,17 +1309,98 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		D2E4F92A20B2BB4500B30F7B /* Products */ = {
+		D263488920BEBF5800A8E89F /* libssh */ = {
 			isa = PBXGroup;
 			children = (
-				D2E4F92E20B2BB4500B30F7B /* curl_ios_static.framework */,
+				D263488A20BEBF5800A8E89F /* libsshpp.hpp */,
+				D263488B20BEBF5800A8E89F /* legacy.h */,
+				D263488C20BEBF5800A8E89F /* callbacks.h */,
+				D263488D20BEBF5800A8E89F /* libssh.h */,
+				D263488E20BEBF5800A8E89F /* sftp.h */,
+				D263488F20BEBF5800A8E89F /* ssh2.h */,
+				D263489020BEBF5800A8E89F /* server.h */,
 			);
-			name = Products;
+			path = libssh;
+			sourceTree = "<group>";
+		};
+		D2961968214F89060070935A /* openssh */ = {
+			isa = PBXGroup;
+			children = (
+				D2071B87215135EF000156D7 /* openssl-compat.h */,
+				D2071B84215135A9000156D7 /* openssl-compat.c */,
+				D2071B7F2150FFD0000156D7 /* match.c */,
+				D2071B802150FFD0000156D7 /* match.h */,
+				D2071B7C2150EE77000156D7 /* authfd.c */,
+				D2071B7D2150EE77000156D7 /* authfd.h */,
+				D2071B7A2150EBC1000156D7 /* authfile.c */,
+				D2071B792150EBC1000156D7 /* authfile.h */,
+				D29619AC214FB5EA0070935A /* ssh-ecdsa.c */,
+				D29619AA214FB5EA0070935A /* ssh-ed25519.c */,
+				D29619AB214FB5EA0070935A /* ssh-rsa.c */,
+				D29619A8214FB4110070935A /* base64.c */,
+				D29619A6214FA7D30070935A /* bcrypt-pbkdf.c */,
+				D29619A5214FA0C40070935A /* ssh2.h */,
+				D29619A3214F99A30070935A /* rsa.c */,
+				D29619A2214F99A30070935A /* rsa.h */,
+				D29619A1214F99750070935A /* blf.h */,
+				D296198E214F995D0070935A /* ed25519 */,
+				D296198B214F96D50070935A /* digest-openssl.c */,
+				D296198C214F96D50070935A /* digest.h */,
+				D2961984214F96A10070935A /* chapoly */,
+				D2961981214F96890070935A /* cipher.c */,
+				D2961982214F968A0070935A /* cipher.h */,
+				D2961980214F94110070935A /* crypto_api.h */,
+				D296197D214F91550070935A /* sshkey.c */,
+				D296197E214F91550070935A /* sshkey.h */,
+				D296197A214F8ABD0070935A /* atomicio.c */,
+				D296197B214F8ABE0070935A /* atomicio.h */,
+				D2961978214F8AA30070935A /* authfd-old.c */,
+				D2961972214F8A580070935A /* sshbuf.c */,
+				D2961971214F8A580070935A /* sshbuf.h */,
+				D2961974214F8A580070935A /* ssherr.h */,
+				D2071B722150E4AA000156D7 /* ssh-add.m */,
+				D296196F214F89210070935A /* ssh-agent.m */,
+				D2071B742150E51F000156D7 /* pathnames.h */,
+				D2071B82215101DC000156D7 /* blink-compat.c */,
+				D2071B752150E5A3000156D7 /* blink-compat.h */,
+			);
+			path = openssh;
+			sourceTree = "<group>";
+		};
+		D2961984214F96A10070935A /* chapoly */ = {
+			isa = PBXGroup;
+			children = (
+				D2961985214F96A10070935A /* chacha.h */,
+				D2961986214F96A10070935A /* poly1305.h */,
+				D2961987214F96A10070935A /* chacha.c */,
+				D2961988214F96A10070935A /* poly1305.c */,
+			);
+			path = chapoly;
+			sourceTree = "<group>";
+		};
+		D296198E214F995D0070935A /* ed25519 */ = {
+			isa = PBXGroup;
+			children = (
+				D296198F214F995D0070935A /* blocks.c */,
+				D2961990214F995D0070935A /* ge25519_base.data */,
+				D2961991214F995D0070935A /* ed25519.c */,
+				D2961992214F995D0070935A /* sc25519.h */,
+				D2961993214F995D0070935A /* ge25519.h */,
+				D2961994214F995D0070935A /* fe25519.h */,
+				D2961995214F995D0070935A /* hash.c */,
+				D2961996214F995D0070935A /* sc25519.c */,
+				D2961997214F995D0070935A /* ge25519.c */,
+				D2961998214F995D0070935A /* crypto_api.h */,
+				D2961999214F995D0070935A /* fe25519.c */,
+			);
+			path = ed25519;
 			sourceTree = "<group>";
 		};
 		D2F330C520A6C8E20074ADD7 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
+				D2961968214F89060070935A /* openssh */,
+				D2334D1221495DAE00D26AC3 /* udptunnel */,
 				D240806020BC8DF800F30099 /* tool_main.c */,
 				D2F330D320A6F1DF0074ADD7 /* clear.m */,
 				D2F330CB20A6D98C0074ADD7 /* config.m */,
@@ -1071,8 +1408,11 @@
 				D2F330CD20A6DA8A0074ADD7 /* music.m */,
 				D2F330D920A7127B0074ADD7 /* open.m */,
 				D2EFE1EE20B7FAFC0087888B /* link_files.m */,
-				D2A0C63C20AAD1EC001CF38F /* theme.m */,
 				D2F330D520A6F4F50074ADD7 /* history.m */,
+				D2A90ADB20D277DF0073BF3D /* ssh.m */,
+				D23742C921106ADF00366359 /* bench.m */,
+				D2179F2E2136DBC600B0850A /* geo.m */,
+				D2C8D30921B544B100AC39C3 /* say.m */,
 				D2F330D120A6EF020074ADD7 /* showkey.m */,
 			);
 			path = Commands;
@@ -1081,6 +1421,20 @@
 		EA0BA1821C0CC57B00719C1A = {
 			isa = PBXGroup;
 			children = (
+				22035CD121F9DEFB007A0F60 /* freetype.framework */,
+				22035CD721F9DEFC007A0F60 /* harfbuzz.framework */,
+				226137AE21F20B7C0097B3A0 /* Python3_ios.framework */,
+				226137A821F20B7B0097B3A0 /* PythonA.framework */,
+				226137A621F20B7B0097B3A0 /* PythonB.framework */,
+				226137A721F20B7B0097B3A0 /* PythonC.framework */,
+				226137AD21F20B7C0097B3A0 /* PythonD.framework */,
+				226137AF21F20B7C0097B3A0 /* PythonE.framework */,
+				226137AB21F20B7B0097B3A0 /* PythonF.framework */,
+				226137AC21F20B7C0097B3A0 /* PythonG.framework */,
+				226137A921F20B7B0097B3A0 /* PythonH.framework */,
+				226137AA21F20B7B0097B3A0 /* PythonI.framework */,
+				22E0543A21865000008ECC05 /* Python_ios.framework */,
+				22E0543321864FF1008ECC05 /* lua_ios.framework */,
 				C9B2E0031D6B612300B89F69 /* Settings */,
 				0732F04F1D062BB300AB5438 /* Frameworks */,
 				0732F0481D062B9A00AB5438 /* Resources */,
@@ -1207,7 +1561,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = D2E4F92A20B2BB4500B30F7B /* Products */;
+					ProductGroup = 2230E8B120C1513300E30379 /* Products */;
 					ProjectRef = D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */;
 				},
 				{
@@ -1291,28 +1645,47 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D21A3FE321943BE200269705 /* dark-notification-ipad-20pt@2x.png in Resources */,
 				07E3AED31D919272007BC086 /* css in Resources */,
+				D21A3FDD21943BE200269705 /* dark-settings-iphone-29pt@2x.png in Resources */,
+				D21A3FDF21943BE200269705 /* dark-app-ipad-pro-83.5pt@2x.png in Resources */,
+				D21A3FDE21943BE200269705 /* dark-app-ipad-76pt.png in Resources */,
 				D2F30EAD205009CD008C5F35 /* base64js.min.js in Resources */,
 				D29FE54A208DC860004679D0 /* commandDictionary.plist in Resources */,
 				073D26C01DC4137000965AB2 /* SmartKeys.xib in Resources */,
+				D21A3FD821943BE200269705 /* dark-notification-ipad-20pt.png in Resources */,
 				C94437601D831CD30096F84E /* Themes in Resources */,
+				D296199B214F995D0070935A /* ge25519_base.data in Resources */,
 				07AA06571E08B12E008310B7 /* PasscodeLockView.xib in Resources */,
 				D29FE54B208DC860004679D0 /* extraCommandsDictionary.plist in Resources */,
+				D21A3FD921943BE200269705 /* dark-settings-iphone-29pt@3x.png in Resources */,
+				D21A3FE021943BE200269705 /* dark-notification-iphone-20pt@3x.png in Resources */,
 				07E4C5211C935E28000C571A /* Media.xcassets in Resources */,
 				0732F04D1D062B9A00AB5438 /* locales.bundle in Resources */,
+				D21A3FE221943BE200269705 /* dark-spotlight-ipad-40pt.png in Resources */,
+				D21A3FD721943BE200269705 /* dark-settings-ipad-29pt.png in Resources */,
+				D21A3FE421943BE200269705 /* dark-spotlight-ipad-40pt@2x.png in Resources */,
 				07E3AECD1D9191B4007BC086 /* about.html in Resources */,
 				0716B5741CFFAB9300268B5B /* LaunchScreen.storyboard in Resources */,
 				85A34307200A837A009324F1 /* webfontloader.js in Resources */,
+				D21A3FE121943BE200269705 /* dark-notification-iphone-20pt@2x.png in Resources */,
+				D2C21F3920FCD7B800F125E0 /* blinkCommandsDictionary.plist in Resources */,
 				D2496F412003941B00E75FE9 /* term.js in Resources */,
 				07AA06491E08B12E008310B7 /* PasscodeLock.strings in Resources */,
+				D21A3FE621943BE200269705 /* dark-spotlight-iphone-40pt@3x.png in Resources */,
+				D21A3FDA21943BE200269705 /* dark-app-iphone-60pt@2x.png in Resources */,
+				D21A3FDC21943BE200269705 /* dark-app-iphone-60pt@3x.png in Resources */,
+				D21A3FE521943BE200269705 /* dark-spotlight-iphone-40pt@2x.png in Resources */,
 				C94437651D838ABF0096F84E /* Fonts in Resources */,
 				D29392B72004D785001FB2AA /* hterm_all.patches.js in Resources */,
 				D2094662204D3FC5003C4F72 /* cacert.pem in Resources */,
 				85A34309200A8FAF009324F1 /* term.css in Resources */,
 				0732F04E1D062B9A00AB5438 /* term.html in Resources */,
 				07E3AED11D9191B4007BC086 /* blink.png in Resources */,
+				D21A3FE721943BE200269705 /* dark-app-ipad-76pt@2x.png in Resources */,
 				C9B2E02F1D6B612400B89F69 /* Settings.storyboard in Resources */,
 				D2496F3F20038B3300E75FE9 /* hterm_all.min.js in Resources */,
+				D21A3FDB21943BE200269705 /* dark-settings-ipad-29pt@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1330,8 +1703,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D296197F214F91550070935A /* sshkey.c in Sources */,
+				D2961989214F96A10070935A /* chacha.c in Sources */,
 				07AA064F1E08B12E008310B7 /* PasscodeLock.swift in Sources */,
 				073D26C11DC4137000965AB2 /* SmartKeysView.m in Sources */,
+				D2D75EE021AFDA10007336B6 /* LayoutManager.m in Sources */,
 				B7A4876D1DC7C709007BA809 /* BKSettingsViewController.m in Sources */,
 				D239710620A07B9100881637 /* escape.cxx in Sources */,
 				C94E9B631D6BA21C00DA4DD6 /* DismissSegue.m in Sources */,
@@ -1339,54 +1715,81 @@
 				D239710920A07B9100881637 /* wcwidth.cpp in Sources */,
 				07F670731D05EEE200C0A53C /* MoshSession.m in Sources */,
 				07F670721D05EEE200C0A53C /* MCPSession.m in Sources */,
+				D23742CA21106ADF00366359 /* bench.m in Sources */,
+				D2071B83215101DC000156D7 /* blink-compat.c in Sources */,
 				D239710820A07B9100881637 /* windows.cxx in Sources */,
 				D240806120BC8DF800F30099 /* tool_main.c in Sources */,
+				D29619AD214FB5EA0070935A /* ssh-ed25519.c in Sources */,
 				B7D6A6291E2D43A800EDF7B0 /* BKSmartKeysConfigViewController.m in Sources */,
 				D239710420A07B9100881637 /* inputbuffer.cxx in Sources */,
+				D2179F2D2136A5DC00B0850A /* GeoManager.m in Sources */,
 				07AA06531E08B12E008310B7 /* PasscodeLockConfigurationType.swift in Sources */,
+				D296199E214F995D0070935A /* sc25519.c in Sources */,
+				D2961970214F89360070935A /* ssh-agent.m in Sources */,
 				073D26BE1DC4137000965AB2 /* SKNonModifierButton.m in Sources */,
 				B7703BCF1E29233600B698DD /* BKKeyboardShortcutsViewController.m in Sources */,
 				07AA06541E08B12E008310B7 /* PasscodeLockStateType.swift in Sources */,
 				07AA064E1E08B12E008310B7 /* EnterPasscodeState.swift in Sources */,
 				C9B2E0301D6B612400B89F69 /* BKPubKey.m in Sources */,
 				D27BBA1C20529FFF00AEA303 /* TermStream.m in Sources */,
+				D296198D214F96D50070935A /* digest-openssl.c in Sources */,
 				B7D4503C1DD4706000CE0DBE /* Reachability.m in Sources */,
 				07AA065D1E08B6EB008310B7 /* UserDefaultsPasscodeRepository.swift in Sources */,
 				B752EE2E1DFEF45300E305C8 /* BKSecurityConfigurationViewController.m in Sources */,
 				D2F330D420A6F1DF0074ADD7 /* clear.m in Sources */,
 				C94437571D8311960096F84E /* BKResource.m in Sources */,
 				07F670771D05EEE200C0A53C /* SSHSession.m in Sources */,
+				D29619AF214FB5EA0070935A /* ssh-ecdsa.c in Sources */,
 				07F670761D05EEE200C0A53C /* SSHCopyIDSession.m in Sources */,
 				07AA06551E08B12E008310B7 /* PasscodeLockType.swift in Sources */,
 				B752EE2B1DFEF19D00E305C8 /* BKUserConfigurationManager.m in Sources */,
+				D24D18C921D4CFB200239C9D /* KeyInput.m in Sources */,
 				D23B188B1FFB76B300A6C903 /* SessionParameters.m in Sources */,
 				C9B2E0351D6B612400B89F69 /* BKSettingsFileDownloader.m in Sources */,
+				D296198A214F96A10070935A /* poly1305.c in Sources */,
+				D2961975214F8A580070935A /* sshbuf.c in Sources */,
+				D296199D214F995D0070935A /* hash.c in Sources */,
 				D2E4F91B20B0537D00B30F7B /* Migrator.m in Sources */,
 				D239710720A07B9100881637 /* util.cxx in Sources */,
+				D2071B812150FFD1000156D7 /* match.c in Sources */,
 				C989E5561D6CC4A1003E0079 /* BKAppearanceViewController.m in Sources */,
 				C989E54B1D6CC488003E0079 /* BKHostsViewController.m in Sources */,
 				B7A487691DC7C48D007BA809 /* UIDevice+DeviceName.m in Sources */,
 				D239710120A07B9100881637 /* replxx.cxx in Sources */,
+				D2071B732150E4AA000156D7 /* ssh-add.m in Sources */,
+				D298D67D2110803600992CA4 /* SSHClientPortListener.m in Sources */,
+				D2C0F31020E64FAD00E48F3A /* SSHClientConnectedChannel.m in Sources */,
+				D2071B86215135A9000156D7 /* openssl-compat.c in Sources */,
 				D23D0FAD2008DAEB00B33A9F /* TermInput.m in Sources */,
 				07AA06501E08B12E008310B7 /* SetPasscodeState.swift in Sources */,
+				D28F301A21AD8A6B00E5259F /* DeviceInfo.m in Sources */,
 				D23E143D20A977AB000FCF5C /* Repl.m in Sources */,
+				D29619AE214FB5EA0070935A /* ssh-rsa.c in Sources */,
+				D2179F2F2136DBC600B0850A /* geo.m in Sources */,
+				D2961983214F968A0070935A /* cipher.c in Sources */,
 				D2F330DA20A7127B0074ADD7 /* open.m in Sources */,
 				C9B2E0321D6B612400B89F69 /* BKFont.m in Sources */,
+				D29619A0214F995D0070935A /* fe25519.c in Sources */,
 				073D26BD1DC4137000965AB2 /* SKModifierButton.m in Sources */,
 				074F30791D062A2800A73445 /* main.m in Sources */,
 				07AA06511E08B12E008310B7 /* PasscodeLockPresenter.swift in Sources */,
 				D20A28BE1E185BDB00055791 /* ScreenController.m in Sources */,
 				07E3AEB31D8F6775007BC086 /* BKSupportViewController.m in Sources */,
+				D2A86D6920EB86F2000DF1DA /* SSHClientOptions.m in Sources */,
 				07AA065B1E08B61F008310B7 /* PasscodeLockConfiguration.swift in Sources */,
+				D29568B921BE629100480A83 /* bk_getopts.c in Sources */,
 				07E3AEC61D9190CF007BC086 /* BKAboutViewController.m in Sources */,
 				D2F330D620A6F4F50074ADD7 /* history.m in Sources */,
 				D2EFE1F520B7FAFC0087888B /* link_files.m in Sources */,
 				D2F330CA20A6CB840074ADD7 /* help.m in Sources */,
 				D2F330CE20A6DA8A0074ADD7 /* music.m in Sources */,
 				07AA064C1E08B12E008310B7 /* ChangePasscodeState.swift in Sources */,
+				D2A90AE220D277E00073BF3D /* ssh.m in Sources */,
 				07AA06561E08B12E008310B7 /* PasscodeRepositoryType.swift in Sources */,
 				D23970FF20A07B9100881637 /* prompt.cxx in Sources */,
+				D2334D1C21495DAE00D26AC3 /* udptunnel.m in Sources */,
 				C9B2E0311D6B612400B89F69 /* BKDefaults.m in Sources */,
+				D296199A214F995D0070935A /* blocks.c in Sources */,
 				07F670751D05EEE200C0A53C /* Session.m in Sources */,
 				85047E77201F9B0E0090E974 /* ControlPanel.m in Sources */,
 				C989E5581D6CC4A1003E0079 /* BKThemeCreateViewController.m in Sources */,
@@ -1394,11 +1797,13 @@
 				07E3AEB61D8F6E2E007BC086 /* BKLinkActions.m in Sources */,
 				D23E142B20A970C3000FCF5C /* BlinkPaths.m in Sources */,
 				D2D6D78620527651003CBEC4 /* TermDevice.m in Sources */,
+				D296199C214F995D0070935A /* ed25519.c in Sources */,
 				D239710020A07B9100881637 /* conversion.cxx in Sources */,
 				C9B2E0331D6B612400B89F69 /* BKHosts.m in Sources */,
 				07AA064A1E08B12E008310B7 /* Functions.swift in Sources */,
 				D2F330D220A6EF030074ADD7 /* showkey.m in Sources */,
 				0728A1DA1E0AE80400ABD31B /* SmartKeysController.m in Sources */,
+				D2071B7E2150EE77000156D7 /* authfd.c in Sources */,
 				D2A92352201732B600043596 /* MusicManager.m in Sources */,
 				C989E54A1D6CC488003E0079 /* BKHostsDetailViewController.m in Sources */,
 				D239710220A07B9100881637 /* ConvertUTF.cpp in Sources */,
@@ -1412,11 +1817,12 @@
 				D23B188E1FFB776000A6C903 /* MoshSessionParameters.m in Sources */,
 				C9B2E0341D6B612400B89F69 /* BKTheme.m in Sources */,
 				0716B5961CFFAB9300268B5B /* TermController.m in Sources */,
+				D29619A7214FA7D40070935A /* bcrypt-pbkdf.c in Sources */,
 				07AA06581E08B12E008310B7 /* PasscodeSignButton.swift in Sources */,
 				0716B5911CFFAB9300268B5B /* SpaceController.m in Sources */,
 				D239710520A07B9100881637 /* history.cxx in Sources */,
-				D2A0C63D20AAD1ED001CF38F /* theme.m in Sources */,
 				C989E5671D6CC95A003E0079 /* BKPubKeyViewController.m in Sources */,
+				D2334D1D21495DAE00D26AC3 /* host2ip.c in Sources */,
 				D2F330CC20A6D98C0074ADD7 /* config.m in Sources */,
 				B7A487651DC7BD65007BA809 /* BKDefaultUserViewController.m in Sources */,
 				D2A8C154201F377D002F415A /* TouchOverlay.m in Sources */,
@@ -1426,10 +1832,16 @@
 				07AA064D1E08B12E008310B7 /* ConfirmPasscodeState.swift in Sources */,
 				C989E5571D6CC4A1003E0079 /* BKFontCreateViewController.m in Sources */,
 				C9472D561D74E9BA001B6022 /* BKKeyboardFuncTriggersViewController.m in Sources */,
+				D296197C214F8ABE0070935A /* atomicio.c in Sources */,
 				C989E5661D6CC95A003E0079 /* BKPubKeyDetailsViewController.m in Sources */,
+				D296199F214F995D0070935A /* ge25519.c in Sources */,
+				D2071B7B2150EBC1000156D7 /* authfile.c in Sources */,
+				D29619A9214FB4110070935A /* base64.c in Sources */,
 				C989E54D1D6CC488003E0079 /* BKKeyboardModifierViewController.m in Sources */,
+				D2060A5420E2644400CF5122 /* SSHClient.m in Sources */,
+				D2C8D30A21B544B100AC39C3 /* say.m in Sources */,
 				B7B3FC401DF5E99200B3D37C /* BKTouchIDAuthManager.m in Sources */,
-				D2D6D78E20529081003CBEC4 /* SSHSession2.m in Sources */,
+				D29619A4214F99A30070935A /* rsa.c in Sources */,
 				079635871D0E6602000473B1 /* TermView.m in Sources */,
 				C989E54E1D6CC488003E0079 /* BKKeyboardViewController.m in Sources */,
 				07AA06591E08B12E008310B7 /* PasscodeSignPlaceholderView.swift in Sources */,
@@ -1577,6 +1989,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1629,6 +2042,7 @@
 				PRODUCT_NAME = Blink;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				STRIP_STYLE = "non-global";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1652,6 +2066,7 @@
 					"$(PROJECT_DIR)/Frameworks/**",
 					"$(PROJECT_DIR)/Frameworks",
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				HEADER_SEARCH_PATHS = $SOURCE_ROOT/Frameworks/include;
 				INFOPLIST_FILE = Blink/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1664,7 +2079,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jinher.Blink;
 				PRODUCT_NAME = Blink;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "ef71f761-fcc0-457d-ad7c-07e520594656";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_STYLE = "non-global";
 				SWIFT_VERSION = 3.0;

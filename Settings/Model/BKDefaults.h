@@ -46,6 +46,13 @@ extern NSString const *BKKeyboardFuncFTriggers;
 extern NSString const *BKKeyboardFuncCursorTriggers;
 extern NSString const *BKKeyboardFuncShortcutTriggers;
 
+typedef NS_ENUM(NSInteger, BKLayoutMode) {
+  BKLayoutModeDefault = 0,
+  BKLayoutModeFill, // Fit screen
+  BKLayoutModeCover, //  Cover screen
+  BKLayoutModeSafeFit, // Honors safe layout guides
+};
+
 
 @interface BKDefaults : NSObject <NSCoding>
 
@@ -56,23 +63,32 @@ extern NSString const *BKKeyboardFuncShortcutTriggers;
 @property (nonatomic, strong) NSNumber *fontSize;
 @property (nonatomic, strong) NSString *defaultUser;
 @property (nonatomic) BOOL capsAsEsc;
+@property (nonatomic) BOOL capsAsCtrl;
 @property (nonatomic) BOOL shiftAsEsc;
+@property (nonatomic) BOOL backquoteAsEsc;
 @property (nonatomic) BOOL autoRepeatKeys;
+@property (nonatomic) BOOL grabCtrlSpace;
 @property (nonatomic) BOOL cursorBlink;
 @property (nonatomic) NSUInteger enableBold;
 @property (nonatomic) BOOL boldAsBright;
 @property (nonatomic) BOOL lightKeyboard;
+@property (nonatomic) BOOL alternateAppIcon;
+@property (nonatomic) BKLayoutMode layoutMode;
 
 + (void)loadDefaults;
 + (BOOL)saveDefaults;
 + (void)setModifer:(NSString *)modifier forKey:(NSString *)key;
 + (void)setCapsAsEsc:(BOOL)state;
++ (void)setCapsAsCtrl:(BOOL)state;
 + (void)setShiftAsEsc:(BOOL)state;
++ (void)setBackquoteAsEsc:(BOOL)state;
 + (void)setAutoRepeatKeys: (BOOL)state;
++ (void)setGrabCtrlSpace: (BOOL)state;
 + (void)setCursorBlink:(BOOL)state;
 + (void)setBoldAsBright:(BOOL)state;
 + (void)setEnableBold:(NSUInteger)state;
 + (void)setLightKeyboard:(BOOL)state;
++ (void)setAlternateAppIcon:(BOOL)state;
 + (void)setTriggers:(NSArray *)triggers forFunction:(NSString *)func;
 + (void)setFontName:(NSString *)fontName;
 + (void)setThemeName:(NSString *)themeName;
@@ -86,12 +102,18 @@ extern NSString const *BKKeyboardFuncShortcutTriggers;
 + (NSDictionary *)keyboardMapping;
 + (NSDictionary *)keyboardFuncTriggers;
 + (BOOL)isCapsAsEsc;
++ (BOOL)isCapsAsCtrl;
 + (BOOL)isShiftAsEsc;
++ (BOOL)isBackquoteAsEsc;
 + (BOOL)autoRepeatKeys;
++ (BOOL)grabCtrlSpace;
 + (BOOL)isCursorBlink;
 + (NSUInteger)enableBold;
 + (BOOL)isBoldAsBright;
 + (BOOL)isLightKeyboard;
++ (BOOL)isAlternateAppIcon;
 + (void)setDefaultUserName:(NSString*)name;
 + (NSString*)defaultUserName;
++ (BKLayoutMode)layoutMode;
++ (void)setLayoutMode:(BKLayoutMode)mode;
 @end

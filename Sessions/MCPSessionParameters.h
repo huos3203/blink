@@ -30,6 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "SessionParameters.h"
 
 @interface MCPSessionParameters: SessionParameters
@@ -43,6 +44,11 @@
 @property NSString *themeName;
 @property BOOL boldAsBright;
 @property NSUInteger enableBold;
+@property CGFloat viewWidth;
+@property CGFloat viewHeight;
+@property BKLayoutMode layoutMode;
+@property BOOL layoutLocked;
+@property CGRect layoutLockedFrame;
 
 - (BOOL)hasEncodedState;
 
