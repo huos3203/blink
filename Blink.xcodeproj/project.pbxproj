@@ -35,7 +35,6 @@
 		079635871D0E6602000473B1 /* TermView.m in Sources */ = {isa = PBXBuildFile; fileRef = 079635841D0E6602000473B1 /* TermView.m */; };
 		07AA06491E08B12E008310B7 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07AA06331E08B12E008310B7 /* PasscodeLock.strings */; };
 		07AA064A1E08B12E008310B7 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06351E08B12E008310B7 /* Functions.swift */; };
-		07AA064B1E08B12E008310B7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 07AA06361E08B12E008310B7 /* Info.plist */; };
 		07AA064C1E08B12E008310B7 /* ChangePasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06381E08B12E008310B7 /* ChangePasscodeState.swift */; };
 		07AA064D1E08B12E008310B7 /* ConfirmPasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06391E08B12E008310B7 /* ConfirmPasscodeState.swift */; };
 		07AA064E1E08B12E008310B7 /* EnterPasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063A1E08B12E008310B7 /* EnterPasscodeState.swift */; };
@@ -69,6 +68,9 @@
 		22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A9494A2067FD5E003A0666 /* tar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3332036EE86001FCC5C /* openssl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3342036EE86001FCC5C /* libssh2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		84196E1921B539770013FC03 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; };
+		84196E1A21B5398C0013FC03 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; };
+		84196E1B21B5398C0013FC03 /* Python_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84196E1821B539770013FC03 /* Python_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85047E71201F8A230090E974 /* RoundedToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E70201F8A230090E974 /* RoundedToolbar.m */; };
 		85047E77201F9B0E0090E974 /* ControlPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E76201F9B0E0090E974 /* ControlPanel.m */; };
 		85A34307200A837A009324F1 /* webfontloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 85A34303200A837A009324F1 /* webfontloader.js */; };
@@ -239,20 +241,6 @@
 			remoteGlobalIDString = 2219DFCF1FD73AF500675252;
 			remoteInfo = curl_ios_static;
 		};
-		2236A8E620389643001CD2AD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2236A8E220389643001CD2AD /* curl_ios_static.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2219DFCF1FD73AF500675252;
-			remoteInfo = curl_ios_static;
-		};
-		D26CF0962039A88700A091EF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1777D3DF1D757AF50037C7F1;
-			remoteInfo = "MBProgressHUD Framework tvOS";
-		};
 		EA0BA1A51C0CC57B00719C1A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EA0BA1831C0CC57B00719C1A /* Project object */;
@@ -269,6 +257,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				84196E1B21B5398C0013FC03 /* Python_ios.framework in Embed Frameworks */,
 				22A9494B2067FD5E003A0666 /* files.framework in Embed Frameworks */,
 				D2A3F4FC20690D08006BB305 /* shell.framework in Embed Frameworks */,
 				22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */,
@@ -371,6 +360,7 @@
 		22A9494A2067FD5E003A0666 /* tar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = tar.framework; sourceTree = "<group>"; };
 		22E1F3332036EE86001FCC5C /* openssl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = openssl.framework; sourceTree = "<group>"; };
 		22E1F3342036EE86001FCC5C /* libssh2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libssh2.framework; sourceTree = "<group>"; };
+		84196E1821B539770013FC03 /* Python_ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Python_ios.framework; sourceTree = "<group>"; };
 		85047E6F201F8A230090E974 /* RoundedToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoundedToolbar.h; sourceTree = "<group>"; };
 		85047E70201F8A230090E974 /* RoundedToolbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoundedToolbar.m; sourceTree = "<group>"; };
 		85047E75201F9B0E0090E974 /* ControlPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlPanel.h; sourceTree = "<group>"; };
@@ -543,6 +533,7 @@
 				D2A3F4F920690CDF006BB305 /* ios_system.framework in Frameworks */,
 				076FBD521DB6BE1D00F6D997 /* libprotobuf.a in Frameworks */,
 				0732F11E1D062DDB00AB5438 /* UICKeyChainStore.framework in Frameworks */,
+				84196E1A21B5398C0013FC03 /* Python_ios.framework in Frameworks */,
 				D2A3F4EC20690B71006BB305 /* shell.framework in Frameworks */,
 				D2A3F4F020690B71006BB305 /* tar.framework in Frameworks */,
 				D2A3F50320690D7E006BB305 /* ssh_cmd.framework in Frameworks */,
@@ -552,6 +543,7 @@
 				0732F1221D062DDB00AB5438 /* MBProgressHUD.framework in Frameworks */,
 				0732F0D11D062BB400AB5438 /* openssl.framework in Frameworks */,
 				0732F0BE1D062BB400AB5438 /* libssh2.framework in Frameworks */,
+				84196E1921B539770013FC03 /* Python_ios.framework in Frameworks */,
 				076FBD501DB6BD9400F6D997 /* libmoshios.framework in Frameworks */,
 				D2A3F4F120690B71006BB305 /* network_ios.framework in Frameworks */,
 				D2A3F4F220690B71006BB305 /* curl_ios.framework in Frameworks */,
@@ -647,6 +639,7 @@
 		0732F04F1D062BB300AB5438 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84196E1821B539770013FC03 /* Python_ios.framework */,
 				D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */,
 				D2A3F4F520690C24006BB305 /* awk.framework */,
 				D2A3F4F320690BE6006BB305 /* ios_system.framework */,
@@ -848,14 +841,6 @@
 			);
 			path = Sessions;
 			sourceTree = SOURCE_ROOT;
-		};
-		2236A8E320389643001CD2AD /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				2236A8E720389643001CD2AD /* curl_ios_static.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
 		};
 		B75112C71DE4A7680040C693 /* UserConfiguration */ = {
 			isa = PBXGroup;
@@ -1096,7 +1081,6 @@
 		EA0BA1821C0CC57B00719C1A = {
 			isa = PBXGroup;
 			children = (
-				2236A8E220389643001CD2AD /* curl_ios_static.xcodeproj */,
 				C9B2E0031D6B612300B89F69 /* Settings */,
 				0732F04F1D062BB300AB5438 /* Frameworks */,
 				0732F0481D062B9A00AB5438 /* Resources */,
@@ -1173,9 +1157,9 @@
 				TargetAttributes = {
 					EA0BA18A1C0CC57B00719C1A = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = HV2S48975V;
+						DevelopmentTeam = 9CA5KUE8T7;
 						LastSwiftMigration = 0830;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.DataProtection = {
 								enabled = 1;
@@ -1300,20 +1284,6 @@
 			remoteRef = D2E4F92D20B2BB4500B30F7B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		2236A8E720389643001CD2AD /* curl_ios_static.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = curl_ios_static.framework;
-			remoteRef = 2236A8E620389643001CD2AD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D26CF0972039A88700A091EF /* MBProgressHUD.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MBProgressHUD.framework;
-			remoteRef = D26CF0962039A88700A091EF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1337,7 +1307,6 @@
 				07AA06491E08B12E008310B7 /* PasscodeLock.strings in Resources */,
 				C94437651D838ABF0096F84E /* Fonts in Resources */,
 				D29392B72004D785001FB2AA /* hterm_all.patches.js in Resources */,
-				07AA064B1E08B12E008310B7 /* Info.plist in Resources */,
 				D2094662204D3FC5003C4F72 /* cacert.pem in Resources */,
 				85A34309200A8FAF009324F1 /* term.css in Resources */,
 				0732F04E1D062B9A00AB5438 /* term.html in Resources */,
@@ -1443,7 +1412,6 @@
 				D23B188E1FFB776000A6C903 /* MoshSessionParameters.m in Sources */,
 				C9B2E0341D6B612400B89F69 /* BKTheme.m in Sources */,
 				0716B5961CFFAB9300268B5B /* TermController.m in Sources */,
-				2236A8ED2038972D001CD2AD /* tool_main.c in Sources */,
 				07AA06581E08B12E008310B7 /* PasscodeSignButton.swift in Sources */,
 				0716B5911CFFAB9300268B5B /* SpaceController.m in Sources */,
 				D239710520A07B9100881637 /* history.cxx in Sources */,
@@ -1635,7 +1603,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = HV2S48975V;
+				DEVELOPMENT_TEAM = 9CA5KUE8T7;
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1657,7 +1625,7 @@
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = Com.CarlosCabanero.BlinkShell;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jinher.Blink;
 				PRODUCT_NAME = Blink;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1676,7 +1644,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = HV2S48975V;
+				DEVELOPMENT_TEAM = 9CA5KUE8T7;
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1694,7 +1662,7 @@
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = Com.CarlosCabanero.BlinkShell;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jinher.Blink;
 				PRODUCT_NAME = Blink;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
