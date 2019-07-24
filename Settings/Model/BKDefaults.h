@@ -53,6 +53,11 @@ typedef NS_ENUM(NSInteger, BKLayoutMode) {
   BKLayoutModeSafeFit, // Honors safe layout guides
 };
 
+typedef NS_ENUM(NSInteger, BKOverscanCompensation) {
+  BKBKOverscanCompensationScale = 0,
+  BKBKOverscanCompensationInsetBounds,
+  BKBKOverscanCompensationNone,
+};
 
 @interface BKDefaults : NSObject <NSCoding>
 
@@ -74,6 +79,9 @@ typedef NS_ENUM(NSInteger, BKLayoutMode) {
 @property (nonatomic) BOOL lightKeyboard;
 @property (nonatomic) BOOL alternateAppIcon;
 @property (nonatomic) BKLayoutMode layoutMode;
+@property (nonatomic) BKOverscanCompensation overscanCompensation;
+@property (nonatomic) BOOL xCallBackURLEnabled;
+@property (nonatomic) NSString *xCallBackURLKey;
 
 + (void)loadDefaults;
 + (BOOL)saveDefaults;
@@ -89,6 +97,8 @@ typedef NS_ENUM(NSInteger, BKLayoutMode) {
 + (void)setEnableBold:(NSUInteger)state;
 + (void)setLightKeyboard:(BOOL)state;
 + (void)setAlternateAppIcon:(BOOL)state;
++ (void)setXCallBackURLEnabled:(BOOL)state;
++ (void)setXCallBackURLKey:(NSString *)key;
 + (void)setTriggers:(NSArray *)triggers forFunction:(NSString *)func;
 + (void)setFontName:(NSString *)fontName;
 + (void)setThemeName:(NSString *)themeName;
@@ -112,8 +122,12 @@ typedef NS_ENUM(NSInteger, BKLayoutMode) {
 + (BOOL)isBoldAsBright;
 + (BOOL)isLightKeyboard;
 + (BOOL)isAlternateAppIcon;
++ (BOOL)isXCallBackURLEnabled;
++ (NSString *)xCallBackURLKey;
 + (void)setDefaultUserName:(NSString*)name;
 + (NSString*)defaultUserName;
 + (BKLayoutMode)layoutMode;
++ (BKOverscanCompensation)overscanCompensation;
 + (void)setLayoutMode:(BKLayoutMode)mode;
++ (void)setOversanCompensation:(BKOverscanCompensation)value;
 @end

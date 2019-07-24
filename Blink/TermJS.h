@@ -43,7 +43,7 @@ NSString *term_init()
   return @"term_init();";
 }
 
-const NSString *term_write(NSString *data) {
+NSString *term_write(NSString *data) {
   NSData *jsonData = [NSJSONSerialization dataWithJSONObject:@[ data ] options:0 error:nil];
   
   NSMutableData *result = [[NSMutableData alloc] initWithCapacity:jsonData.length + 11 + 5];
@@ -141,9 +141,9 @@ NSString *term_setBoldEnabled(NSUInteger state)
   return [NSString stringWithFormat:@"term_set('enable-bold', %@)", stateStr];
 }
 
-NSString *term_setFontFamily(NSString *family)
+NSString *term_setFontFamily(NSString *family, NSString * fontSizeDetectionMethod)
 {
-  return [NSString stringWithFormat:@"term_setFontFamily(%@[0]);", _encodeString(family)];
+  return [NSString stringWithFormat:@"term_setFontFamily(%@[0], %@[0]);", _encodeString(family), _encodeString(fontSizeDetectionMethod)];
 }
 
 NSString *term_appendUserCss(NSString *css)

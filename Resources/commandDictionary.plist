@@ -170,13 +170,13 @@
 		<string>46ac:dilnm:rst:vVwCDN:R:TW:</string>
 		<string>no</string>
 	</array>
-	<key>ifconfig</key>
-	<array>
-		<string>network_ios.framework/network_ios</string>
-		<string>ifconfig_main</string>
-		<string>abdlmruv</string>
-		<string>no</string>
-	</array>
+  <key>ifconfig</key>
+  <array>
+    <string>network_ios.framework/network_ios</string>
+    <string>ifconfig_main</string>
+    <string>abdlmruv</string>
+    <string>no</string>
+  </array>
 	<key>link</key>
 	<array>
 		<string>files.framework/files</string>

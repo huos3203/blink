@@ -51,7 +51,6 @@ NSString const *BKKeyboardFuncFTriggers = @"Function Keys";
 NSString const *BKKeyboardFuncCursorTriggers = @"Cursor Keys";
 NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
 
-
 @implementation BKDefaults
 
 #pragma mark - NSCoding
@@ -76,6 +75,9 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   _lightKeyboard = [coder decodeBoolForKey:@"lightKeyboard"];
   _alternateAppIcon = [coder decodeBoolForKey:@"alternateAppIcon"];
   _layoutMode = (BKLayoutMode)[coder decodeIntegerForKey:@"layoutMode"];
+  _overscanCompensation = (BKOverscanCompensation)[coder decodeIntegerForKey:@"overscanCompensation"];
+  _xCallBackURLEnabled = [coder decodeBoolForKey:@"xCallBackURLEnabled"];
+  _xCallBackURLKey = [coder decodeObjectForKey:@"xCallBackURLKey"];
   return self;
 }
 
@@ -99,6 +101,9 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   [encoder encodeBool:_lightKeyboard forKey:@"lightKeyboard"];
   [encoder encodeBool:_alternateAppIcon forKey:@"alternateAppIcon"];
   [encoder encodeInteger:_layoutMode forKey:@"layoutMode"];
+  [encoder encodeInteger:_overscanCompensation forKey:@"overscanCompensation"];
+  [encoder encodeBool:_xCallBackURLEnabled forKey:@"xCallBackURLEnabled"];
+  [encoder encodeObject:_xCallBackURLKey forKey:@"xCallBackURLKey"];
 }
 
 + (void)loadDefaults
@@ -261,6 +266,18 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
   defaults.layoutMode = mode;
 }
 
++ (void)setOversanCompensation:(BKOverscanCompensation)value {
+  defaults.overscanCompensation = value;
+}
+
++ (void)setXCallBackURLEnabled:(BOOL)value {
+  defaults.xCallBackURLEnabled = value;
+}
+
++ (void)setXCallBackURLKey:(NSString *)key {
+  defaults.xCallBackURLKey = key;
+}
+
 + (NSString *)selectedFontName
 {
   return defaults.fontName;
@@ -364,6 +381,21 @@ NSString const *BKKeyboardFuncShortcutTriggers = @"Shortcuts";
 + (BKLayoutMode)layoutMode
 {
   return defaults.layoutMode;
+}
+
++ (BKOverscanCompensation)overscanCompensation
+{
+  return defaults.overscanCompensation;
+}
+
++ (BOOL)isXCallBackURLEnabled
+{
+  return defaults.xCallBackURLEnabled;
+}
+
++ (NSString *)xCallBackURLKey
+{
+  return defaults.xCallBackURLKey;
 }
 
 @end

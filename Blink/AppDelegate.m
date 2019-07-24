@@ -33,6 +33,7 @@
 #import "Migrator.h"
 #import "BKiCloudSyncHandler.h"
 #import "BKTouchIDAuthManager.h"
+#import "TermController.h"
 #import "ScreenController.h"
 #import "BlinkPaths.h"
 #import "BKDefaults.h"
@@ -40,6 +41,7 @@
 #import "BKHosts.h"
 #import <ios_system/ios_system.h>
 #include <libssh/callbacks.h>
+#include "xcall.h"
 
 
 @import CloudKit;
@@ -91,12 +93,39 @@ void __setupProcessEnv() {
   return YES;
 }
 
+- (void)_loadProfileVars {
+  NSCharacterSet *whiteSpace = [NSCharacterSet whitespaceCharacterSet];
+  NSString *profile = [NSString stringWithContentsOfFile:[BlinkPaths blinkProfileFile] encoding:NSUTF8StringEncoding error:nil];
+  [profile enumerateLinesUsingBlock:^(NSString * _Nonnull line, BOOL * _Nonnull stop) {
+    NSMutableArray<NSString *> *parts = [[line componentsSeparatedByString:@"="] mutableCopy];
+    if (parts.count < 2) {
+      return;
+    }
+    
+    NSString *varName = [parts.firstObject stringByTrimmingCharactersInSet:whiteSpace];
+    if (varName.length == 0) {
+      return;
+    }
+    [parts removeObjectAtIndex:0];
+    NSString *varValue = [[parts componentsJoinedByString:@"="] stringByTrimmingCharactersInSet:whiteSpace];
+    if ([varValue hasSuffix:@"\""] || [varValue hasPrefix:@"\""]) {
+      varValue = [varValue substringWithRange:NSMakeRange(1, varValue.length - 1)];
+    }
+    if (varValue.length == 0) {
+      return;
+    }
+    BOOL forceOverwrite = 1;
+    setenv(varName.UTF8String, varValue.UTF8String, forceOverwrite);
+  }];
+}
+
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [Migrator migrateIfNeeded];
   [BKDefaults loadDefaults];
   [BKPubKey loadIDS];
   [BKHosts loadHosts];
+  [self _loadProfileVars];
   return YES;
 }
 
@@ -244,6 +273,36 @@ void __setupProcessEnv() {
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
+  if ([url.host isEqualToString:@"run"]) {
+    if (![BKDefaults isXCallBackURLEnabled]) {
+      return NO;
+    }
+    
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
+    NSArray * items = components.queryItems;
+    NSURLQueryItem *keyItem = [[items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"key"]] firstObject];
+    
+    NSString *urlKey = [BKDefaults xCallBackURLKey];
+
+    if (!keyItem.value) {
+      return NO;
+    }
+    
+    if (![keyItem.value isEqual:urlKey]) {
+      return NO;
+    }
+    
+    NSURLQueryItem *cmdItem = [[items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"cmd"]] firstObject];
+    NSString *cmd = cmdItem.value ?: @"help";
+
+    NSUserActivity * activity = [[NSUserActivity alloc] initWithActivityType:BKUserActivityTypeCommandLine];
+    activity.eligibleForPublicIndexing = NO;
+    [activity setTitle:[NSString stringWithFormat:@"run: %@ ", cmd]];
+    [activity setUserInfo:@{BKUserActivityCommandLineKey: cmd}];
+    [[[ScreenController shared] mainScreenRootViewController] restoreUserActivityState:activity];
+    return YES;
+  }
+  blink_handle_url(url);
   // What we can do useful?
   return YES;
 }

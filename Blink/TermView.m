@@ -380,7 +380,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
     _jsIsBusy = YES;
     _jsBuffer = [[NSMutableString alloc] init];
     
-    const NSString *jsScript = term_write(buffer);
+    NSString *jsScript = term_write(buffer);
     [self _evalJSScript:jsScript];
   });
 }
@@ -653,7 +653,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   [script addObject:@"function applyUserSettings() {"];
   {
     if (fontFamily) {
-      [script addObject: term_setFontFamily(fontFamily)];
+      [script addObject: term_setFontFamily(fontFamily, font.systemWide ? @"dom" : @"canvas")];
     }
     
     [script addObject:term_setBoldEnabled(params.enableBold)];

@@ -1,290 +1,299 @@
-// !$*UTF8*$!
-{
-	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 46;
-	objects = {
+    // !$*UTF8*$!
+    {
+        archiveVersion = 1;
+        classes = {
+        };
+        objectVersion = 46;
+        objects = {
 
-/* Begin PBXBuildFile section */
-		0716B5721CFFAB9300268B5B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0716B52A1CFFAB9300268B5B /* AppDelegate.m */; };
-		0716B5741CFFAB9300268B5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0716B52C1CFFAB9300268B5B /* LaunchScreen.storyboard */; };
-		0716B5911CFFAB9300268B5B /* SpaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0716B5591CFFAB9300268B5B /* SpaceController.m */; };
-		0716B5961CFFAB9300268B5B /* TermController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0716B5621CFFAB9300268B5B /* TermController.m */; };
-		0716B5A71CFFABB000268B5B /* BlinkUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0716B5A51CFFABB000268B5B /* BlinkUITests.m */; };
-		0728A1DA1E0AE80400ABD31B /* SmartKeysController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0728A1D91E0AE80400ABD31B /* SmartKeysController.m */; };
-		0732F04D1D062B9A00AB5438 /* locales.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0732F04A1D062B9A00AB5438 /* locales.bundle */; };
-		0732F04E1D062B9A00AB5438 /* term.html in Resources */ = {isa = PBXBuildFile; fileRef = 0732F04B1D062B9A00AB5438 /* term.html */; };
-		0732F0BE1D062BB400AB5438 /* libssh2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F05F1D062BB300AB5438 /* libssh2.framework */; };
-		0732F0D11D062BB400AB5438 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F0841D062BB300AB5438 /* openssl.framework */; };
-		0732F11E1D062DDB00AB5438 /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1171D062CA000AB5438 /* UICKeyChainStore.framework */; };
-		0732F11F1D062DDB00AB5438 /* UICKeyChainStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1171D062CA000AB5438 /* UICKeyChainStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0732F1221D062DDB00AB5438 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; };
-		0732F1231D062DDB00AB5438 /* MBProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0732F1271D06323A00AB5438 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1261D06323A00AB5438 /* libz.tbd */; };
-		0732F1291D06324200AB5438 /* libcurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1281D06324200AB5438 /* libcurses.tbd */; };
-		073D26BC1DC4137000965AB2 /* SKButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26B21DC4137000965AB2 /* SKButton.m */; };
-		073D26BD1DC4137000965AB2 /* SKModifierButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26B41DC4137000965AB2 /* SKModifierButton.m */; };
-		073D26BE1DC4137000965AB2 /* SKNonModifierButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26B61DC4137000965AB2 /* SKNonModifierButton.m */; };
-		073D26C01DC4137000965AB2 /* SmartKeys.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073D26B91DC4137000965AB2 /* SmartKeys.xib */; };
-		073D26C11DC4137000965AB2 /* SmartKeysView.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26BB1DC4137000965AB2 /* SmartKeysView.m */; };
-		074F30791D062A2800A73445 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 074F30781D062A2800A73445 /* main.m */; };
-		076FBD501DB6BD9400F6D997 /* libmoshios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */; };
-		076FBD521DB6BE1D00F6D997 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD511DB6BE1D00F6D997 /* libprotobuf.a */; };
-		079635871D0E6602000473B1 /* TermView.m in Sources */ = {isa = PBXBuildFile; fileRef = 079635841D0E6602000473B1 /* TermView.m */; };
-		07AA06491E08B12E008310B7 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07AA06331E08B12E008310B7 /* PasscodeLock.strings */; };
-		07AA064A1E08B12E008310B7 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06351E08B12E008310B7 /* Functions.swift */; };
-		07AA064C1E08B12E008310B7 /* ChangePasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06381E08B12E008310B7 /* ChangePasscodeState.swift */; };
-		07AA064D1E08B12E008310B7 /* ConfirmPasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06391E08B12E008310B7 /* ConfirmPasscodeState.swift */; };
-		07AA064E1E08B12E008310B7 /* EnterPasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063A1E08B12E008310B7 /* EnterPasscodeState.swift */; };
-		07AA064F1E08B12E008310B7 /* PasscodeLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063B1E08B12E008310B7 /* PasscodeLock.swift */; };
-		07AA06501E08B12E008310B7 /* SetPasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063C1E08B12E008310B7 /* SetPasscodeState.swift */; };
-		07AA06511E08B12E008310B7 /* PasscodeLockPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063E1E08B12E008310B7 /* PasscodeLockPresenter.swift */; };
-		07AA06521E08B12E008310B7 /* PasscodeLockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063F1E08B12E008310B7 /* PasscodeLockViewController.swift */; };
-		07AA06531E08B12E008310B7 /* PasscodeLockConfigurationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06411E08B12E008310B7 /* PasscodeLockConfigurationType.swift */; };
-		07AA06541E08B12E008310B7 /* PasscodeLockStateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06421E08B12E008310B7 /* PasscodeLockStateType.swift */; };
-		07AA06551E08B12E008310B7 /* PasscodeLockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06431E08B12E008310B7 /* PasscodeLockType.swift */; };
-		07AA06561E08B12E008310B7 /* PasscodeRepositoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06441E08B12E008310B7 /* PasscodeRepositoryType.swift */; };
-		07AA06571E08B12E008310B7 /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07AA06461E08B12E008310B7 /* PasscodeLockView.xib */; };
-		07AA06581E08B12E008310B7 /* PasscodeSignButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06471E08B12E008310B7 /* PasscodeSignButton.swift */; };
-		07AA06591E08B12E008310B7 /* PasscodeSignPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06481E08B12E008310B7 /* PasscodeSignPlaceholderView.swift */; };
-		07AA065B1E08B61F008310B7 /* PasscodeLockConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA065A1E08B61F008310B7 /* PasscodeLockConfiguration.swift */; };
-		07AA065D1E08B6EB008310B7 /* UserDefaultsPasscodeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA065C1E08B6EB008310B7 /* UserDefaultsPasscodeRepository.swift */; };
-		07E3AEB01D8F6758007BC086 /* BKFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEAF1D8F6758007BC086 /* BKFeedbackViewController.m */; };
-		07E3AEB31D8F6775007BC086 /* BKSupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEB21D8F6775007BC086 /* BKSupportViewController.m */; };
-		07E3AEB61D8F6E2E007BC086 /* BKLinkActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEB51D8F6E2E007BC086 /* BKLinkActions.m */; };
-		07E3AEC61D9190CF007BC086 /* BKAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEC51D9190CF007BC086 /* BKAboutViewController.m */; };
-		07E3AECD1D9191B4007BC086 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = 07E3AEC71D9191B4007BC086 /* about.html */; };
-		07E3AED11D9191B4007BC086 /* blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E3AECC1D9191B4007BC086 /* blink.png */; };
-		07E3AED31D919272007BC086 /* css in Resources */ = {isa = PBXBuildFile; fileRef = 07E3AED21D919272007BC086 /* css */; };
-		07E4C5211C935E28000C571A /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07E4C5201C935E28000C571A /* Media.xcassets */; };
-		07F670721D05EEE200C0A53C /* MCPSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670661D05EEE200C0A53C /* MCPSession.m */; };
-		07F670731D05EEE200C0A53C /* MoshSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670681D05EEE200C0A53C /* MoshSession.m */; };
-		07F670751D05EEE200C0A53C /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706C1D05EEE200C0A53C /* Session.m */; };
-		07F670761D05EEE200C0A53C /* SSHCopyIDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706E1D05EEE200C0A53C /* SSHCopyIDSession.m */; };
-		07F670771D05EEE200C0A53C /* SSHSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670701D05EEE200C0A53C /* SSHSession.m */; };
-		22A9494B2067FD5E003A0666 /* files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A949492067FD5E003A0666 /* files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A9494A2067FD5E003A0666 /* tar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3332036EE86001FCC5C /* openssl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3342036EE86001FCC5C /* libssh2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		849058BD220012D400CF24F7 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849058BC220012D400CF24F7 /* Python_ios.framework */; };
-		849058BE220012D400CF24F7 /* Python_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 849058BC220012D400CF24F7 /* Python_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		85047E71201F8A230090E974 /* RoundedToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E70201F8A230090E974 /* RoundedToolbar.m */; };
-		85047E77201F9B0E0090E974 /* ControlPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E76201F9B0E0090E974 /* ControlPanel.m */; };
-		85A34307200A837A009324F1 /* webfontloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 85A34303200A837A009324F1 /* webfontloader.js */; };
-		85A34309200A8FAF009324F1 /* term.css in Resources */ = {isa = PBXBuildFile; fileRef = 85A34308200A8FAF009324F1 /* term.css */; };
-		B700AED81DD0F2C200100EBF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B700AED71DD0F2C200100EBF /* CloudKit.framework */; };
-		B75112CD1DE4A7B10040C693 /* BKiCloudConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B75112CC1DE4A7B10040C693 /* BKiCloudConfigurationViewController.m */; };
-		B752EE2B1DFEF19D00E305C8 /* BKUserConfigurationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B752EE2A1DFEF19D00E305C8 /* BKUserConfigurationManager.m */; };
-		B752EE2E1DFEF45300E305C8 /* BKSecurityConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B752EE2D1DFEF45300E305C8 /* BKSecurityConfigurationViewController.m */; };
-		B7703BCF1E29233600B698DD /* BKKeyboardShortcutsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7703BCE1E29233600B698DD /* BKKeyboardShortcutsViewController.m */; };
-		B7A487651DC7BD65007BA809 /* BKDefaultUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7A487641DC7BD65007BA809 /* BKDefaultUserViewController.m */; };
-		B7A487691DC7C48D007BA809 /* UIDevice+DeviceName.m in Sources */ = {isa = PBXBuildFile; fileRef = B7A487681DC7C48D007BA809 /* UIDevice+DeviceName.m */; };
-		B7A4876D1DC7C709007BA809 /* BKSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7A4876C1DC7C709007BA809 /* BKSettingsViewController.m */; };
-		B7B3FC401DF5E99200B3D37C /* BKTouchIDAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7B3FC3F1DF5E99200B3D37C /* BKTouchIDAuthManager.m */; };
-		B7D450361DD3A87200CE0DBE /* BKiCloudSyncHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D450351DD3A87200CE0DBE /* BKiCloudSyncHandler.m */; };
-		B7D4503C1DD4706000CE0DBE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D4503B1DD4706000CE0DBE /* Reachability.m */; };
-		B7D6A6291E2D43A800EDF7B0 /* BKSmartKeysConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D6A6281E2D43A800EDF7B0 /* BKSmartKeysConfigViewController.m */; };
-		C94437571D8311960096F84E /* BKResource.m in Sources */ = {isa = PBXBuildFile; fileRef = C94437561D8311960096F84E /* BKResource.m */; };
-		C94437601D831CD30096F84E /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = C944375F1D831CD30096F84E /* Themes */; };
-		C94437651D838ABF0096F84E /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = C94437641D838ABF0096F84E /* Fonts */; };
-		C9472D561D74E9BA001B6022 /* BKKeyboardFuncTriggersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9472D551D74E9BA001B6022 /* BKKeyboardFuncTriggersViewController.m */; };
-		C94E9B631D6BA21C00DA4DD6 /* DismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = C94E9B621D6BA21C00DA4DD6 /* DismissSegue.m */; };
-		C989E54A1D6CC488003E0079 /* BKHostsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E53D1D6CC488003E0079 /* BKHostsDetailViewController.m */; };
-		C989E54B1D6CC488003E0079 /* BKHostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E53F1D6CC488003E0079 /* BKHostsViewController.m */; };
-		C989E54C1D6CC488003E0079 /* BKPredictionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5411D6CC488003E0079 /* BKPredictionViewController.m */; };
-		C989E54D1D6CC488003E0079 /* BKKeyboardModifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5441D6CC488003E0079 /* BKKeyboardModifierViewController.m */; };
-		C989E54E1D6CC488003E0079 /* BKKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5461D6CC488003E0079 /* BKKeyboardViewController.m */; };
-		C989E5561D6CC4A1003E0079 /* BKAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5511D6CC4A1003E0079 /* BKAppearanceViewController.m */; };
-		C989E5571D6CC4A1003E0079 /* BKFontCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5531D6CC4A1003E0079 /* BKFontCreateViewController.m */; };
-		C989E5581D6CC4A1003E0079 /* BKThemeCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5551D6CC4A1003E0079 /* BKThemeCreateViewController.m */; };
-		C989E5651D6CC95A003E0079 /* BKPubKeyCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5601D6CC95A003E0079 /* BKPubKeyCreateViewController.m */; };
-		C989E5661D6CC95A003E0079 /* BKPubKeyDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5621D6CC95A003E0079 /* BKPubKeyDetailsViewController.m */; };
-		C989E5671D6CC95A003E0079 /* BKPubKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5641D6CC95A003E0079 /* BKPubKeyViewController.m */; };
-		C9B2E02F1D6B612400B89F69 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9B2E0041D6B612300B89F69 /* Settings.storyboard */; };
-		C9B2E0301D6B612400B89F69 /* BKPubKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0081D6B612300B89F69 /* BKPubKey.m */; };
-		C9B2E0311D6B612400B89F69 /* BKDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00A1D6B612300B89F69 /* BKDefaults.m */; };
-		C9B2E0321D6B612400B89F69 /* BKFont.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00C1D6B612300B89F69 /* BKFont.m */; };
-		C9B2E0331D6B612400B89F69 /* BKHosts.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00E1D6B612300B89F69 /* BKHosts.m */; };
-		C9B2E0341D6B612400B89F69 /* BKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0101D6B612300B89F69 /* BKTheme.m */; };
-		C9B2E0351D6B612400B89F69 /* BKSettingsFileDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0131D6B612300B89F69 /* BKSettingsFileDownloader.m */; };
-		D2060A5420E2644400CF5122 /* SSHClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D2060A5320E2644400CF5122 /* SSHClient.m */; };
-		D2071B732150E4AA000156D7 /* ssh-add.m in Sources */ = {isa = PBXBuildFile; fileRef = D2071B722150E4AA000156D7 /* ssh-add.m */; };
-		D2071B7B2150EBC1000156D7 /* authfile.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B7A2150EBC1000156D7 /* authfile.c */; };
-		D2071B7E2150EE77000156D7 /* authfd.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B7C2150EE77000156D7 /* authfd.c */; };
-		D2071B812150FFD1000156D7 /* match.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B7F2150FFD0000156D7 /* match.c */; };
-		D2071B83215101DC000156D7 /* blink-compat.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B82215101DC000156D7 /* blink-compat.c */; };
-		D2071B86215135A9000156D7 /* openssl-compat.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B84215135A9000156D7 /* openssl-compat.c */; };
-		D2094662204D3FC5003C4F72 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D209465B204D3FC5003C4F72 /* cacert.pem */; };
-		D20A28BE1E185BDB00055791 /* ScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = D20A28BD1E185BDB00055791 /* ScreenController.m */; };
-		D2179F2D2136A5DC00B0850A /* GeoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2179F2C2136A5DC00B0850A /* GeoManager.m */; };
-		D2179F2F2136DBC600B0850A /* geo.m in Sources */ = {isa = PBXBuildFile; fileRef = D2179F2E2136DBC600B0850A /* geo.m */; };
-		D21A3FD721943BE200269705 /* dark-settings-ipad-29pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC621943BE200269705 /* dark-settings-ipad-29pt.png */; };
-		D21A3FD821943BE200269705 /* dark-notification-ipad-20pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC721943BE200269705 /* dark-notification-ipad-20pt.png */; };
-		D21A3FD921943BE200269705 /* dark-settings-iphone-29pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC821943BE200269705 /* dark-settings-iphone-29pt@3x.png */; };
-		D21A3FDA21943BE200269705 /* dark-app-iphone-60pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC921943BE200269705 /* dark-app-iphone-60pt@2x.png */; };
-		D21A3FDB21943BE200269705 /* dark-settings-ipad-29pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCA21943BE200269705 /* dark-settings-ipad-29pt@2x.png */; };
-		D21A3FDC21943BE200269705 /* dark-app-iphone-60pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCB21943BE200269705 /* dark-app-iphone-60pt@3x.png */; };
-		D21A3FDD21943BE200269705 /* dark-settings-iphone-29pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCC21943BE200269705 /* dark-settings-iphone-29pt@2x.png */; };
-		D21A3FDE21943BE200269705 /* dark-app-ipad-76pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCD21943BE200269705 /* dark-app-ipad-76pt.png */; };
-		D21A3FDF21943BE200269705 /* dark-app-ipad-pro-83.5pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCE21943BE200269705 /* dark-app-ipad-pro-83.5pt@2x.png */; };
-		D21A3FE021943BE200269705 /* dark-notification-iphone-20pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCF21943BE200269705 /* dark-notification-iphone-20pt@3x.png */; };
-		D21A3FE121943BE200269705 /* dark-notification-iphone-20pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD021943BE200269705 /* dark-notification-iphone-20pt@2x.png */; };
-		D21A3FE221943BE200269705 /* dark-spotlight-ipad-40pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD121943BE200269705 /* dark-spotlight-ipad-40pt.png */; };
-		D21A3FE321943BE200269705 /* dark-notification-ipad-20pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD221943BE200269705 /* dark-notification-ipad-20pt@2x.png */; };
-		D21A3FE421943BE200269705 /* dark-spotlight-ipad-40pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD321943BE200269705 /* dark-spotlight-ipad-40pt@2x.png */; };
-		D21A3FE521943BE200269705 /* dark-spotlight-iphone-40pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD421943BE200269705 /* dark-spotlight-iphone-40pt@2x.png */; };
-		D21A3FE621943BE200269705 /* dark-spotlight-iphone-40pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD521943BE200269705 /* dark-spotlight-iphone-40pt@3x.png */; };
-		D21A3FE721943BE200269705 /* dark-app-ipad-76pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD621943BE200269705 /* dark-app-ipad-76pt@2x.png */; };
-		D2334D1C21495DAE00D26AC3 /* udptunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2334D1321495DAE00D26AC3 /* udptunnel.m */; };
-		D2334D1D21495DAE00D26AC3 /* host2ip.c in Sources */ = {isa = PBXBuildFile; fileRef = D2334D1421495DAE00D26AC3 /* host2ip.c */; };
-		D23742CA21106ADF00366359 /* bench.m in Sources */ = {isa = PBXBuildFile; fileRef = D23742C921106ADF00366359 /* bench.m */; };
-		D23970FF20A07B9100881637 /* prompt.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970E820A07B9100881637 /* prompt.cxx */; };
-		D239710020A07B9100881637 /* conversion.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970EC20A07B9100881637 /* conversion.cxx */; };
-		D239710120A07B9100881637 /* replxx.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970ED20A07B9100881637 /* replxx.cxx */; };
-		D239710220A07B9100881637 /* ConvertUTF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D23970EF20A07B9100881637 /* ConvertUTF.cpp */; };
-		D239710320A07B9100881637 /* io.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970F120A07B9100881637 /* io.cxx */; };
-		D239710420A07B9100881637 /* inputbuffer.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970F220A07B9100881637 /* inputbuffer.cxx */; };
-		D239710520A07B9100881637 /* history.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970F320A07B9100881637 /* history.cxx */; };
-		D239710620A07B9100881637 /* escape.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970F820A07B9100881637 /* escape.cxx */; };
-		D239710720A07B9100881637 /* util.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970FA20A07B9100881637 /* util.cxx */; };
-		D239710820A07B9100881637 /* windows.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970FB20A07B9100881637 /* windows.cxx */; };
-		D239710920A07B9100881637 /* wcwidth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D23970FE20A07B9100881637 /* wcwidth.cpp */; };
-		D23B18851FF7CEBA00A6C903 /* StateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B18841FF7CEBA00A6C903 /* StateManager.m */; };
-		D23B188B1FFB76B300A6C903 /* SessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B188A1FFB76B300A6C903 /* SessionParameters.m */; };
-		D23B188E1FFB776000A6C903 /* MoshSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B188D1FFB776000A6C903 /* MoshSessionParameters.m */; };
-		D23D0FAD2008DAEB00B33A9F /* TermInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D0FAC2008DAEB00B33A9F /* TermInput.m */; };
-		D23E142B20A970C3000FCF5C /* BlinkPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E142A20A970C3000FCF5C /* BlinkPaths.m */; };
-		D23E143D20A977AB000FCF5C /* Repl.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E143C20A977AB000FCF5C /* Repl.m */; };
-		D2496F3F20038B3300E75FE9 /* hterm_all.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F3B20038B3300E75FE9 /* hterm_all.min.js */; };
-		D2496F412003941B00E75FE9 /* term.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F402003941B00E75FE9 /* term.js */; };
-		D24D18C921D4CFB200239C9D /* KeyInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D24D18C821D4CFB200239C9D /* KeyInput.m */; };
-		D2512AC520BD4C3000A80257 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D263489720BEBFE000A8E89F /* libsshd.a */; };
-		D27BBA1C20529FFF00AEA303 /* TermStream.m in Sources */ = {isa = PBXBuildFile; fileRef = D27BBA1B20529FFF00AEA303 /* TermStream.m */; };
-		D28DB3AC210B110C008A1139 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D28DB3AB210B110B008A1139 /* libcompression.tbd */; };
-		D28F301A21AD8A6B00E5259F /* DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F301921AD8A6B00E5259F /* DeviceInfo.m */; };
-		D29392B72004D785001FB2AA /* hterm_all.patches.js in Resources */ = {isa = PBXBuildFile; fileRef = D29392B62004D785001FB2AA /* hterm_all.patches.js */; };
-		D29568B921BE629100480A83 /* bk_getopts.c in Sources */ = {isa = PBXBuildFile; fileRef = D29568B821BE629100480A83 /* bk_getopts.c */; };
-		D2961970214F89360070935A /* ssh-agent.m in Sources */ = {isa = PBXBuildFile; fileRef = D296196F214F89210070935A /* ssh-agent.m */; };
-		D2961975214F8A580070935A /* sshbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961972214F8A580070935A /* sshbuf.c */; };
-		D296197C214F8ABE0070935A /* atomicio.c in Sources */ = {isa = PBXBuildFile; fileRef = D296197A214F8ABD0070935A /* atomicio.c */; };
-		D296197F214F91550070935A /* sshkey.c in Sources */ = {isa = PBXBuildFile; fileRef = D296197D214F91550070935A /* sshkey.c */; };
-		D2961983214F968A0070935A /* cipher.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961981214F96890070935A /* cipher.c */; };
-		D2961989214F96A10070935A /* chacha.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961987214F96A10070935A /* chacha.c */; };
-		D296198A214F96A10070935A /* poly1305.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961988214F96A10070935A /* poly1305.c */; };
-		D296198D214F96D50070935A /* digest-openssl.c in Sources */ = {isa = PBXBuildFile; fileRef = D296198B214F96D50070935A /* digest-openssl.c */; };
-		D296199A214F995D0070935A /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = D296198F214F995D0070935A /* blocks.c */; };
-		D296199B214F995D0070935A /* ge25519_base.data in Resources */ = {isa = PBXBuildFile; fileRef = D2961990214F995D0070935A /* ge25519_base.data */; };
-		D296199C214F995D0070935A /* ed25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961991214F995D0070935A /* ed25519.c */; };
-		D296199D214F995D0070935A /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961995214F995D0070935A /* hash.c */; };
-		D296199E214F995D0070935A /* sc25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961996214F995D0070935A /* sc25519.c */; };
-		D296199F214F995D0070935A /* ge25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961997214F995D0070935A /* ge25519.c */; };
-		D29619A0214F995D0070935A /* fe25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961999214F995D0070935A /* fe25519.c */; };
-		D29619A4214F99A30070935A /* rsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619A3214F99A30070935A /* rsa.c */; };
-		D29619A7214FA7D40070935A /* bcrypt-pbkdf.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619A6214FA7D30070935A /* bcrypt-pbkdf.c */; };
-		D29619A9214FB4110070935A /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619A8214FB4110070935A /* base64.c */; };
-		D29619AD214FB5EA0070935A /* ssh-ed25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AA214FB5EA0070935A /* ssh-ed25519.c */; };
-		D29619AE214FB5EA0070935A /* ssh-rsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AB214FB5EA0070935A /* ssh-rsa.c */; };
-		D29619AF214FB5EA0070935A /* ssh-ecdsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AC214FB5EA0070935A /* ssh-ecdsa.c */; };
-		D298D67D2110803600992CA4 /* SSHClientPortListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D298D67C2110803600992CA4 /* SSHClientPortListener.m */; };
-		D29FE54A208DC860004679D0 /* commandDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE548208DC860004679D0 /* commandDictionary.plist */; };
-		D29FE54B208DC860004679D0 /* extraCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */; };
-		D2A3F4EA20690B71006BB305 /* text.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E120690B70006BB305 /* text.framework */; };
-		D2A3F4EC20690B71006BB305 /* shell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E320690B70006BB305 /* shell.framework */; };
-		D2A3F4F020690B71006BB305 /* tar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E720690B71006BB305 /* tar.framework */; };
-		D2A3F4F120690B71006BB305 /* network_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E820690B71006BB305 /* network_ios.framework */; };
-		D2A3F4F220690B71006BB305 /* curl_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; };
-		D2A3F4F620690C24006BB305 /* awk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F520690C24006BB305 /* awk.framework */; };
-		D2A3F4F820690CB0006BB305 /* awk.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F520690C24006BB305 /* awk.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2A3F4F920690CDF006BB305 /* ios_system.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F320690BE6006BB305 /* ios_system.framework */; };
-		D2A3F4FA20690CDF006BB305 /* ios_system.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F320690BE6006BB305 /* ios_system.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2A3F4FC20690D08006BB305 /* shell.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E320690B70006BB305 /* shell.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2A3F4FE20690D23006BB305 /* text.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E120690B70006BB305 /* text.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2A3F50020690D44006BB305 /* network_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E820690B71006BB305 /* network_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2A3F50320690D7E006BB305 /* ssh_cmd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E620690B71006BB305 /* ssh_cmd.framework */; };
-		D2A3F50420690D7E006BB305 /* ssh_cmd.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E620690B71006BB305 /* ssh_cmd.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2A3F50620690D8A006BB305 /* curl_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2A86D6920EB86F2000DF1DA /* SSHClientOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A86D6820EB86F2000DF1DA /* SSHClientOptions.m */; };
-		D2A8C154201F377D002F415A /* TouchOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8C153201F377D002F415A /* TouchOverlay.m */; };
-		D2A90AE220D277E00073BF3D /* ssh.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A90ADB20D277DF0073BF3D /* ssh.m */; };
-		D2A92352201732B600043596 /* MusicManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A92351201732B600043596 /* MusicManager.m */; };
-		D2C0F31020E64FAD00E48F3A /* SSHClientConnectedChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C0F30F20E64FAD00E48F3A /* SSHClientConnectedChannel.m */; };
-		D2C21F3920FCD7B800F125E0 /* blinkCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2C21F3220FCD6CD00F125E0 /* blinkCommandsDictionary.plist */; };
-		D2C8D30A21B544B100AC39C3 /* say.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C8D30921B544B100AC39C3 /* say.m */; };
-		D2D0AD081FFB7A74007EC56A /* MCPSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D0AD071FFB7A74007EC56A /* MCPSessionParameters.m */; };
-		D2D6D78620527651003CBEC4 /* TermDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D78520527651003CBEC4 /* TermDevice.m */; };
-		D2D75EE021AFDA10007336B6 /* LayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D75EDF21AFDA10007336B6 /* LayoutManager.m */; };
-		D2E4F91B20B0537D00B30F7B /* Migrator.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4F91A20B0537D00B30F7B /* Migrator.m */; };
-		D2EFE1F520B7FAFC0087888B /* link_files.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EFE1EE20B7FAFC0087888B /* link_files.m */; };
-		D2F30EAD205009CD008C5F35 /* base64js.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2F30EAC205009CD008C5F35 /* base64js.min.js */; };
-		D2F330CA20A6CB840074ADD7 /* help.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330C920A6CB840074ADD7 /* help.m */; };
-		D2F330CC20A6D98C0074ADD7 /* config.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330CB20A6D98C0074ADD7 /* config.m */; };
-		D2F330CE20A6DA8A0074ADD7 /* music.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330CD20A6DA8A0074ADD7 /* music.m */; };
-		D2F330D220A6EF030074ADD7 /* showkey.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330D120A6EF020074ADD7 /* showkey.m */; };
-		D2F330D420A6F1DF0074ADD7 /* clear.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330D320A6F1DF0074ADD7 /* clear.m */; };
-		D2F330D620A6F4F50074ADD7 /* history.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330D520A6F4F50074ADD7 /* history.m */; };
-		D2F330DA20A7127B0074ADD7 /* open.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330D920A7127B0074ADD7 /* open.m */; };
-/* End PBXBuildFile section */
+    /* Begin PBXBuildFile section */
+            0716B5721CFFAB9300268B5B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0716B52A1CFFAB9300268B5B /* AppDelegate.m */; };
+            0716B5741CFFAB9300268B5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0716B52C1CFFAB9300268B5B /* LaunchScreen.storyboard */; };
+            0716B5911CFFAB9300268B5B /* SpaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0716B5591CFFAB9300268B5B /* SpaceController.m */; };
+            0716B5961CFFAB9300268B5B /* TermController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0716B5621CFFAB9300268B5B /* TermController.m */; };
+            0716B5A71CFFABB000268B5B /* BlinkUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0716B5A51CFFABB000268B5B /* BlinkUITests.m */; };
+            0728A1DA1E0AE80400ABD31B /* SmartKeysController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0728A1D91E0AE80400ABD31B /* SmartKeysController.m */; };
+            0732F04D1D062B9A00AB5438 /* locales.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0732F04A1D062B9A00AB5438 /* locales.bundle */; };
+            0732F04E1D062B9A00AB5438 /* term.html in Resources */ = {isa = PBXBuildFile; fileRef = 0732F04B1D062B9A00AB5438 /* term.html */; };
+            0732F0BE1D062BB400AB5438 /* libssh2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F05F1D062BB300AB5438 /* libssh2.framework */; };
+            0732F0D11D062BB400AB5438 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F0841D062BB300AB5438 /* openssl.framework */; };
+            0732F11E1D062DDB00AB5438 /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1171D062CA000AB5438 /* UICKeyChainStore.framework */; };
+            0732F11F1D062DDB00AB5438 /* UICKeyChainStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1171D062CA000AB5438 /* UICKeyChainStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            0732F1271D06323A00AB5438 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1261D06323A00AB5438 /* libz.tbd */; };
+            0732F1291D06324200AB5438 /* libcurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1281D06324200AB5438 /* libcurses.tbd */; };
+            073D26BC1DC4137000965AB2 /* SKButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26B21DC4137000965AB2 /* SKButton.m */; };
+            073D26BD1DC4137000965AB2 /* SKModifierButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26B41DC4137000965AB2 /* SKModifierButton.m */; };
+            073D26BE1DC4137000965AB2 /* SKNonModifierButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26B61DC4137000965AB2 /* SKNonModifierButton.m */; };
+            073D26C01DC4137000965AB2 /* SmartKeys.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073D26B91DC4137000965AB2 /* SmartKeys.xib */; };
+            073D26C11DC4137000965AB2 /* SmartKeysView.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26BB1DC4137000965AB2 /* SmartKeysView.m */; };
+            074F30791D062A2800A73445 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 074F30781D062A2800A73445 /* main.m */; };
+            076FBD501DB6BD9400F6D997 /* libmoshios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */; };
+            076FBD521DB6BE1D00F6D997 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD511DB6BE1D00F6D997 /* libprotobuf.a */; };
+            079635871D0E6602000473B1 /* TermView.m in Sources */ = {isa = PBXBuildFile; fileRef = 079635841D0E6602000473B1 /* TermView.m */; };
+            07AA06491E08B12E008310B7 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07AA06331E08B12E008310B7 /* PasscodeLock.strings */; };
+            07AA064A1E08B12E008310B7 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06351E08B12E008310B7 /* Functions.swift */; };
+            07AA064C1E08B12E008310B7 /* ChangePasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06381E08B12E008310B7 /* ChangePasscodeState.swift */; };
+            07AA064D1E08B12E008310B7 /* ConfirmPasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06391E08B12E008310B7 /* ConfirmPasscodeState.swift */; };
+            07AA064E1E08B12E008310B7 /* EnterPasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063A1E08B12E008310B7 /* EnterPasscodeState.swift */; };
+            07AA064F1E08B12E008310B7 /* PasscodeLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063B1E08B12E008310B7 /* PasscodeLock.swift */; };
+            07AA06501E08B12E008310B7 /* SetPasscodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063C1E08B12E008310B7 /* SetPasscodeState.swift */; };
+            07AA06511E08B12E008310B7 /* PasscodeLockPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063E1E08B12E008310B7 /* PasscodeLockPresenter.swift */; };
+            07AA06521E08B12E008310B7 /* PasscodeLockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA063F1E08B12E008310B7 /* PasscodeLockViewController.swift */; };
+            07AA06531E08B12E008310B7 /* PasscodeLockConfigurationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06411E08B12E008310B7 /* PasscodeLockConfigurationType.swift */; };
+            07AA06541E08B12E008310B7 /* PasscodeLockStateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06421E08B12E008310B7 /* PasscodeLockStateType.swift */; };
+            07AA06551E08B12E008310B7 /* PasscodeLockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06431E08B12E008310B7 /* PasscodeLockType.swift */; };
+            07AA06561E08B12E008310B7 /* PasscodeRepositoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06441E08B12E008310B7 /* PasscodeRepositoryType.swift */; };
+            07AA06571E08B12E008310B7 /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07AA06461E08B12E008310B7 /* PasscodeLockView.xib */; };
+            07AA06581E08B12E008310B7 /* PasscodeSignButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06471E08B12E008310B7 /* PasscodeSignButton.swift */; };
+            07AA06591E08B12E008310B7 /* PasscodeSignPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06481E08B12E008310B7 /* PasscodeSignPlaceholderView.swift */; };
+            07AA065B1E08B61F008310B7 /* PasscodeLockConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA065A1E08B61F008310B7 /* PasscodeLockConfiguration.swift */; };
+            07AA065D1E08B6EB008310B7 /* UserDefaultsPasscodeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA065C1E08B6EB008310B7 /* UserDefaultsPasscodeRepository.swift */; };
+            07E3AEB01D8F6758007BC086 /* BKFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEAF1D8F6758007BC086 /* BKFeedbackViewController.m */; };
+            07E3AEB31D8F6775007BC086 /* BKSupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEB21D8F6775007BC086 /* BKSupportViewController.m */; };
+            07E3AEB61D8F6E2E007BC086 /* BKLinkActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEB51D8F6E2E007BC086 /* BKLinkActions.m */; };
+            07E3AEC61D9190CF007BC086 /* BKAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEC51D9190CF007BC086 /* BKAboutViewController.m */; };
+            07E3AECD1D9191B4007BC086 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = 07E3AEC71D9191B4007BC086 /* about.html */; };
+            07E3AED11D9191B4007BC086 /* blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 07E3AECC1D9191B4007BC086 /* blink.png */; };
+            07E3AED31D919272007BC086 /* css in Resources */ = {isa = PBXBuildFile; fileRef = 07E3AED21D919272007BC086 /* css */; };
+            07E4C5211C935E28000C571A /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07E4C5201C935E28000C571A /* Media.xcassets */; };
+            07F670721D05EEE200C0A53C /* MCPSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670661D05EEE200C0A53C /* MCPSession.m */; };
+            07F670731D05EEE200C0A53C /* MoshSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670681D05EEE200C0A53C /* MoshSession.m */; };
+            07F670751D05EEE200C0A53C /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706C1D05EEE200C0A53C /* Session.m */; };
+            07F670761D05EEE200C0A53C /* SSHCopyIDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706E1D05EEE200C0A53C /* SSHCopyIDSession.m */; };
+            07F670771D05EEE200C0A53C /* SSHSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670701D05EEE200C0A53C /* SSHSession.m */; };
+            22A9494B2067FD5E003A0666 /* files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A949492067FD5E003A0666 /* files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A9494A2067FD5E003A0666 /* tar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3332036EE86001FCC5C /* openssl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3342036EE86001FCC5C /* libssh2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            849058BD220012D400CF24F7 /* Python_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849058BC220012D400CF24F7 /* Python_ios.framework */; };
+            849058BE220012D400CF24F7 /* Python_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 849058BC220012D400CF24F7 /* Python_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            85047E71201F8A230090E974 /* RoundedToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E70201F8A230090E974 /* RoundedToolbar.m */; };
+            85047E77201F9B0E0090E974 /* ControlPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E76201F9B0E0090E974 /* ControlPanel.m */; };
+            85A34307200A837A009324F1 /* webfontloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 85A34303200A837A009324F1 /* webfontloader.js */; };
+            85A34309200A8FAF009324F1 /* term.css in Resources */ = {isa = PBXBuildFile; fileRef = 85A34308200A8FAF009324F1 /* term.css */; };
+            B75112CD1DE4A7B10040C693 /* BKiCloudConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B75112CC1DE4A7B10040C693 /* BKiCloudConfigurationViewController.m */; };
+            B752EE2B1DFEF19D00E305C8 /* BKUserConfigurationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B752EE2A1DFEF19D00E305C8 /* BKUserConfigurationManager.m */; };
+            B752EE2E1DFEF45300E305C8 /* BKSecurityConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B752EE2D1DFEF45300E305C8 /* BKSecurityConfigurationViewController.m */; };
+            B7703BCF1E29233600B698DD /* BKKeyboardShortcutsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7703BCE1E29233600B698DD /* BKKeyboardShortcutsViewController.m */; };
+            B7A487651DC7BD65007BA809 /* BKDefaultUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7A487641DC7BD65007BA809 /* BKDefaultUserViewController.m */; };
+            B7A487691DC7C48D007BA809 /* UIDevice+DeviceName.m in Sources */ = {isa = PBXBuildFile; fileRef = B7A487681DC7C48D007BA809 /* UIDevice+DeviceName.m */; };
+            B7A4876D1DC7C709007BA809 /* BKSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7A4876C1DC7C709007BA809 /* BKSettingsViewController.m */; };
+            B7B3FC401DF5E99200B3D37C /* BKTouchIDAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B7B3FC3F1DF5E99200B3D37C /* BKTouchIDAuthManager.m */; };
+            B7D450361DD3A87200CE0DBE /* BKiCloudSyncHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D450351DD3A87200CE0DBE /* BKiCloudSyncHandler.m */; };
+            B7D4503C1DD4706000CE0DBE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D4503B1DD4706000CE0DBE /* Reachability.m */; };
+            B7D6A6291E2D43A800EDF7B0 /* BKSmartKeysConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D6A6281E2D43A800EDF7B0 /* BKSmartKeysConfigViewController.m */; };
+            C94437571D8311960096F84E /* BKResource.m in Sources */ = {isa = PBXBuildFile; fileRef = C94437561D8311960096F84E /* BKResource.m */; };
+            C94437601D831CD30096F84E /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = C944375F1D831CD30096F84E /* Themes */; };
+            C94437651D838ABF0096F84E /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = C94437641D838ABF0096F84E /* Fonts */; };
+            C9472D561D74E9BA001B6022 /* BKKeyboardFuncTriggersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9472D551D74E9BA001B6022 /* BKKeyboardFuncTriggersViewController.m */; };
+            C94E9B631D6BA21C00DA4DD6 /* DismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = C94E9B621D6BA21C00DA4DD6 /* DismissSegue.m */; };
+            C989E54A1D6CC488003E0079 /* BKHostsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E53D1D6CC488003E0079 /* BKHostsDetailViewController.m */; };
+            C989E54B1D6CC488003E0079 /* BKHostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E53F1D6CC488003E0079 /* BKHostsViewController.m */; };
+            C989E54C1D6CC488003E0079 /* BKPredictionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5411D6CC488003E0079 /* BKPredictionViewController.m */; };
+            C989E54D1D6CC488003E0079 /* BKKeyboardModifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5441D6CC488003E0079 /* BKKeyboardModifierViewController.m */; };
+            C989E54E1D6CC488003E0079 /* BKKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5461D6CC488003E0079 /* BKKeyboardViewController.m */; };
+            C989E5561D6CC4A1003E0079 /* BKAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5511D6CC4A1003E0079 /* BKAppearanceViewController.m */; };
+            C989E5571D6CC4A1003E0079 /* BKFontCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5531D6CC4A1003E0079 /* BKFontCreateViewController.m */; };
+            C989E5581D6CC4A1003E0079 /* BKThemeCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5551D6CC4A1003E0079 /* BKThemeCreateViewController.m */; };
+            C989E5651D6CC95A003E0079 /* BKPubKeyCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5601D6CC95A003E0079 /* BKPubKeyCreateViewController.m */; };
+            C989E5661D6CC95A003E0079 /* BKPubKeyDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5621D6CC95A003E0079 /* BKPubKeyDetailsViewController.m */; };
+            C989E5671D6CC95A003E0079 /* BKPubKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E5641D6CC95A003E0079 /* BKPubKeyViewController.m */; };
+            C9B2E02F1D6B612400B89F69 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9B2E0041D6B612300B89F69 /* Settings.storyboard */; };
+            C9B2E0301D6B612400B89F69 /* BKPubKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0081D6B612300B89F69 /* BKPubKey.m */; };
+            C9B2E0311D6B612400B89F69 /* BKDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00A1D6B612300B89F69 /* BKDefaults.m */; };
+            C9B2E0321D6B612400B89F69 /* BKFont.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00C1D6B612300B89F69 /* BKFont.m */; };
+            C9B2E0331D6B612400B89F69 /* BKHosts.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00E1D6B612300B89F69 /* BKHosts.m */; };
+            C9B2E0341D6B612400B89F69 /* BKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0101D6B612300B89F69 /* BKTheme.m */; };
+            C9B2E0351D6B612400B89F69 /* BKSettingsFileDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0131D6B612300B89F69 /* BKSettingsFileDownloader.m */; };
+            D2060A5420E2644400CF5122 /* SSHClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D2060A5320E2644400CF5122 /* SSHClient.m */; };
+            D2071B732150E4AA000156D7 /* ssh-add.m in Sources */ = {isa = PBXBuildFile; fileRef = D2071B722150E4AA000156D7 /* ssh-add.m */; };
+            D2071B7B2150EBC1000156D7 /* authfile.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B7A2150EBC1000156D7 /* authfile.c */; };
+            D2071B7E2150EE77000156D7 /* authfd.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B7C2150EE77000156D7 /* authfd.c */; };
+            D2071B812150FFD1000156D7 /* match.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B7F2150FFD0000156D7 /* match.c */; };
+            D2071B83215101DC000156D7 /* blink-compat.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B82215101DC000156D7 /* blink-compat.c */; };
+            D2071B86215135A9000156D7 /* openssl-compat.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B84215135A9000156D7 /* openssl-compat.c */; };
+            D2094662204D3FC5003C4F72 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D209465B204D3FC5003C4F72 /* cacert.pem */; };
+            D20A28BE1E185BDB00055791 /* ScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = D20A28BD1E185BDB00055791 /* ScreenController.m */; };
+            D2179F2D2136A5DC00B0850A /* GeoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2179F2C2136A5DC00B0850A /* GeoManager.m */; };
+            D2179F2F2136DBC600B0850A /* geo.m in Sources */ = {isa = PBXBuildFile; fileRef = D2179F2E2136DBC600B0850A /* geo.m */; };
+            D21A3FD721943BE200269705 /* dark-settings-ipad-29pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC621943BE200269705 /* dark-settings-ipad-29pt.png */; };
+            D21A3FD821943BE200269705 /* dark-notification-ipad-20pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC721943BE200269705 /* dark-notification-ipad-20pt.png */; };
+            D21A3FD921943BE200269705 /* dark-settings-iphone-29pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC821943BE200269705 /* dark-settings-iphone-29pt@3x.png */; };
+            D21A3FDA21943BE200269705 /* dark-app-iphone-60pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC921943BE200269705 /* dark-app-iphone-60pt@2x.png */; };
+            D21A3FDB21943BE200269705 /* dark-settings-ipad-29pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCA21943BE200269705 /* dark-settings-ipad-29pt@2x.png */; };
+            D21A3FDC21943BE200269705 /* dark-app-iphone-60pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCB21943BE200269705 /* dark-app-iphone-60pt@3x.png */; };
+            D21A3FDD21943BE200269705 /* dark-settings-iphone-29pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCC21943BE200269705 /* dark-settings-iphone-29pt@2x.png */; };
+            D21A3FDE21943BE200269705 /* dark-app-ipad-76pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCD21943BE200269705 /* dark-app-ipad-76pt.png */; };
+            D21A3FDF21943BE200269705 /* dark-app-ipad-pro-83.5pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCE21943BE200269705 /* dark-app-ipad-pro-83.5pt@2x.png */; };
+            D21A3FE021943BE200269705 /* dark-notification-iphone-20pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FCF21943BE200269705 /* dark-notification-iphone-20pt@3x.png */; };
+            D21A3FE121943BE200269705 /* dark-notification-iphone-20pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD021943BE200269705 /* dark-notification-iphone-20pt@2x.png */; };
+            D21A3FE221943BE200269705 /* dark-spotlight-ipad-40pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD121943BE200269705 /* dark-spotlight-ipad-40pt.png */; };
+            D21A3FE321943BE200269705 /* dark-notification-ipad-20pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD221943BE200269705 /* dark-notification-ipad-20pt@2x.png */; };
+            D21A3FE421943BE200269705 /* dark-spotlight-ipad-40pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD321943BE200269705 /* dark-spotlight-ipad-40pt@2x.png */; };
+            D21A3FE521943BE200269705 /* dark-spotlight-iphone-40pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD421943BE200269705 /* dark-spotlight-iphone-40pt@2x.png */; };
+            D21A3FE621943BE200269705 /* dark-spotlight-iphone-40pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD521943BE200269705 /* dark-spotlight-iphone-40pt@3x.png */; };
+            D21A3FE721943BE200269705 /* dark-app-ipad-76pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FD621943BE200269705 /* dark-app-ipad-76pt@2x.png */; };
+            D2334D1C21495DAE00D26AC3 /* udptunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2334D1321495DAE00D26AC3 /* udptunnel.m */; };
+            D2334D1D21495DAE00D26AC3 /* host2ip.c in Sources */ = {isa = PBXBuildFile; fileRef = D2334D1421495DAE00D26AC3 /* host2ip.c */; };
+            D23742CA21106ADF00366359 /* bench.m in Sources */ = {isa = PBXBuildFile; fileRef = D23742C921106ADF00366359 /* bench.m */; };
+            D23970FF20A07B9100881637 /* prompt.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970E820A07B9100881637 /* prompt.cxx */; };
+            D239710020A07B9100881637 /* conversion.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970EC20A07B9100881637 /* conversion.cxx */; };
+            D239710120A07B9100881637 /* replxx.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970ED20A07B9100881637 /* replxx.cxx */; };
+            D239710220A07B9100881637 /* ConvertUTF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D23970EF20A07B9100881637 /* ConvertUTF.cpp */; };
+            D239710320A07B9100881637 /* io.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970F120A07B9100881637 /* io.cxx */; };
+            D239710420A07B9100881637 /* inputbuffer.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970F220A07B9100881637 /* inputbuffer.cxx */; };
+            D239710520A07B9100881637 /* history.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970F320A07B9100881637 /* history.cxx */; };
+            D239710620A07B9100881637 /* escape.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970F820A07B9100881637 /* escape.cxx */; };
+            D239710720A07B9100881637 /* util.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970FA20A07B9100881637 /* util.cxx */; };
+            D239710820A07B9100881637 /* windows.cxx in Sources */ = {isa = PBXBuildFile; fileRef = D23970FB20A07B9100881637 /* windows.cxx */; };
+            D239710920A07B9100881637 /* wcwidth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D23970FE20A07B9100881637 /* wcwidth.cpp */; };
+            D23AA645223EA3C40020FA77 /* BKXCallBackUrlConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D23AA644223EA3C40020FA77 /* BKXCallBackUrlConfigurationViewController.m */; };
+            D23B18851FF7CEBA00A6C903 /* StateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B18841FF7CEBA00A6C903 /* StateManager.m */; };
+            D23B188B1FFB76B300A6C903 /* SessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B188A1FFB76B300A6C903 /* SessionParameters.m */; };
+            D23B188E1FFB776000A6C903 /* MoshSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B188D1FFB776000A6C903 /* MoshSessionParameters.m */; };
+            D23D0FAD2008DAEB00B33A9F /* TermInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D0FAC2008DAEB00B33A9F /* TermInput.m */; };
+            D23E142B20A970C3000FCF5C /* BlinkPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E142A20A970C3000FCF5C /* BlinkPaths.m */; };
+            D23E143D20A977AB000FCF5C /* Repl.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E143C20A977AB000FCF5C /* Repl.m */; };
+            D2496F3F20038B3300E75FE9 /* hterm_all.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F3B20038B3300E75FE9 /* hterm_all.min.js */; };
+            D2496F412003941B00E75FE9 /* term.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F402003941B00E75FE9 /* term.js */; };
+            D24AFD58222410E700CFD3C1 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; };
+            D24AFD59222410E700CFD3C1 /* MBProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            D24D18C921D4CFB200239C9D /* KeyInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D24D18C821D4CFB200239C9D /* KeyInput.m */; };
+            D2512AC520BD4C3000A80257 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+            D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D263489720BEBFE000A8E89F /* libsshd.a */; };
+            D27AD9BC222FDD3D00379872 /* xcall.m in Sources */ = {isa = PBXBuildFile; fileRef = D27AD9BB222FDD3D00379872 /* xcall.m */; };
+            D27BBA1C20529FFF00AEA303 /* TermStream.m in Sources */ = {isa = PBXBuildFile; fileRef = D27BBA1B20529FFF00AEA303 /* TermStream.m */; };
+            D28DB3AC210B110C008A1139 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D28DB3AB210B110B008A1139 /* libcompression.tbd */; };
+            D28F301A21AD8A6B00E5259F /* DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F301921AD8A6B00E5259F /* DeviceInfo.m */; };
+            D29392B72004D785001FB2AA /* hterm_all.patches.js in Resources */ = {isa = PBXBuildFile; fileRef = D29392B62004D785001FB2AA /* hterm_all.patches.js */; };
+            D29568B921BE629100480A83 /* bk_getopts.c in Sources */ = {isa = PBXBuildFile; fileRef = D29568B821BE629100480A83 /* bk_getopts.c */; };
+            D2961970214F89360070935A /* ssh-agent.m in Sources */ = {isa = PBXBuildFile; fileRef = D296196F214F89210070935A /* ssh-agent.m */; };
+            D2961975214F8A580070935A /* sshbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961972214F8A580070935A /* sshbuf.c */; };
+            D296197C214F8ABE0070935A /* atomicio.c in Sources */ = {isa = PBXBuildFile; fileRef = D296197A214F8ABD0070935A /* atomicio.c */; };
+            D296197F214F91550070935A /* sshkey.c in Sources */ = {isa = PBXBuildFile; fileRef = D296197D214F91550070935A /* sshkey.c */; };
+            D2961983214F968A0070935A /* cipher.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961981214F96890070935A /* cipher.c */; };
+            D2961989214F96A10070935A /* chacha.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961987214F96A10070935A /* chacha.c */; };
+            D296198A214F96A10070935A /* poly1305.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961988214F96A10070935A /* poly1305.c */; };
+            D296198D214F96D50070935A /* digest-openssl.c in Sources */ = {isa = PBXBuildFile; fileRef = D296198B214F96D50070935A /* digest-openssl.c */; };
+            D296199A214F995D0070935A /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = D296198F214F995D0070935A /* blocks.c */; };
+            D296199B214F995D0070935A /* ge25519_base.data in Resources */ = {isa = PBXBuildFile; fileRef = D2961990214F995D0070935A /* ge25519_base.data */; };
+            D296199C214F995D0070935A /* ed25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961991214F995D0070935A /* ed25519.c */; };
+            D296199D214F995D0070935A /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961995214F995D0070935A /* hash.c */; };
+            D296199E214F995D0070935A /* sc25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961996214F995D0070935A /* sc25519.c */; };
+            D296199F214F995D0070935A /* ge25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961997214F995D0070935A /* ge25519.c */; };
+            D29619A0214F995D0070935A /* fe25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D2961999214F995D0070935A /* fe25519.c */; };
+            D29619A4214F99A30070935A /* rsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619A3214F99A30070935A /* rsa.c */; };
+            D29619A7214FA7D40070935A /* bcrypt-pbkdf.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619A6214FA7D30070935A /* bcrypt-pbkdf.c */; };
+            D29619A9214FB4110070935A /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619A8214FB4110070935A /* base64.c */; };
+            D29619AD214FB5EA0070935A /* ssh-ed25519.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AA214FB5EA0070935A /* ssh-ed25519.c */; };
+            D29619AE214FB5EA0070935A /* ssh-rsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AB214FB5EA0070935A /* ssh-rsa.c */; };
+            D29619AF214FB5EA0070935A /* ssh-ecdsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AC214FB5EA0070935A /* ssh-ecdsa.c */; };
+            D298D67D2110803600992CA4 /* SSHClientPortListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D298D67C2110803600992CA4 /* SSHClientPortListener.m */; };
+            D29FE54A208DC860004679D0 /* commandDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE548208DC860004679D0 /* commandDictionary.plist */; };
+            D29FE54B208DC860004679D0 /* extraCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */; };
+            D2A3F4EA20690B71006BB305 /* text.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E120690B70006BB305 /* text.framework */; };
+            D2A3F4EC20690B71006BB305 /* shell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E320690B70006BB305 /* shell.framework */; };
+            D2A3F4F020690B71006BB305 /* tar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E720690B71006BB305 /* tar.framework */; };
+            D2A3F4F120690B71006BB305 /* network_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E820690B71006BB305 /* network_ios.framework */; };
+            D2A3F4F220690B71006BB305 /* curl_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; };
+            D2A3F4F620690C24006BB305 /* awk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F520690C24006BB305 /* awk.framework */; };
+            D2A3F4F820690CB0006BB305 /* awk.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F520690C24006BB305 /* awk.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            D2A3F4F920690CDF006BB305 /* ios_system.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F320690BE6006BB305 /* ios_system.framework */; };
+            D2A3F4FA20690CDF006BB305 /* ios_system.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F320690BE6006BB305 /* ios_system.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            D2A3F4FC20690D08006BB305 /* shell.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E320690B70006BB305 /* shell.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            D2A3F4FE20690D23006BB305 /* text.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E120690B70006BB305 /* text.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            D2A3F50020690D44006BB305 /* network_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E820690B71006BB305 /* network_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            D2A3F50320690D7E006BB305 /* ssh_cmd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E620690B71006BB305 /* ssh_cmd.framework */; };
+            D2A3F50420690D7E006BB305 /* ssh_cmd.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E620690B71006BB305 /* ssh_cmd.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            D2A3F50620690D8A006BB305 /* curl_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+            D2A86D6920EB86F2000DF1DA /* SSHClientOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A86D6820EB86F2000DF1DA /* SSHClientOptions.m */; };
+            D2A8C154201F377D002F415A /* TouchOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8C153201F377D002F415A /* TouchOverlay.m */; };
+            D2A90AE220D277E00073BF3D /* ssh.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A90ADB20D277DF0073BF3D /* ssh.m */; };
+            D2A92352201732B600043596 /* MusicManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A92351201732B600043596 /* MusicManager.m */; };
+            D2AC6749220303D900177BC5 /* openurl.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AC6742220303D900177BC5 /* openurl.m */; };
+            D2C0F31020E64FAD00E48F3A /* SSHClientConnectedChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C0F30F20E64FAD00E48F3A /* SSHClientConnectedChannel.m */; };
+            D2C21F3920FCD7B800F125E0 /* blinkCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2C21F3220FCD6CD00F125E0 /* blinkCommandsDictionary.plist */; };
+            D2C8D30A21B544B100AC39C3 /* say.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C8D30921B544B100AC39C3 /* say.m */; };
+            D2D0AD081FFB7A74007EC56A /* MCPSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D0AD071FFB7A74007EC56A /* MCPSessionParameters.m */; };
+            D2D6D78620527651003CBEC4 /* TermDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D78520527651003CBEC4 /* TermDevice.m */; };
+            D2D75EE021AFDA10007336B6 /* LayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D75EDF21AFDA10007336B6 /* LayoutManager.m */; };
+            D2E4F91B20B0537D00B30F7B /* Migrator.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4F91A20B0537D00B30F7B /* Migrator.m */; };
+            D2EFE1F520B7FAFC0087888B /* link_files.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EFE1EE20B7FAFC0087888B /* link_files.m */; };
+            D2F30EAD205009CD008C5F35 /* base64js.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2F30EAC205009CD008C5F35 /* base64js.min.js */; };
+            D2F330CA20A6CB840074ADD7 /* help.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330C920A6CB840074ADD7 /* help.m */; };
+            D2F330CC20A6D98C0074ADD7 /* config.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330CB20A6D98C0074ADD7 /* config.m */; };
+            D2F330CE20A6DA8A0074ADD7 /* music.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330CD20A6DA8A0074ADD7 /* music.m */; };
+            D2F330D220A6EF030074ADD7 /* showkey.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330D120A6EF020074ADD7 /* showkey.m */; };
+            D2F330D420A6F1DF0074ADD7 /* clear.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330D320A6F1DF0074ADD7 /* clear.m */; };
+            D2F330D620A6F4F50074ADD7 /* history.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330D520A6F4F50074ADD7 /* history.m */; };
+            D2F330DA20A7127B0074ADD7 /* open.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330D920A7127B0074ADD7 /* open.m */; };
+    /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		0732F10A1D062BF700AB5438 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D286A7491518C70F00E13FB8;
-			remoteInfo = "MBProgressHUD Static Library";
-		};
-		0732F10C1D062BF700AB5438 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1D104D7A1ACA36CC00973364;
-			remoteInfo = "MBProgressHUD Framework";
-		};
-		0732F1161D062CA000AB5438 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 14796A501C1CD9A500169D09;
-			remoteInfo = UICKeyChainStore;
-		};
-		0732F1181D062CA000AB5438 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 14796A691C1CD9C900169D09;
-			remoteInfo = libUICKeyChainStore;
-		};
-		0732F11A1D062CA000AB5438 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 14796A5F1C1CD9B500169D09;
-			remoteInfo = UICKeyChainStoreTests;
-		};
-		0732F1201D062DDB00AB5438 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 14796A461C1CD9A500169D09;
-			remoteInfo = UICKeyChainStore;
-		};
-		0732F1241D062DDC00AB5438 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 1D104D791ACA36CC00973364;
-			remoteInfo = "MBProgressHUD Framework";
-		};
-		0747D63D2018182D00CF8F0C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 148993CF1D8F2515000132F7;
-			remoteInfo = TestHost;
-		};
-		84905872220007FF00CF24F7 /* PBXContainerItemProxy */ = {
+    /* Begin PBXContainerItemProxy section */
+            0732F10A1D062BF700AB5438 /* PBXContainerItemProxy */ = {
+                isa = PBXContainerItemProxy;
+                containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
+                proxyType = 2;
+                remoteGlobalIDString = D286A7491518C70F00E13FB8;
+                remoteInfo = "MBProgressHUD Static Library";
+            };
+            0732F10C1D062BF700AB5438 /* PBXContainerItemProxy */ = {
+                isa = PBXContainerItemProxy;
+                containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
+                proxyType = 2;
+                remoteGlobalIDString = 1D104D7A1ACA36CC00973364;
+                remoteInfo = "MBProgressHUD Framework";
+            };
+            0732F1161D062CA000AB5438 /* PBXContainerItemProxy */ = {
+                isa = PBXContainerItemProxy;
+                containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
+                proxyType = 2;
+                remoteGlobalIDString = 14796A501C1CD9A500169D09;
+                remoteInfo = UICKeyChainStore;
+            };
+            0732F1181D062CA000AB5438 /* PBXContainerItemProxy */ = {
+                isa = PBXContainerItemProxy;
+                containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
+                proxyType = 2;
+                remoteGlobalIDString = 14796A691C1CD9C900169D09;
+                remoteInfo = libUICKeyChainStore;
+            };
+            0732F11A1D062CA000AB5438 /* PBXContainerItemProxy */ = {
+                isa = PBXContainerItemProxy;
+                containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
+                proxyType = 2;
+                remoteGlobalIDString = 14796A5F1C1CD9B500169D09;
+                remoteInfo = UICKeyChainStoreTests;
+            };
+            0732F1201D062DDB00AB5438 /* PBXContainerItemProxy */ = {
+                isa = PBXContainerItemProxy;
+                containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
+                proxyType = 1;
+                remoteGlobalIDString = 14796A461C1CD9A500169D09;
+                remoteInfo = UICKeyChainStore;
+            };
+            0747D63D2018182D00CF8F0C /* PBXContainerItemProxy */ = {
+                isa = PBXContainerItemProxy;
+                containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
+                proxyType = 2;
+                remoteGlobalIDString = 148993CF1D8F2515000132F7;
+                remoteInfo = TestHost;
+            };
+            D24AFD5A222410E700CFD3C1 /* PBXContainerItemProxy */ = {
+                isa = PBXContainerItemProxy;
+                containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
+                proxyType = 1;
+                remoteGlobalIDString = 1D104D791ACA36CC00973364;
+                remoteInfo = "MBProgressHUD Framework";
+            };
+            D2A3F4DC206909A8006BB305 /* PBXContainerItemProxy */ = {
+                isa = PBXContainerItemProxy;
+                containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
+                proxyType = 2;
+                remoteGlobalIDString = 1777D3DF1D757AF50037C7F1;
+                remoteInfo = "MBProgressHUD Framework tvOS";
+            };
+            D2E4F92D20B2BB4500B30F7B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
 			proxyType = 2;
@@ -309,11 +318,11 @@
 			files = (
 				849058BE220012D400CF24F7 /* Python_ios.framework in Embed Frameworks */,
 				22A9494B2067FD5E003A0666 /* files.framework in Embed Frameworks */,
+				D24AFD59222410E700CFD3C1 /* MBProgressHUD.framework in Embed Frameworks */,
 				D2A3F4FC20690D08006BB305 /* shell.framework in Embed Frameworks */,
 				22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */,
 				22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */,
 				22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */,
-				0732F1231D062DDB00AB5438 /* MBProgressHUD.framework in Embed Frameworks */,
 				D2A3F4F820690CB0006BB305 /* awk.framework in Embed Frameworks */,
 				D2A3F50020690D44006BB305 /* network_ios.framework in Embed Frameworks */,
 				0732F11F1D062DDB00AB5438 /* UICKeyChainStore.framework in Embed Frameworks */,
@@ -417,7 +426,6 @@
 		85047E76201F9B0E0090E974 /* ControlPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlPanel.m; sourceTree = "<group>"; };
 		85A34303200A837A009324F1 /* webfontloader.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = webfontloader.js; sourceTree = "<group>"; };
 		85A34308200A8FAF009324F1 /* term.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = term.css; sourceTree = "<group>"; };
-		B700AED71DD0F2C200100EBF /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		B75112CB1DE4A7B10040C693 /* BKiCloudConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKiCloudConfigurationViewController.h; sourceTree = "<group>"; };
 		B75112CC1DE4A7B10040C693 /* BKiCloudConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKiCloudConfigurationViewController.m; sourceTree = "<group>"; };
 		B752EE291DFEF19D00E305C8 /* BKUserConfigurationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKUserConfigurationManager.h; sourceTree = "<group>"; };
@@ -552,6 +560,8 @@
 		D23970FC20A07B9100881637 /* utfstring.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = utfstring.hxx; sourceTree = "<group>"; };
 		D23970FD20A07B9100881637 /* conversion.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = conversion.hxx; sourceTree = "<group>"; };
 		D23970FE20A07B9100881637 /* wcwidth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wcwidth.cpp; sourceTree = "<group>"; };
+		D23AA643223EA3C40020FA77 /* BKXCallBackUrlConfigurationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BKXCallBackUrlConfigurationViewController.h; sourceTree = "<group>"; };
+		D23AA644223EA3C40020FA77 /* BKXCallBackUrlConfigurationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BKXCallBackUrlConfigurationViewController.m; sourceTree = "<group>"; };
 		D23B18831FF7CEBA00A6C903 /* StateManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateManager.h; sourceTree = "<group>"; };
 		D23B18841FF7CEBA00A6C903 /* StateManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StateManager.m; sourceTree = "<group>"; };
 		D23B18891FFB76B300A6C903 /* SessionParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SessionParameters.h; sourceTree = "<group>"; };
@@ -576,6 +586,8 @@
 		D263488F20BEBF5800A8E89F /* ssh2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssh2.h; sourceTree = "<group>"; };
 		D263489020BEBF5800A8E89F /* server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server.h; sourceTree = "<group>"; };
 		D263489720BEBFE000A8E89F /* libsshd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsshd.a; sourceTree = "<group>"; };
+		D27AD9BB222FDD3D00379872 /* xcall.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = xcall.m; sourceTree = "<group>"; };
+		D27AD9BD222FDD5700379872 /* xcall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xcall.h; sourceTree = "<group>"; };
 		D27BBA1A20529FFF00AEA303 /* TermStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermStream.h; sourceTree = "<group>"; };
 		D27BBA1B20529FFF00AEA303 /* TermStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TermStream.m; sourceTree = "<group>"; };
 		D28DB3AB210B110B008A1139 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
@@ -643,6 +655,8 @@
 		D2A90ADB20D277DF0073BF3D /* ssh.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ssh.m; sourceTree = "<group>"; };
 		D2A92350201732B600043596 /* MusicManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MusicManager.h; sourceTree = "<group>"; };
 		D2A92351201732B600043596 /* MusicManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MusicManager.m; sourceTree = "<group>"; };
+		D2AC6742220303D900177BC5 /* openurl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = openurl.m; sourceTree = "<group>"; };
+		D2AC674A22031EE600177BC5 /* openurl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = openurl.h; sourceTree = "<group>"; };
 		D2C0F30E20E64FAD00E48F3A /* SSHClientConnectedChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHClientConnectedChannel.h; sourceTree = "<group>"; };
 		D2C0F30F20E64FAD00E48F3A /* SSHClientConnectedChannel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHClientConnectedChannel.m; sourceTree = "<group>"; };
 		D2C21F3220FCD6CD00F125E0 /* blinkCommandsDictionary.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = blinkCommandsDictionary.plist; sourceTree = "<group>"; };
@@ -683,13 +697,12 @@
 				076FBD521DB6BE1D00F6D997 /* libprotobuf.a in Frameworks */,
 				0732F11E1D062DDB00AB5438 /* UICKeyChainStore.framework in Frameworks */,
 				D2A3F4EC20690B71006BB305 /* shell.framework in Frameworks */,
+				D24AFD58222410E700CFD3C1 /* MBProgressHUD.framework in Frameworks */,
 				D2A3F4F020690B71006BB305 /* tar.framework in Frameworks */,
 				D2A3F50320690D7E006BB305 /* ssh_cmd.framework in Frameworks */,
-				B700AED81DD0F2C200100EBF /* CloudKit.framework in Frameworks */,
 				D2A3F4EA20690B71006BB305 /* text.framework in Frameworks */,
 				D2A3F4F620690C24006BB305 /* awk.framework in Frameworks */,
 				D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */,
-				0732F1221D062DDB00AB5438 /* MBProgressHUD.framework in Frameworks */,
 				0732F0D11D062BB400AB5438 /* openssl.framework in Frameworks */,
 				0732F0BE1D062BB400AB5438 /* libssh2.framework in Frameworks */,
 				076FBD501DB6BD9400F6D997 /* libmoshios.framework in Frameworks */,
@@ -824,7 +837,6 @@
 				22E1F3342036EE86001FCC5C /* libssh2.framework */,
 				22E1F3332036EE86001FCC5C /* openssl.framework */,
 				07AA06321E08B12E008310B7 /* PasscodeLock */,
-				B700AED71DD0F2C200100EBF /* CloudKit.framework */,
 				076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */,
 				0732F1281D06324200AB5438 /* libcurses.tbd */,
 				0732F1261D06323A00AB5438 /* libz.tbd */,
@@ -1028,6 +1040,8 @@
 				B75112CC1DE4A7B10040C693 /* BKiCloudConfigurationViewController.m */,
 				B752EE2C1DFEF45300E305C8 /* BKSecurityConfigurationViewController.h */,
 				B752EE2D1DFEF45300E305C8 /* BKSecurityConfigurationViewController.m */,
+				D23AA643223EA3C40020FA77 /* BKXCallBackUrlConfigurationViewController.h */,
+				D23AA644223EA3C40020FA77 /* BKXCallBackUrlConfigurationViewController.m */,
 			);
 			path = UserConfiguration;
 			sourceTree = "<group>";
@@ -1365,6 +1379,10 @@
 				D23742C921106ADF00366359 /* bench.m */,
 				D2179F2E2136DBC600B0850A /* geo.m */,
 				D2C8D30921B544B100AC39C3 /* say.m */,
+				D2AC674A22031EE600177BC5 /* openurl.h */,
+				D2AC6742220303D900177BC5 /* openurl.m */,
+				D27AD9BD222FDD5700379872 /* xcall.h */,
+				D27AD9BB222FDD3D00379872 /* xcall.m */,
 				D2F330D120A6EF020074ADD7 /* showkey.m */,
 			);
 			path = Commands;
@@ -1413,7 +1431,7 @@
 			);
 			dependencies = (
 				0732F1211D062DDB00AB5438 /* PBXTargetDependency */,
-				0732F1251D062DDC00AB5438 /* PBXTargetDependency */,
+				D24AFD5B222410E700CFD3C1 /* PBXTargetDependency */,
 			);
 			name = Blink;
 			productName = Blink;
@@ -1458,13 +1476,13 @@
 								enabled = 1;
 							};
 							com.apple.Keychain = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.Push = {
 								enabled = 1;
 							};
 							com.apple.iCloud = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -1480,6 +1498,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				de,
@@ -1653,6 +1672,7 @@
 				D29619AD214FB5EA0070935A /* ssh-ed25519.c in Sources */,
 				B7D6A6291E2D43A800EDF7B0 /* BKSmartKeysConfigViewController.m in Sources */,
 				D239710420A07B9100881637 /* inputbuffer.cxx in Sources */,
+				D23AA645223EA3C40020FA77 /* BKXCallBackUrlConfigurationViewController.m in Sources */,
 				D2179F2D2136A5DC00B0850A /* GeoManager.m in Sources */,
 				07AA06531E08B12E008310B7 /* PasscodeLockConfigurationType.swift in Sources */,
 				D296199E214F995D0070935A /* sc25519.c in Sources */,
@@ -1707,6 +1727,7 @@
 				D20A28BE1E185BDB00055791 /* ScreenController.m in Sources */,
 				07E3AEB31D8F6775007BC086 /* BKSupportViewController.m in Sources */,
 				D2A86D6920EB86F2000DF1DA /* SSHClientOptions.m in Sources */,
+				D27AD9BC222FDD3D00379872 /* xcall.m in Sources */,
 				07AA065B1E08B61F008310B7 /* PasscodeLockConfiguration.swift in Sources */,
 				D29568B921BE629100480A83 /* bk_getopts.c in Sources */,
 				07E3AEC61D9190CF007BC086 /* BKAboutViewController.m in Sources */,
@@ -1763,6 +1784,7 @@
 				07AA064D1E08B12E008310B7 /* ConfirmPasscodeState.swift in Sources */,
 				C989E5571D6CC4A1003E0079 /* BKFontCreateViewController.m in Sources */,
 				C9472D561D74E9BA001B6022 /* BKKeyboardFuncTriggersViewController.m in Sources */,
+				D2AC6749220303D900177BC5 /* openurl.m in Sources */,
 				D296197C214F8ABE0070935A /* atomicio.c in Sources */,
 				C989E5661D6CC95A003E0079 /* BKPubKeyDetailsViewController.m in Sources */,
 				D296199F214F995D0070935A /* ge25519.c in Sources */,
@@ -1795,10 +1817,10 @@
 			name = UICKeyChainStore;
 			targetProxy = 0732F1201D062DDB00AB5438 /* PBXContainerItemProxy */;
 		};
-		0732F1251D062DDC00AB5438 /* PBXTargetDependency */ = {
+		D24AFD5B222410E700CFD3C1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "MBProgressHUD Framework";
-			targetProxy = 0732F1241D062DDC00AB5438 /* PBXContainerItemProxy */;
+			targetProxy = D24AFD5A222410E700CFD3C1 /* PBXContainerItemProxy */;
 		};
 		EA0BA1A61C0CC57B00719C1A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1882,6 +1904,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				VALID_ARCHS = arm64;
 			};
 			name = Debug;
@@ -1932,6 +1955,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = arm64;
 			};
@@ -1971,11 +1995,9 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jinher.Blink;
 				PRODUCT_NAME = Blink;
-				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				STRIP_STYLE = "non-global";
-				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1986,7 +2008,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Blink/Blink.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 9CA5KUE8T7;
@@ -2010,10 +2032,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jinher.Blink;
 				PRODUCT_NAME = Blink;
-				PROVISIONING_PROFILE = "ef71f761-fcc0-457d-ad7c-07e520594656";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_STYLE = "non-global";
-				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -76,13 +76,14 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   return _termDevice.view.title;
 }
 
-- (BOOL)handleControl:(NSString *)control
-{
-  return [_session handleControl:control];
-}
-
-- (void)indexCommand:(NSString *)cmdLine {
+- (void)indexCommand:(NSString *)originalCmdLine {
+  NSString *cmdLine = [
+                        [NSString stringWithFormat:@"%@", originalCmdLine]
+                            stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   
+  if ([cmdLine hasPrefix:@"config "] || [cmdLine isEqualToString:@"config"]) {
+    return;
+  }
   NSUserActivity * activity = [[NSUserActivity alloc] initWithActivityType:BKUserActivityTypeCommandLine];
   activity.eligibleForPublicIndexing = NO;
   activity.eligibleForSearch = YES;
@@ -90,18 +91,21 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   
   if (@available(iOS 12.0, *)) {
     activity.eligibleForPrediction = YES;
+    activity.persistentIdentifier = cmdLine;
   }
-  
   
   _activityKey = [NSString stringWithFormat:@"run: %@ ", cmdLine];
   [activity setTitle:_activityKey];
   
-  _activityUserInfo = @{BKUserActivityCommandLineKey: cmdLine ?: @"help"};
+  _activityUserInfo = @{BKUserActivityCommandLineKey: cmdLine ? [cmdLine copy] : @"help"};
   
   activity.userInfo = _activityUserInfo;
   
-  self.userActivity = activity;
-  [self.userActivity becomeCurrent];
+  __weak TermController *weakSelf = self;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    weakSelf.userActivity = activity;
+    [weakSelf.userActivity becomeCurrent];
+  });
 }
 
 - (void)updateUserActivityState:(NSUserActivity *)activity
@@ -134,14 +138,13 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   if ([_session isRunningCmd] || !cmdLine) {
     return;
   }
+  
   char ctrlA = 'a' - 'a' + 1;
   char ctrlK = 'k' - 'a' + 1;
   // delete all input on current line - ctrl+a ctrl+k
   // run command
   if (self.userActivity) {
     [_termDevice write:[NSString stringWithFormat:@"%c%c%@\n", ctrlA, ctrlK, cmdLine]];
-  } else {
-    self.userActivity = activity;
   }
 }
 

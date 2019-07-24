@@ -1,8 +1,8 @@
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 //
 // B L I N K
 //
-// Copyright (C) 2016-2018 Blink Mobile Shell Project
+// Copyright (C) 2016-2019 Blink Mobile Shell Project
 //
 // This file is part of Blink.
 //
@@ -29,32 +29,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
 
-@interface BlinkPaths : NSObject
+#import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
-+ (NSString *) documents;
-+ (NSURL *) documentsURL;
-
-+ (NSString *) iCloudDriveDocuments;
-
-// ~/.blink
-+ (NSString *) blink;
-// ~/.ssh
-+ (NSString *) ssh;
-
-+ (NSURL *) blinkURL;
-+ (NSString *)blinkKeysFile;
-+ (NSString *)blinkHostsFile;
-+ (NSString *)blinkSyncItemsFile;
-+ (NSString *)blinkProfileFile;
-
-+ (NSString *) historyFile;
-+ (NSString *) knownHostsFile;
-+ (NSString *) defaultsFile;
-
-+ (void)linkICloudDriveIfNeeded;
-
+@interface BKXCallBackUrlConfigurationViewController : UITableViewController
 
 @end
+
+NS_ASSUME_NONNULL_END

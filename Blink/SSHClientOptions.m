@@ -68,6 +68,7 @@ const NSString * SSHOptionSendEnv = @"sendenv"; // -o
 const NSString * SSHOptionKbdInteractiveAuthentication = @"kbdinteractiveauthentication"; // -o
 const NSString * SSHOptionPubkeyAuthentication = @"pubkeyauthentication"; // -o
 const NSString * SSHOptionPasswordAuthentication = @"passwordauthentication"; // -o
+const NSString * SSHOptionIdentitiesOnly = @"identitiesonly"; // -o
 
 // Non standart
 const NSString * SSHOptionPassword = @"_password"; //
@@ -135,10 +136,6 @@ const NSString * SSHOptionValueDEBUG3 = @"debug3";
   NSObject *hostportType = [[NSObject alloc] init];
   
   NSArray *userOption = @[stringType];
-  NSString *defaultUserName = BKDefaults.defaultUserName;
-  if (defaultUserName.length > 0) {
-    userOption = [userOption arrayByAddingObject:defaultUserName];
-  }
   
   NSDictionary *opts = @{
                          SSHOptionUser: userOption,
@@ -171,6 +168,7 @@ const NSString * SSHOptionValueDEBUG3 = @"debug3";
                          SSHOptionPubkeyAuthentication: @[yesNoType, SSHOptionValueYES],
                          SSHOptionKbdInteractiveAuthentication: @[yesNoType, SSHOptionValueYES],
                          SSHOptionPasswordAuthentication: @[yesNoType, SSHOptionValueYES],
+                         SSHOptionIdentitiesOnly: @[yesNoType, SSHOptionValueNO]
                          };
   
   NSMutableDictionary *result = [[NSMutableDictionary alloc] init];
@@ -538,6 +536,18 @@ const NSString * SSHOptionValueDEBUG3 = @"debug3";
     return rc;
   }
   
+  char *user = NULL;
+  ssh_options_get(session, SSH_OPTIONS_USER, &user);
+  if (user) {
+    _options[SSHOptionUser] = @(user);
+    ssh_string_free_char(user);
+  } else {
+    NSString *defaultUserName = BKDefaults.defaultUserName;
+    if (defaultUserName.length > 0) {
+      _options[SSHOptionUser] = defaultUserName;
+      [self _applySSH:session optionKey:SSHOptionUser withOption:SSH_OPTIONS_USER];
+    }
+  }
   char *identity = NULL;
   ssh_options_get(session, SSH_OPTIONS_IDENTITY, &identity);
   if (identity) {

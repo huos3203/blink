@@ -1,8 +1,8 @@
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 //
 // B L I N K
 //
-// Copyright (C) 2016-2018 Blink Mobile Shell Project
+// Copyright (C) 2016-2019 Blink Mobile Shell Project
 //
 // This file is part of Blink.
 //
@@ -29,32 +29,36 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
 
-@interface BlinkPaths : NSObject
+#ifndef xcall_h
+#define xcall_h
 
+@interface BlinkXCall: NSObject
 
-+ (NSString *) documents;
-+ (NSURL *) documentsURL;
+@property NSString *callID;
 
-+ (NSString *) iCloudDriveDocuments;
+@property BOOL async;
+@property BOOL verbose;
 
-// ~/.blink
-+ (NSString *) blink;
-// ~/.ssh
-+ (NSString *) ssh;
+@property NSURL *xURL;
+@property NSURL *xCallbackURL;
 
-+ (NSURL *) blinkURL;
-+ (NSString *)blinkKeysFile;
-+ (NSString *)blinkHostsFile;
-+ (NSString *)blinkSyncItemsFile;
-+ (NSString *)blinkProfileFile;
+@property NSURL *xSuccessURL;
+@property NSURL *xErrorURL;
+@property NSURL *xCancelURL;
 
-+ (NSString *) historyFile;
-+ (NSString *) knownHostsFile;
-+ (NSString *) defaultsFile;
+@property NSURL *xOriginalSuccessURL;
+@property NSURL *xOriginalErrorURL;
+@property NSURL *xOriginalCancelURL;
 
-+ (void)linkICloudDriveIfNeeded;
+@property NSMutableArray<NSArray<NSString *> *> *parseOutputParams; // [<paramName>, <decoder:json|base64>]
+@property NSMutableArray<NSArray<NSString *> *> *encodeInputParams; // [<paramName>, <value>]
 
+@property NSString *stdInParameterName;
 
 @end
+
+void blink_xcall(NSURL *url);
+void blink_handle_url(NSURL *url);
+
+#endif /* xcall_h */

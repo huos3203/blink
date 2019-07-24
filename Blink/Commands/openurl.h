@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 //
 // B L I N K
 //
@@ -29,32 +29,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
 
-@interface BlinkPaths : NSObject
+#ifndef openurl_h
+#define openurl_h
 
+void blink_openurl(NSURL *url);
 
-+ (NSString *) documents;
-+ (NSURL *) documentsURL;
-
-+ (NSString *) iCloudDriveDocuments;
-
-// ~/.blink
-+ (NSString *) blink;
-// ~/.ssh
-+ (NSString *) ssh;
-
-+ (NSURL *) blinkURL;
-+ (NSString *)blinkKeysFile;
-+ (NSString *)blinkHostsFile;
-+ (NSString *)blinkSyncItemsFile;
-+ (NSString *)blinkProfileFile;
-
-+ (NSString *) historyFile;
-+ (NSString *) knownHostsFile;
-+ (NSString *) defaultsFile;
-
-+ (void)linkICloudDriveIfNeeded;
-
-
-@end
+#endif /* openurl_h */
