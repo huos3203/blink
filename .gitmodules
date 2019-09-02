@@ -12,4 +12,5 @@
 	url = https://github.com/blinksh/MBProgressHUD.git
 [submodule "fastlane"]
 	path = fastlane
+	branch = blink
 	url = https://github.com/huos3203/iFastlaneRunner.git
