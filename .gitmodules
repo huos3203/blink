@@ -10,3 +10,6 @@
 [submodule "Frameworks/MBProgressHUD"]
 	path = Frameworks/MBProgressHUD
 	url = https://github.com/blinksh/MBProgressHUD.git
+[submodule "fastlane"]
+	path = fastlane
+	url = https://github.com/huos3203/iFastlaneRunner.git
