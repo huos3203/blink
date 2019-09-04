@@ -27,7 +27,6 @@
 		073D26C01DC4137000965AB2 /* SmartKeys.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073D26B91DC4137000965AB2 /* SmartKeys.xib */; };
 		073D26C11DC4137000965AB2 /* SmartKeysView.m in Sources */ = {isa = PBXBuildFile; fileRef = 073D26BB1DC4137000965AB2 /* SmartKeysView.m */; };
 		074F30791D062A2800A73445 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 074F30781D062A2800A73445 /* main.m */; };
-		076FBD501DB6BD9400F6D997 /* libmoshios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */; };
 		076FBD521DB6BE1D00F6D997 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD511DB6BE1D00F6D997 /* libprotobuf.a */; };
 		079635871D0E6602000473B1 /* TermView.m in Sources */ = {isa = PBXBuildFile; fileRef = 079635841D0E6602000473B1 /* TermView.m */; };
 		07AA06491E08B12E008310B7 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07AA06331E08B12E008310B7 /* PasscodeLock.strings */; };
@@ -65,6 +64,9 @@
 		22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22A9494A2067FD5E003A0666 /* tar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3332036EE86001FCC5C /* openssl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3342036EE86001FCC5C /* libssh2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		84A75C15231FA67C009D8EF7 /* libmoshios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */; };
+		84A75C19231FA692009D8EF7 /* curl_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; };
+		84A75C1A231FA692009D8EF7 /* curl_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		85047E71201F8A230090E974 /* RoundedToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E70201F8A230090E974 /* RoundedToolbar.m */; };
 		85047E77201F9B0E0090E974 /* ControlPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85047E76201F9B0E0090E974 /* ControlPanel.m */; };
 		85A34307200A837A009324F1 /* webfontloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 85A34303200A837A009324F1 /* webfontloader.js */; };
@@ -158,7 +160,6 @@
 		D24AFD58222410E700CFD3C1 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; };
 		D24AFD59222410E700CFD3C1 /* MBProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D24D18C921D4CFB200239C9D /* KeyInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D24D18C821D4CFB200239C9D /* KeyInput.m */; };
-		D2512AC520BD4C3000A80257 /* curl_ios_static.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E4F92E20B2BB4500B30F7B /* curl_ios_static.framework */; };
 		D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D263489720BEBFE000A8E89F /* libsshd.a */; };
 		D27AD9BC222FDD3D00379872 /* xcall.m in Sources */ = {isa = PBXBuildFile; fileRef = D27AD9BB222FDD3D00379872 /* xcall.m */; };
 		D27BBA1C20529FFF00AEA303 /* TermStream.m in Sources */ = {isa = PBXBuildFile; fileRef = D27BBA1B20529FFF00AEA303 /* TermStream.m */; };
@@ -194,7 +195,6 @@
 		D2A3F4EC20690B71006BB305 /* shell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E320690B70006BB305 /* shell.framework */; };
 		D2A3F4F020690B71006BB305 /* tar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E720690B71006BB305 /* tar.framework */; };
 		D2A3F4F120690B71006BB305 /* network_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E820690B71006BB305 /* network_ios.framework */; };
-		D2A3F4F220690B71006BB305 /* curl_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; };
 		D2A3F4F620690C24006BB305 /* awk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F520690C24006BB305 /* awk.framework */; };
 		D2A3F4F820690CB0006BB305 /* awk.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F520690C24006BB305 /* awk.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D2A3F4F920690CDF006BB305 /* ios_system.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F320690BE6006BB305 /* ios_system.framework */; };
@@ -204,7 +204,6 @@
 		D2A3F50020690D44006BB305 /* network_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E820690B71006BB305 /* network_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D2A3F50320690D7E006BB305 /* ssh_cmd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E620690B71006BB305 /* ssh_cmd.framework */; };
 		D2A3F50420690D7E006BB305 /* ssh_cmd.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E620690B71006BB305 /* ssh_cmd.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2A3F50620690D8A006BB305 /* curl_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D2A86D6920EB86F2000DF1DA /* SSHClientOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A86D6820EB86F2000DF1DA /* SSHClientOptions.m */; };
 		D2A8C154201F377D002F415A /* TouchOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8C153201F377D002F415A /* TouchOverlay.m */; };
 		D2A90AE220D277E00073BF3D /* ssh.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A90ADB20D277DF0073BF3D /* ssh.m */; };
@@ -299,13 +298,6 @@
 			remoteGlobalIDString = 1777D3DF1D757AF50037C7F1;
 			remoteInfo = "MBProgressHUD Framework tvOS";
 		};
-		D2E4F92D20B2BB4500B30F7B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2219DFCF1FD73AF500675252;
-			remoteInfo = curl_ios_static;
-		};
 		EA0BA1A51C0CC57B00719C1A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EA0BA1831C0CC57B00719C1A /* Project object */;
@@ -327,6 +319,7 @@
 				D2A3F4FC20690D08006BB305 /* shell.framework in Embed Frameworks */,
 				22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */,
 				22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */,
+				84A75C1A231FA692009D8EF7 /* curl_ios.framework in Embed Frameworks */,
 				22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */,
 				D2A3F4F820690CB0006BB305 /* awk.framework in Embed Frameworks */,
 				D2A3F50020690D44006BB305 /* network_ios.framework in Embed Frameworks */,
@@ -334,7 +327,6 @@
 				D2A3F4FA20690CDF006BB305 /* ios_system.framework in Embed Frameworks */,
 				D2A3F50420690D7E006BB305 /* ssh_cmd.framework in Embed Frameworks */,
 				D2A3F4FE20690D23006BB305 /* text.framework in Embed Frameworks */,
-				D2A3F50620690D8A006BB305 /* curl_ios.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -674,7 +666,6 @@
 		D2D75EDF21AFDA10007336B6 /* LayoutManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayoutManager.m; sourceTree = "<group>"; };
 		D2E4F91920B0537D00B30F7B /* Migrator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Migrator.h; sourceTree = "<group>"; };
 		D2E4F91A20B0537D00B30F7B /* Migrator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Migrator.m; sourceTree = "<group>"; };
-		D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl_ios_static.xcodeproj; path = ios_system/curl_ios_static.xcodeproj; sourceTree = "<group>"; };
 		D2EFE1EE20B7FAFC0087888B /* link_files.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = link_files.m; sourceTree = "<group>"; };
 		D2F30EAC205009CD008C5F35 /* base64js.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = base64js.min.js; sourceTree = "<group>"; };
 		D2F330C920A6CB840074ADD7 /* help.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = help.m; sourceTree = "<group>"; };
@@ -694,7 +685,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D28DB3AC210B110C008A1139 /* libcompression.tbd in Frameworks */,
-				D2512AC520BD4C3000A80257 /* curl_ios_static.framework in Frameworks */,
 				0732F1291D06324200AB5438 /* libcurses.tbd in Frameworks */,
 				0732F1271D06323A00AB5438 /* libz.tbd in Frameworks */,
 				D2A3F4F920690CDF006BB305 /* ios_system.framework in Frameworks */,
@@ -703,15 +693,15 @@
 				D2A3F4EC20690B71006BB305 /* shell.framework in Frameworks */,
 				D24AFD58222410E700CFD3C1 /* MBProgressHUD.framework in Frameworks */,
 				D2A3F4F020690B71006BB305 /* tar.framework in Frameworks */,
+				84A75C19231FA692009D8EF7 /* curl_ios.framework in Frameworks */,
 				D2A3F50320690D7E006BB305 /* ssh_cmd.framework in Frameworks */,
 				D2A3F4EA20690B71006BB305 /* text.framework in Frameworks */,
+				84A75C15231FA67C009D8EF7 /* libmoshios.framework in Frameworks */,
 				D2A3F4F620690C24006BB305 /* awk.framework in Frameworks */,
 				D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */,
 				0732F0D11D062BB400AB5438 /* openssl.framework in Frameworks */,
 				0732F0BE1D062BB400AB5438 /* libssh2.framework in Frameworks */,
-				076FBD501DB6BD9400F6D997 /* libmoshios.framework in Frameworks */,
 				D2A3F4F120690B71006BB305 /* network_ios.framework in Frameworks */,
-				D2A3F4F220690B71006BB305 /* curl_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -825,7 +815,6 @@
 			isa = PBXGroup;
 			children = (
 				D28DB3AB210B110B008A1139 /* libcompression.tbd */,
-				D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */,
 				D2A3F4F520690C24006BB305 /* awk.framework */,
 				D2A3F4F320690BE6006BB305 /* ios_system.framework */,
 				D2A3F4E920690B71006BB305 /* curl_ios.framework */,
@@ -1367,14 +1356,6 @@
 			path = ed25519;
 			sourceTree = "<group>";
 		};
-		D2E4F92A20B2BB4500B30F7B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D2E4F92E20B2BB4500B30F7B /* curl_ios_static.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		D2F330C520A6C8E20074ADD7 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
@@ -1532,10 +1513,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = D2E4F92A20B2BB4500B30F7B /* Products */;
-					ProjectRef = D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */;
-				},
-				{
 					ProductGroup = 84DA8FD8231CBEEA00E8F59E /* Products */;
 					ProjectRef = 84DA8FD7231CBEEA00E8F59E /* FastlaneSwiftRunner.xcodeproj */;
 				},
@@ -1611,13 +1588,6 @@
 			fileType = wrapper.framework;
 			path = MBProgressHUD.framework;
 			remoteRef = D2A3F4DC206909A8006BB305 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D2E4F92E20B2BB4500B30F7B /* curl_ios_static.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = curl_ios_static.framework;
-			remoteRef = D2E4F92D20B2BB4500B30F7B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
