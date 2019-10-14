@@ -2,7 +2,7 @@
 //
 // B L I N K
 //
-// Copyright (C) 2016-2018 Blink Mobile Shell Project
+// Copyright (C) 2016-2019 Blink Mobile Shell Project
 //
 // This file is part of Blink.
 //
@@ -36,9 +36,8 @@
 #import "BKFont.h"
 #import "BKTheme.h"
 #import "TermJS.h"
-#import <zlib.h>
 
-#import <compression.h>
+#import "Blink-Swift.h"
 
 struct winsize __winSizeFromJSON(NSDictionary *json) {
   struct winsize res;
@@ -64,158 +63,110 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 
 - (void)_keyboardDidChangeFrame:(id)sender
 {
-  
 }
 
 - (void)_keyboardWillChangeFrame:(id)sender
 {
-  
 }
 
 - (void)_keyboardWillShow:(id)sender
 {
-  
 }
 
 - (void)_keyboardWillHide:(id)sender
 {
-  
 }
 
 
 @end
 
-
-@interface TermView () <UIGestureRecognizerDelegate, WKScriptMessageHandler>
+@interface TermView () <WKScriptMessageHandler>
 @end
 
 @implementation TermView {
   WKWebView *_webView;
-  UIImageView *_snapshotImageView;
-  NSTimer *_activeTimer;
+  WKWebViewGesturesInteraction *_gestureInteraction;
   
   BOOL _focused;
   BOOL _jsIsBusy;
   dispatch_queue_t _jsQueue;
   NSMutableString *_jsBuffer;
+  CGRect _currentBounds;
+  UIEdgeInsets _currentAdditionalInsets;
+  NSTimer *_layoutDebounceTimer;
   
-  UIView *_deadZoneLeft;
-  UIView *_deadZoneRight;
+  UIView *_coverView;
 }
 
 
-- (id)initWithFrame:(CGRect)frame andBgColor:(UIColor *)bgColor
+- (id)initWithFrame:(CGRect)frame
 {
   self = [super initWithFrame:frame];
 
   if (!self) {
     return self;
   }
-    
+  
+  _layoutDebounceTimer = nil;
+  _currentBounds = CGRectZero;
   _jsQueue = dispatch_queue_create(@"TermView.js".UTF8String, DISPATCH_QUEUE_SERIAL);
   _jsBuffer = [[NSMutableString alloc] init];
 
   [self _addWebView];
-  self.opaque = YES;
-  _webView.opaque = YES;
+  _coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+  [self addSubview:_coverView];
+  _coverView.backgroundColor = [UIColor blackColor];
   
-  UIImageView *imageView = [[UIImageView alloc] initWithFrame:[self webViewFrame]];
-  imageView.contentMode = UIViewContentModeTop | UIViewContentModeLeft;
-  imageView.autoresizingMask =  UIViewAutoresizingNone;
-  
-  bgColor = bgColor ?: [UIColor blackColor];
-  imageView.backgroundColor = bgColor;
-  self.backgroundColor = bgColor;
-  
-  _snapshotImageView = imageView;
-  [self addSubview:imageView];
-  
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self selector:@selector(_willResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-  [nc addObserver:self selector:@selector(_didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-  
-  _deadZoneLeft = [[UIView alloc] initWithFrame:CGRectZero];
-  _deadZoneRight = [[UIView alloc] initWithFrame:CGRectZero];
-  
-//  [self addSubview:_deadZoneLeft];
-//  [self addSubview:_deadZoneRight];
 
   return self;
 }
 
-- (void)dealloc
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+  if (!backgroundColor) {
+    return;
+  }
+  [super setBackgroundColor:backgroundColor];
+  _webView.backgroundColor = backgroundColor;
+  _coverView.backgroundColor = backgroundColor;
 }
 
 - (void)layoutSubviews {
   [super layoutSubviews];
-
-  CGFloat gripSize = 14;
-  _deadZoneLeft.frame = CGRectMake(0, 0, gripSize, self.bounds.size.height);
-  _deadZoneRight.frame = CGRectMake(self.bounds.size.width - gripSize, 0, gripSize, self.bounds.size.height);
   
-  [self bringSubviewToFront:_deadZoneLeft];
-  [self bringSubviewToFront:_deadZoneRight];
+  _coverView.frame = self.bounds;
+  [self bringSubviewToFront:_coverView];
   
-  CGRect webViewFrame = [self webViewFrame];
-  if (CGRectEqualToRect(_webView.frame, webViewFrame)) {
+  [_layoutDebounceTimer invalidate];
+  
+  if (CGRectEqualToRect(_currentBounds, CGRectZero)) {
+    [self _actualLayoutSubviews];
     return;
   }
   
-//  _snapshotImageView.frame = webViewFrame;
-  if (_webView.superview) {
-    _webView.frame = webViewFrame;
+  if (CGRectEqualToRect(_currentBounds, self.bounds) && UIEdgeInsetsEqualToEdgeInsets(_currentAdditionalInsets, self.additionalInsets)) {
+    return;
   }
+  
+  __weak typeof(self) weakSelf = self;
+  _layoutDebounceTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 repeats:NO block:^(NSTimer * _Nonnull timer) {
+    [weakSelf _actualLayoutSubviews];
+  }];
+}
+
+- (void)_actualLayoutSubviews {
+  CGRect webViewFrame = [self webViewFrame];
+  
+  if (!CGRectEqualToRect(_webView.frame, webViewFrame)) {
+    _webView.frame = webViewFrame;
+//    _scroller.frame = webViewFrame;
+  }
+
+  _currentBounds = self.bounds;
+  _currentAdditionalInsets = self.additionalInsets;
 }
 
 - (UIEdgeInsets)safeAreaInsets {
   return UIEdgeInsetsZero;
-}
-
-- (void)_willResignActive
-{
-  if (_activeTimer) {
-    [_activeTimer invalidate];
-    _activeTimer = nil;
-    return;
-  }
-  
-  if (self.window == nil) {
-    return;
-  }
-  
-  [_webView takeSnapshotWithConfiguration:nil completionHandler:^(UIImage * _Nullable snapshotImage, NSError * _Nullable error) {
-    _snapshotImageView.image = snapshotImage;
-    _snapshotImageView.frame = _webView.frame;
-    _snapshotImageView.alpha = 1;
-    [self addSubview:_snapshotImageView];
-    [_webView removeFromSuperview];
-  }];
-}
-
-- (void)_didBecomeActive
-{
-  [_activeTimer invalidate];
-  _activeTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(_delayedDidBecomeActive) userInfo:nil repeats:NO];
-}
-
-- (void)_delayedDidBecomeActive
-{
-  [_activeTimer invalidate];
-  _activeTimer = nil;
-  
-  if (self.window == nil) {
-    return;
-  }
-  
-  if (_webView.superview) {
-    return;
-  }
-
-  [self insertSubview:_webView belowSubview:_snapshotImageView];
-  [_snapshotImageView removeFromSuperview];
-  [self setNeedsLayout];
 }
 
 - (CGRect)webViewFrame {
@@ -233,31 +184,22 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 {
   WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
   configuration.selectionGranularity = WKSelectionGranularityCharacter;
+  configuration.defaultWebpagePreferences.preferredContentMode = WKContentModeDesktop;
   [configuration.userContentController addScriptMessageHandler:self name:@"interOp"];
 
   _webView = [[BKWebView alloc] initWithFrame:[self webViewFrame] configuration:configuration];
   
-  _webView.scrollView.delaysContentTouches = NO;
-  _webView.scrollView.canCancelContentTouches = NO;
-  _webView.scrollView.scrollEnabled = NO;
-  _webView.scrollView.panGestureRecognizer.enabled = NO;
+   _gestureInteraction = [[WKWebViewGesturesInteraction alloc] initWithJsScrollerPath:@"t.scrollPort_.scroller_"];
+  [_webView addInteraction:_gestureInteraction];
   
   [self addSubview:_webView];
-  [self setNeedsLayout];
 }
 
-- (NSString *)title
-{
+- (NSString *)title {
   return _webView.title;
 }
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor
-{
-  [super setBackgroundColor:backgroundColor];
-  _webView.backgroundColor = backgroundColor;
-}
-
-- (void)loadWith:(MCPSessionParameters *)params;
+- (void)loadWith:(MCPParams *)params;
 {
   [_webView.configuration.userContentController addUserScript:[self _termInitScriptWith:params]];
   
@@ -266,11 +208,8 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   [_webView loadFileURL:url allowingReadAccessToURL:url];
 }
 
-- (void)reloadWith:(MCPSessionParameters *)params;
+- (void)reloadWith:(MCPParams *)params;
 {
-  _snapshotImageView.frame = [self webViewFrame];
-  [self addSubview:_snapshotImageView];
-  _snapshotImageView.alpha = 1;
   [_webView.configuration.userContentController removeAllUserScripts];
   [_webView.configuration.userContentController addUserScript:[self _termInitScriptWith:params]];
   [_webView reload];
@@ -338,7 +277,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 
 - (void)focus {
   _focused = YES;
-  [self _didBecomeActive]; // Double check and attach if we are detached
   [_webView evaluateJavaScript:term_focus() completionHandler:nil];
 }
 
@@ -421,6 +359,16 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
     [_device viewWinSizeChanged:__winSizeFromJSON(data)];
   } else if ([operation isEqualToString:@"terminalReady"]) {
     [self _onTerminalReady:data];
+//    for (id interaction in _webView.subviews.firstObject.subviews.firstObject.interactions) {
+//      [_webView.subviews.firstObject.subviews.firstObject removeInteraction:interaction];
+//    }
+//    dispatch_async(dispatch_get_main_queue(), ^{
+    
+    [UIView transitionFromView:_coverView toView:_webView duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
+      [_coverView removeFromSuperview];
+      _coverView = nil;
+    }];
+    
   } else if ([operation isEqualToString:@"fontSizeChanged"]) {
     [_device viewFontSizeChanged:[data[@"size"] integerValue]];
   } else if ([operation isEqualToString:@"copy"]) {
@@ -436,16 +384,19 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 {
   NSArray *bgColor = data[@"bgColor"];
   if (bgColor && bgColor.count == 3) {
-    self.backgroundColor = [UIColor colorWithRed:[bgColor[0] floatValue] / 255.0f
+    UIColor *color = [UIColor colorWithRed:[bgColor[0] floatValue] / 255.0f
                                            green:[bgColor[1] floatValue] / 255.0f
                                             blue:[bgColor[2] floatValue] / 255.0f
                                            alpha:1];
+    self.backgroundColor = color;
+    _gestureInteraction.indicatorStyle = color.isLight ? UIScrollViewIndicatorStyleBlack : UIScrollViewIndicatorStyleWhite;
+  } else {
+    _gestureInteraction.indicatorStyle = UIScrollViewIndicatorStyleDefault;
   }
   
   [_device viewWinSizeChanged:__winSizeFromJSON(data[@"size"])];
-  
-  self.alpha = 1;
 
+  _isReady = YES;
   [_device viewIsReady];
     
   if (_focused) {
@@ -453,12 +404,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   } else {
     [self blur];
   }
-  
-  [UIView animateWithDuration:0.2 delay:0.0 options:kNilOptions animations:^{
-    _snapshotImageView.alpha = 0;
-  } completion:^(BOOL finished) {
-    [_snapshotImageView removeFromSuperview];
-  }];
 }
   
 - (NSString *)_menuTitleFromNSURL:(NSURL *)url
@@ -630,7 +575,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   return result;
 }
 
-- (WKUserScript *)_termInitScriptWith:(MCPSessionParameters *)params;
+- (WKUserScript *)_termInitScriptWith:(MCPParams *)params;
 {
   NSMutableArray *script = [[NSMutableArray alloc] init];
   BKFont *font = [BKFont withName: params.fontName ?: [BKDefaults selectedFontName]];
@@ -650,9 +595,9 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
     [script addObject:term_setBoldEnabled(params.enableBold)];
     [script addObject:term_setBoldAsBright(params.boldAsBright)];
     
-    BKTheme *theme = [BKTheme withName: params.themeName ?: [BKDefaults selectedThemeName]];
-    if (theme) {
-      [script addObject:theme.content];
+    NSString *themeContent = [[BKTheme withName: params.themeName ?: [BKDefaults selectedThemeName]] content];
+    if (themeContent) {
+      [script addObject:themeContent];
     }
     
     [script addObject:term_setFontSize(params.fontSize == 0 ? [BKDefaults selectedFontSize] : @(params.fontSize))];
@@ -676,8 +621,17 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 
 - (void)terminate
 {
+  _device = nil;
   // Disconnect message handler
   [_webView.configuration.userContentController removeScriptMessageHandlerForName:@"interOp"];
+}
+
+- (void)dealloc {
+  [self terminate];
+  [_webView removeInteraction:_gestureInteraction];
+  _gestureInteraction = nil;
+  [_layoutDebounceTimer invalidate];
+  _layoutDebounceTimer = nil;
 }
 
 @end
