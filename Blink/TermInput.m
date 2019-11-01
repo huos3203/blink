@@ -119,8 +119,11 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 
 + (NSString *)ESC:(NSString *)c
 {
-  if (c == nil || [c length] == 0 || c == UIKeyInputEscape) {
+  NSInteger len = [c length];
+  if (len == 0) {
     return @"\x1B";
+  } else if (c == UIKeyInputEscape) {
+    return @"\x1B\x1B";
   } else {
     return [NSString stringWithFormat:@"\x1B%c", [c characterAtIndex:0]];
   }
@@ -149,11 +152,11 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
     return @"\x1B";
   } else if ([c isEqual:@"\n"]) {
     // See raw mode: http://man7.org/linux/man-pages/man3/termios.3.html
-    if (raw) {
+//    if (raw) {
       // INLCR  Translate NL to CR on input
       return @"\r";
-    }
-    return c;
+//    }
+//    return c;
   }
   
   if (m) {
@@ -183,9 +186,10 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
     return [NSString stringWithFormat:@"%@1%ld~", CSI, number + 1];
     case 9:
     case 10:
+    return [NSString stringWithFormat:@"%@2%ld~", CSI, number - 9];
     case 11:
     case 12:
-    return [NSString stringWithFormat:@"%@2%ld~", CSI, number - 9];
+    return [NSString stringWithFormat:@"%@2%ld~", CSI, number - 8];
     default:
     return nil;
   }
@@ -320,7 +324,8 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 }
 
 - (void)deviceWrite:(NSString *) input {
-  [_device write:input];
+  [_device.view displayInput: input];
+  [_device write: input];
 }
 
 - (void)textStorage:(NSTextStorage *)textStorage

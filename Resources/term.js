@@ -60,27 +60,64 @@ function term_setupDefaults() {
   term_set('allow-images-inline', true); // need to make it work
 }
 
+function term_processKB(str) {
+  if (!t.prompt) {
+    return;
+  }
+  if (str) {
+    t.prompt.processInput(str);
+  }
+}
+
+function term_displayInput(str, display) {
+  if (!t || !t.accessibilityReader_) {
+    return;
+  }
+  
+  t.accessibilityReader_.hasUserGesture = true;
+  
+  if (!display) {
+    return;
+  }
+  
+  if (str && !t.prompt._secure) {
+    window.KeystrokeVisualizer.processInput(str);
+  }
+}
+
+
 function term_setup() {
   t = new hterm.Terminal('blink');
 
   t.onTerminalReady = function() {
+    term_setAutoCarriageReturn(true);
     t.setCursorVisible(true);
-
+    
     t.io.onTerminalResize = function(cols, rows) {
       _postMessage('sigwinch', {cols, rows});
+      if (t.prompt) {
+        t.prompt.resize();
+      }
     };
 
     var size = {
       cols: t.screenSize.width,
       rows: t.screenSize.height,
     };
+    
     document.body.style.backgroundColor =
       t.scrollPort_.screen_.style.backgroundColor;
     var bgColor = _colorComponents(t.scrollPort_.screen_.style.backgroundColor);
-    _postMessage('terminalReady', {size, bgColor});
-
+    
     t.keyboard.characterEncoding = 'raw'; // we are UTF8. Fix for #507
     t.uninstallKeyboard();
+    
+    _postMessage('terminalReady', {size, bgColor});
+
+    if (window.KeystrokeVisualizer) {
+      window.KeystrokeVisualizer.enable();
+    }
+    t.setAccessibilityEnabled(true);
   };
 
   t.decorate(document.getElementById('terminal'));
@@ -104,6 +141,49 @@ function term_init() {
     term_setup();
   }
 }
+
+var _requestId = 0;
+var _requestsMap = {};
+
+class ApiRequest {
+  constructor(name, request) {
+    this.id = _requestId++;
+    request.id = this.id;
+    var self = this;
+    this.promise = new Promise(function(resolve, reject) {
+        self.resolve = resolve;
+        self.reject = reject;
+    });
+    _requestsMap[this.id] = self
+    _postMessage("api", {name, request: JSON.stringify(request)} );
+    
+    this.then = this.promise.then.bind(this.promise);
+    this.catch = this.promise.catch.bind(this.promise);
+  }
+  
+  cancel() {
+    this.resolve(null);
+    delete _requestsMap[this.id];
+  }
+}
+
+function term_apiRequest(name, request) {
+  return new ApiRequest(name, request)
+}
+
+function term_apiResponse(name, response) {
+  var res = JSON.parse(response);
+  var req = _requestsMap[res.requestId];
+  if (!req) {
+    return;
+  }
+  delete _requestsMap[req.id];
+  req.resolve(res)
+}
+
+
+window.term_apiRequest = term_apiRequest;
+window.term_apiResponse = term_apiResponse;
 
 function term_write(data) {
   t.interpret(data);
@@ -208,29 +288,50 @@ function term_blur() {
 
 function _setTermCoordinates(event, x, y) {
   // One based row/column stored on the mouse event.
-  event.terminalRow =
-    parseInt(
-      (y - t.scrollPort_.visibleRowTopMargin) /
-        t.scrollPort_.characterSize.height,
-    ) + 1;
-  event.terminalColumn = parseInt(x / t.scrollPort_.characterSize.width) + 1;
+  var ty = (y / t.scrollPort_.characterSize.height | 0) + 1;
+  var tx = (x / t.scrollPort_.characterSize.width | 0) + 1;
+//  console.log(`x:${x},y: ${y}, col:${tx}, row:${ty}`);
+  event.terminalRow = ty;
+  event.terminalColumn = tx;
 }
 
-function term_reportTapInPoint(x, y) {
-  term_reportMouseEvent('mousedown', x, y, 1);
-  term_reportMouseEvent('mouseup', x, y, 1);
+function term_reportMouseClick(x, y, buttons, display) {
+  if (!t.prompt) {
+    return;
+  }
+
+  var event = new MouseEvent(name, {buttons});
+  _setTermCoordinates(event, x, y);
+  if (!t.prompt.processMouseClick(event)) {
+    term_reportMouseEvent('mousedown', x, y, 1);
+    term_reportMouseEvent('mouseup', x, y, 1);
+  }
+                                  
+  if (display) {
+     term_displayInput("👆", display);
+  }
 }
 
 function term_reportMouseEvent(name, x, y, buttons) {
+  if (!t.prompt) {
+    return;
+  }
+
   var event = new MouseEvent(name, {buttons});
   _setTermCoordinates(event, x, y);
   t.onMouse(event);
 }
 
 function term_reportWheelEvent(name, x, y, deltaX, deltaY) {
+  if (!t.prompt) {
+    return;
+  }
+
   var event = new WheelEvent(name, {deltaX, deltaY});
   _setTermCoordinates(event, x, y);
-  t.onMouse(event);
+  if (!t.prompt.processMouseScroll(event)) {
+    t.onMouse(event);
+  }
 }
 
 function term_setWidth(cols) {

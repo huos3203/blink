@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 //
 // B L I N K
 //
@@ -29,17 +29,5 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
-#import "TermDevice.h"
 
-@interface Repl : NSObject
-
-- (instancetype)initWithDevice:(TermDevice *)device andStream: (TermStream *)stream;
-
-- (void)sigwinch;
-- (void)loopWithCallback:(BOOL(^)(NSString *cmd)) callback;
-
-- (int)clear_main:(int)argc argv:(char **)argv;
-- (int)history_main:(int)argc argv:(char **)argv;
-- (void)forceExit;
-@end
+#include <stdio.h>
