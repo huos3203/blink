@@ -31,20 +31,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString const *BKKeyboardModifierCtrl;
-extern NSString const *BKKeyboardModifierAlt;
-extern NSString const *BKKeyboardModifierCmd;
-extern NSString const *BKKeyboardModifierCaps;
-extern NSString const *BKKeyboardModifierShift;
-
-extern NSString const *BKKeyboardSeqNone;
-extern NSString const *BKKeyboardSeqCtrl;
-extern NSString const *BKKeyboardSeqEsc;
-extern NSString const *BKKeyboardSeqMeta;
-
-extern NSString const *BKKeyboardFuncFTriggers;
-extern NSString const *BKKeyboardFuncCursorTriggers;
-extern NSString const *BKKeyboardFuncShortcutTriggers;
+extern NSString *const BKAppearanceChanged;
 
 typedef NS_ENUM(NSInteger, BKLayoutMode) {
   BKLayoutModeDefault = 0,
@@ -67,18 +54,10 @@ typedef NS_ENUM(NSInteger, BKKeyboardStyle) {
 
 @interface BKDefaults : NSObject <NSCoding>
 
-@property (nonatomic, strong) NSMutableDictionary *keyboardMaps;
-@property (nonatomic, strong) NSMutableDictionary *keyboardFuncTriggers;
 @property (nonatomic, strong) NSString *themeName;
 @property (nonatomic, strong) NSString *fontName;
 @property (nonatomic, strong) NSNumber *fontSize;
 @property (nonatomic, strong) NSString *defaultUser;
-@property (nonatomic) BOOL capsAsEsc;
-@property (nonatomic) BOOL capsAsCtrl;
-@property (nonatomic) BOOL shiftAsEsc;
-@property (nonatomic) BOOL backquoteAsEsc;
-@property (nonatomic) BOOL autoRepeatKeys;
-@property (nonatomic) BOOL grabCtrlSpace;
 @property (nonatomic) BOOL cursorBlink;
 @property (nonatomic) NSUInteger enableBold;
 @property (nonatomic) BOOL boldAsBright;
@@ -92,13 +71,6 @@ typedef NS_ENUM(NSInteger, BKKeyboardStyle) {
 
 + (void)loadDefaults;
 + (BOOL)saveDefaults;
-+ (void)setModifer:(NSString *)modifier forKey:(NSString *)key;
-+ (void)setCapsAsEsc:(BOOL)state;
-+ (void)setCapsAsCtrl:(BOOL)state;
-+ (void)setShiftAsEsc:(BOOL)state;
-+ (void)setBackquoteAsEsc:(BOOL)state;
-+ (void)setAutoRepeatKeys: (BOOL)state;
-+ (void)setGrabCtrlSpace: (BOOL)state;
 + (void)setCursorBlink:(BOOL)state;
 + (void)setBoldAsBright:(BOOL)state;
 + (void)setEnableBold:(NSUInteger)state;
@@ -113,17 +85,6 @@ typedef NS_ENUM(NSInteger, BKKeyboardStyle) {
 + (NSString *)selectedFontName;
 + (NSString *)selectedThemeName;
 + (NSNumber *)selectedFontSize;
-+ (NSArray *)keyboardModifierList;
-+ (NSArray *)keyboardFuncTriggersList;
-+ (NSArray *)keyboardKeyList;
-+ (NSDictionary *)keyboardMapping;
-+ (NSDictionary *)keyboardFuncTriggers;
-+ (BOOL)isCapsAsEsc;
-+ (BOOL)isCapsAsCtrl;
-+ (BOOL)isShiftAsEsc;
-+ (BOOL)isBackquoteAsEsc;
-+ (BOOL)autoRepeatKeys;
-+ (BOOL)grabCtrlSpace;
 + (BOOL)isCursorBlink;
 + (NSUInteger)enableBold;
 + (BOOL)isBoldAsBright;

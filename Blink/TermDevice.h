@@ -32,8 +32,20 @@
 #import <Foundation/Foundation.h>
 #import "TermStream.h"
 #import "TermView.h"
-#import "TermInput.h"
 #include <sys/ioctl.h>
+
+@class TermDevice;
+
+@protocol TermInput <NSObject>
+
+@property (weak) TermDevice *device;
+@property BOOL secureTextEntry;
+
+- (void)setHasSelection:(BOOL)value;
+- (void)reset;
+
+@end
+
 
 @protocol TermDeviceDelegate
 
@@ -54,14 +66,14 @@
 
 @property (readonly) TermStream *stream;
 @property (readonly) TermView *view;
-@property (readonly) TermInput *input;
+@property (readonly) UIView<TermInput> *input;
 @property id<TermDeviceDelegate> delegate;
 @property (nonatomic) BOOL rawMode;
 @property (nonatomic) BOOL secureTextEntry;
 @property (nonatomic) NSInteger rows;
 @property (nonatomic) NSInteger cols;
 
-- (void)attachInput:(TermInput *)termInput;
+- (void)attachInput:(UIView<TermInput> *)termInput;
 - (void)attachView:(TermView *)termView;
 
 - (void)onSubmit:(NSString *)line;

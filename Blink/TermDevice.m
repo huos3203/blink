@@ -276,7 +276,7 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:kNilOptions error:nil];
   NSString *cmd = [NSString stringWithFormat: @"\x1b]1337;BlinkPrompt=%@\x07", [data base64EncodedStringWithOptions:kNilOptions]];
   
-  fprintf(_stream.out, cmd.UTF8String);
+  fprintf(_stream.out, "%s", cmd.UTF8String);
 }
 
 - (NSString *)readline:(NSString *)prompt secure:(BOOL)secure {
@@ -333,7 +333,7 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   win.ws_col = cols;
 }
 
-- (void)attachInput:(TermInput *)termInput
+- (void)attachInput:(UIView<TermInput> *)termInput
 {
   _input = termInput;
   if (!_input) {
@@ -346,6 +346,8 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   }
   
   _input.device = self;
+  [_input setHasSelection:_view.hasSelection];
+  
   if (_secureTextEntry != _input.secureTextEntry) {
     _input.secureTextEntry = _secureTextEntry;
     [_input reset];
@@ -356,11 +358,11 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
 - (void)focus {
   [_view focus];
   [_delegate deviceFocused];
-  dispatch_async(dispatch_get_main_queue(), ^{
-    if (![_input isFirstResponder]) {
-      [_input becomeFirstResponder];
-    }
-  });
+//  dispatch_async(dispatch_get_main_queue(), ^{
+//    if (![_input isFirstResponder]) {
+//      [_input becomeFirstResponder];
+//    }
+//  });
   
 }
 
@@ -419,6 +421,10 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
 - (void)viewCopyString:(NSString *)text
 {
   [[UIPasteboard generalPasteboard] setString:text];
+}
+
+- (void)viewSelectionChanged {
+  [_input setHasSelection:_view.hasSelection];
 }
 
 - (BOOL)handleControl:(NSString *)control

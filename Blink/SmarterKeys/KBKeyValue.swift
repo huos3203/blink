@@ -101,6 +101,46 @@ enum KBKeyValue: Hashable, Identifiable, Codable {
     }
   }
   
+  var keyCode: KeyCode {
+    switch self {
+    case .cmd: return .commandLeft
+    case .tab: return .tab
+    case .alt: return .optionLeft
+    case .ctrl: return .controlLeft
+    case .esc: return .escape
+    case .left: return .left
+    case .right: return .right
+    case .up: return .up
+    case .down: return .down
+    case .f(let n):
+      switch n {
+      case 1: return .f1
+      case 2: return .f2
+      case 3: return .f3
+      case 4: return .f4
+      case 5: return .f5
+      case 6: return .f6
+      case 7: return .f7
+      case 8: return .f8
+      case 9: return .f9
+      case 10: return .f10
+      case 11: return .f11
+      case 12: return .f12
+      default: return .unidentified
+      }
+    case .text(value: let ch):
+      switch ch {
+      case "`", "~": return .backquote
+      case "[", "{": return .bracketLeft
+      case "]", "}": return .bracketRight
+      case "\\", "|": return .backslash
+      default: return .unidentified
+      }
+    default: return .unidentified
+    }
+    
+  }
+  
   var accessibilityLabel: String {
     // TODO: localize
     switch self {
@@ -127,7 +167,7 @@ enum KBKeyValue: Hashable, Identifiable, Codable {
     }
   }
   
-  var sequence: String? {
+  var input: String? {
     switch self {
     case .text(let value): return value
     case .esc: return UIKeyCommand.inputEscape
@@ -136,7 +176,6 @@ enum KBKeyValue: Hashable, Identifiable, Codable {
     case .up: return UIKeyCommand.inputUpArrow
     case .down: return UIKeyCommand.inputDownArrow
     case .tab: return "\t"
-    case .f(let num): return _fkey(num)
     default: return nil
     }
   }
@@ -180,34 +219,5 @@ enum KBKeyValue: Hashable, Identifiable, Codable {
     case .alt, .ctrl, .cmd: return true
     default: return false
     }
-  }
-  
-  func _fkey(_ num: Int8) -> String {
-    let SS3 = _esc("O")
-    let CGI = _esc("[")
-    switch num {
-    case 1: return "\(SS3)P"
-    case 2: return "\(SS3)Q"
-    case 3: return "\(SS3)R"
-    case 4: return "\(SS3)S"
-    case 5: return "\(CGI)15~"
-    case 6...8: return "\(CGI)1\(num + 1)~"
-    case 9...10: return "\(CGI)2\(num - 9)~"
-    case 11...12: return "\(CGI)2\(num - 8)~"
-    default: return ""
-    }
-  }
-  
-  func _esc(_ c: String?) -> String {
-    let esc = "\u{001B}"
-    guard let c = c, !c.isEmpty else {
-      return esc
-    }
-    
-    if c == UIKeyCommand.inputEscape {
-      return esc + esc
-    }
-    
-    return esc + c
   }
 }

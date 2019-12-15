@@ -35,6 +35,7 @@
 #import "BKUserConfigurationManager.h"
 #import "BKiCloudConfigurationViewController.h"
 #import "BKiCloudSyncHandler.h"
+#import "Blink-Swift.h"
 
 
 @interface BKSettingsViewController ()
@@ -48,20 +49,13 @@
 
 @implementation BKSettingsViewController
 {
-  NSArray *_kbCommands;
+  
 }
 
 - (void)viewDidLoad
 {
   [super viewDidLoad];
   
-  UIKeyModifierFlags modifierFlags = [BKUserConfigurationManager shortCutModifierFlags];
-  
-  _kbCommands = @[
-                  [UIKeyCommand keyCommandWithInput: @"w" modifierFlags: modifierFlags
-                                             action: @selector(_closeConfig:)
-                               discoverabilityTitle: @"Close Settings"]
-                  ];
   
   // Uncomment the following line to preserve selection between presentations.
   // self.clearsSelectionOnViewWillAppear = NO;
@@ -76,10 +70,6 @@
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (NSArray<UIKeyCommand *> *)keyCommands
-{
-  return _kbCommands;
-}
 
 - (BOOL)canBecomeFirstResponder
 {
@@ -102,4 +92,16 @@
 - (IBAction)unwindFromDefaultUser:(UIStoryboardSegue *)sender
 {
 }
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+  return YES;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (indexPath.section == 1 && indexPath.row == 1) {
+    UIViewController *vc = [KBSettingsViewController createWithNav:self.navigationController];
+    [self.navigationController pushViewController:vc animated:YES];
+  }
+}
+
 @end

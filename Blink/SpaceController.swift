@@ -55,8 +55,6 @@ public class SpaceController: UIViewController {
   private var _hud: MBProgressHUD? = nil
   
   private var _overlay = UIView()
-  private var _kbdCommands:[UIKeyCommand] = []
-  private var _kbdCommandsWithoutDiscoverability: [UIKeyCommand] = []
   private var _spaceControllerAnimating: Bool = false
   
   public override func viewDidLayoutSubviews() {
@@ -114,7 +112,6 @@ public class SpaceController: UIViewController {
     
     _commandsHUD.delegate = self
     _registerForNotifications()
-    _setupKBCommands()
     
     _commandsHUD.delegate = self
     
@@ -145,7 +142,7 @@ public class SpaceController: UIViewController {
     super.viewWillTransition(to: size, with: coordinator)
     if view.window?.isKeyWindow == true {
       DispatchQueue.main.async {
-        SmarterTermInput.shared.reloadInputViews()
+        SmarterTermInput.shared.contentView()?.reloadInputViews()
       }
     }
   }
@@ -195,18 +192,6 @@ public class SpaceController: UIViewController {
         self._commandsHUD.attachToWindow(inputWindow: win)
       }
     }
-  }
-  
-  @objc func _keyboardFuncTriggerChanged(_ notification: NSNotification) {
-    guard
-      let userInfo = notification.userInfo,
-      let action = userInfo["func"] as? String,
-      action == BKKeyboardFuncCursorTriggers
-    else {
-      return
-    }
-    
-    _setupKBCommands()
   }
   
   func _createShell(
@@ -287,11 +272,7 @@ public class SpaceController: UIViewController {
   @objc func _focusOnShell() {
     _attachInputToCurrentTerm()
     let input = SmarterTermInput.shared
-    if !input.isFirstResponder {
-      _ = input.becomeFirstResponder()
-    } else {
-      input.refreshInputViews()
-    }
+    _ = input.becomeFirstResponder()
     // We should make input window key window
     if input.window?.isKeyWindow == false {
       input.window?.makeKeyAndVisible()
@@ -471,55 +452,62 @@ extension SpaceController {
 
 extension SpaceController {
   public override var keyCommands: [UIKeyCommand]? {
-    return _kbdCommands
+    guard
+       view.window?.windowScene?.activationState == UIScene.ActivationState.foregroundActive
+    else {
+      return []
+    }
+    return SmarterTermInput.shared.blinkKeyCommands
+    
   }
   
-  // simple helper
-  private func _cmd(_ title: String, _ action: Selector, _ input: String, _ flags: UIKeyModifierFlags) -> UIKeyCommand {
-    return UIKeyCommand(
-      title: title,
-      image: nil,
-      action: action,
-      input: input,
-      modifierFlags: flags,
-      propertyList: nil
-    )
+  @objc func _onBlinkCommand(_ cmd: BlinkCommand) {
+    SmarterTermInput.shared.reportStateReset()
+    switch cmd.bindingAction {
+    case .press(let keyCode, mods: let mods):
+      SmarterTermInput.shared.reportPress(UIKeyModifierFlags(rawValue: mods), keyId: keyCode.id)
+      break;
+    case .command(let c):
+      _onCommand(c)
+    default:
+      break;
+    }
   }
   
-  private func _setupKBCommands() {
-    let modifierFlags = BKUserConfigurationManager.shortCutModifierFlags()
-    let prevNextShellModifierFlags = BKUserConfigurationManager.shortCutModifierFlagsForNextPrevShell()
-    
-    let right = UIKeyCommand.inputRightArrow
-    let left = UIKeyCommand.inputLeftArrow
-    
-    _kbdCommands = [
-      _cmd("New Window",     #selector(_newWindowAction),   "t", prevNextShellModifierFlags),
-      _cmd("Close Window",   #selector(_closeWindowAction), "w", prevNextShellModifierFlags),
-    
-      _cmd("New Shell",      #selector(newShellAction),   "t", modifierFlags),
-      _cmd("Close Shell",    #selector(closeShellAction), "w", modifierFlags),
-      
-      _cmd("Next Shell",     #selector(_nextShellAction), "]", prevNextShellModifierFlags),
-      _cmd("Previous Shell", #selector(_prevShellAction), "[", prevNextShellModifierFlags),
-    
-      // Alternative key commands for keyboard layouts having problems to access
-      // some of the default ones (e.g. the German keyboard layout)
-      _cmd("Next Shell",     #selector(_nextShellAction),  right, prevNextShellModifierFlags),
-      _cmd("Previous Shell", #selector(_prevShellAction),  left,  prevNextShellModifierFlags),
-      
-      // Font size
-      _cmd("Zoom In",    #selector(_increaseFontSizeAction), "+",  modifierFlags),
-      _cmd("Zoom Out",   #selector(_decreaseFontSizeAction), "-",  modifierFlags),
-      _cmd("Zoom Reset", #selector(_resetFontSizeAction),    "=",  modifierFlags),
-      
-      // Screens
-      _cmd("Focus Other Window",         #selector(_focusOtherWindowAction),  "o", modifierFlags),
-      _cmd("Move shell to other Window", #selector(_moveToOtherWindowAction), "o", prevNextShellModifierFlags),
-      
-      // Misc
-      _cmd("Show Config",    #selector(_showConfigAction), ",", modifierFlags),
-    ]
+  func _onCommand(_ cmd: Command) {
+    guard
+      view.window?.windowScene?.activationState == UIScene.ActivationState.foregroundActive
+    else {
+      return
+    }
+    switch cmd {
+    case .configShow: _showConfigAction()
+    case .tab1: _moveToShell(idx: 1)
+    case .tab2: _moveToShell(idx: 2)
+    case .tab3: _moveToShell(idx: 3)
+    case .tab4: _moveToShell(idx: 4)
+    case .tab5: _moveToShell(idx: 5)
+    case .tab6: _moveToShell(idx: 6)
+    case .tab7: _moveToShell(idx: 7)
+    case .tab8: _moveToShell(idx: 8)
+    case .tab9: _moveToShell(idx: 9)
+    case .tab10: _moveToShell(idx: 10)
+    case .tab11: _moveToShell(idx: 11)
+    case .tab12: _moveToShell(idx: 12)
+    case .tabClose: closeShellAction()
+    case .tabMoveToOtherWindow: _moveToOtherWindowAction()
+    case .tabNew: newShellAction()
+    case .tabNext: _nextShellAction()
+    case .tabPrev: _prevShellAction()
+    case .windowClose: _closeWindowAction()
+    case .windowFocusOther: _focusOtherWindowAction()
+    case .windowNew: _newWindowAction()
+    case .clipboardCopy: SmarterTermInput.shared.copy(self)
+    case .clipboardPaste: SmarterTermInput.shared.paste(self)
+    case .zoomIn: currentTerm()?.termDevice.view?.increaseFontSize()
+    case .zoomOut: currentTerm()?.termDevice.view?.decreaseFontSize()
+    case .zoomReset: currentTerm()?.termDevice.view?.resetFontSize()
+    }
   }
   
   @objc func focusOnShellAction() {
@@ -535,8 +523,6 @@ extension SpaceController {
     _closeCurrentSpace()
   }
   
-  
-  
   @objc func _focusOtherWindowAction() {
     let sessions = _activeSessions()
     
@@ -545,7 +531,11 @@ extension SpaceController {
       let session = view.window?.windowScene?.session,
       let idx = sessions.firstIndex(of: session)?.advanced(by: 1)
     else  {
-      _ = SmarterTermInput.shared.resignFirstResponder()
+      if currentTerm()?.termDevice.view?.isFocused() == true {
+        _ = SmarterTermInput.shared.resignFirstResponder()
+      } else {
+        _focusOnShell()
+      }
       return
     }
     

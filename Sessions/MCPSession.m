@@ -153,7 +153,6 @@
   } else if ([cmd isEqualToString:@"ssh-copy-id"]) {
     [self _runSSHCopyIDWithArgs:cmdline];
   } else {
-    [self.delegate indexCommand:cmdline];
     
     _currentCmd = cmdline;
     thread_stdout = nil;
@@ -252,7 +251,6 @@
 
 - (void)_runMoshWithArgs:(NSString *)args
 {
-  [self.delegate indexCommand:args];
   self.sessionParams.childSessionParams = [[MoshParams alloc] init];
   self.sessionParams.childSessionType = @"mosh";
   _childSession = [[MoshSession alloc] initWithDevice:_device andParams:self.sessionParams.childSessionParams];
@@ -263,7 +261,6 @@
 - (void)_runSSHWithArgs:(NSString *)args
 {
   self.sessionParams.childSessionParams = nil;
-  [self.delegate indexCommand:args];
   _childSession = [[SSHSession alloc] initWithDevice:_device andParams:self.sessionParams.childSessionParams];
   self.sessionParams.childSessionType = @"ssh";
   [_childSession executeAttachedWithArgs:args];
@@ -309,14 +306,17 @@
 
 - (BOOL)handleControl:(NSString *)control
 {
+  NSString *ctrlC = @"\x03";
+  NSString *ctrlD = @"\x04";
+  
   if (_childSession) {
-    if ([control isEqualToString:@"c"] || [control isEqualToString:@"d"]) {
+    if ([control isEqualToString:ctrlC] || [control isEqualToString:ctrlD]) {
       [_device closeReadline];
     }
     return [_childSession handleControl:control];
   }
   
-  if ([control isEqualToString:@"c"] || [control isEqualToString:@"d"]) {
+  if ([control isEqualToString:ctrlC] || [control isEqualToString:ctrlD]) {
     if (_currentCmd) {
       if ([_device rawMode]) {
         return NO;
@@ -326,7 +326,7 @@
           [client.value kill];
         }
       } else {
-        if ([control isEqualToString:@"d"]) {
+        if ([control isEqualToString:ctrlD]) {
           [_device closeReadline];
           [_cmdStream closeIn];
           return NO;

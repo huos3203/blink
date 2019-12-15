@@ -32,7 +32,6 @@
 #import "TermView.h"
 #import "TermDevice.h"
 #import "BKDefaults.h"
-#import "BKSettingsNotifications.h"
 #import "BKFont.h"
 #import "BKTheme.h"
 #import "TermJS.h"
@@ -61,6 +60,10 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   return NO;
 }
 
+//- (BOOL)canBecomeFirstResponder {
+//  return NO;
+//}
+
 - (void)_keyboardDidChangeFrame:(id)sender
 {
 }
@@ -87,7 +90,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   WKWebView *_webView;
   WKWebViewGesturesInteraction *_gestureInteraction;
   
-  BOOL _focused;
   BOOL _jsIsBusy;
   dispatch_queue_t _jsQueue;
   NSMutableString *_jsBuffer;
@@ -276,7 +278,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 }
 
 - (void)focus {
-  _focused = YES;
+  _gestureInteraction.focused = YES;
   [_webView evaluateJavaScript:term_focus() completionHandler:nil];
 }
 
@@ -287,7 +289,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 
 - (void)blur
 {
-  _focused = NO;
+  _gestureInteraction.focused = NO;
   [_webView evaluateJavaScript:term_blur() completionHandler:nil];
 }
 
@@ -401,16 +403,20 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   _isReady = YES;
   [_device viewIsReady];
     
-  if (_focused) {
-    [self focus];
+  if (_gestureInteraction.focused) {
+    [_webView evaluateJavaScript:term_focus() completionHandler:nil];
   } else {
-    [self blur];
+    [_webView evaluateJavaScript:term_blur() completionHandler:nil];
   }
   
   [UIView transitionFromView:_coverView toView:_webView duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
     [_coverView removeFromSuperview];
     _coverView = nil;
   }];
+}
+
+- (BOOL)isFocused {
+  return _gestureInteraction.focused;
 }
   
 - (NSString *)_menuTitleFromNSURL:(NSURL *)url
@@ -454,6 +460,8 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   _selectedText = data[@"text"];
   _hasSelection = _selectedText.length > 0;
   
+  [_device viewSelectionChanged];
+  
   if (!_hasSelection) {
     return;
   }
@@ -480,8 +488,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   
   CGRect rect = CGRectFromString(data[@"rect"]);
   [menu setMenuItems:items];
-  [menu setTargetRect:rect inView:self];
-  [menu setMenuVisible:YES animated:NO];
+  [menu showMenuFromView:self rect:rect];
 }
 
 - (void)modifySideOfSelection
@@ -553,7 +560,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 {
   [_webView copy:sender];
   UIMenuController * menu = [UIMenuController sharedMenuController];
-  [menu setMenuVisible:NO animated:YES];
+  [menu hideMenuFromView:self];
 }
 
 - (void)paste:(id)sender

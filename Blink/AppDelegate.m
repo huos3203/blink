@@ -104,9 +104,24 @@ void __setupProcessEnv() {
   [nc addObserver:self
          selector: @selector(_onScreenConnect)
              name:UIScreenDidConnectNotification object:nil];
+  
+//  [nc addObserver:self selector:@selector(_logEvent:) name:nil object:nil];
+//  [nc addObserver:self selector:@selector(_active) name:@"UIApplicationSystemNavigationActionChangedNotification" object:nil];
 
+  [UIApplication sharedApplication].applicationSupportsShakeToEdit = NO;
   return YES;
 }
+
+//- (void)_active {
+//  [[SmarterTermInput shared] realBecomeFirstResponder];
+//}
+//- (void)_logEvent:(NSNotification *)n {
+//  NSLog(@"event, %@, %@", n.name, n.userInfo);
+//  if ([n.name isEqualToString:@"UIApplicationSystemNavigationActionChangedNotification"]) {
+//    [[SmarterTermInput shared] realBecomeFirstResponder];
+//  }
+//
+//}
 
 - (void)_loadProfileVars {
   NSCharacterSet *whiteSpace = [NSCharacterSet whitespaceCharacterSet];
@@ -124,7 +139,14 @@ void __setupProcessEnv() {
     [parts removeObjectAtIndex:0];
     NSString *varValue = [[parts componentsJoinedByString:@"="] stringByTrimmingCharactersInSet:whiteSpace];
     if ([varValue hasSuffix:@"\""] || [varValue hasPrefix:@"\""]) {
+      NSData *data =  [varValue dataUsingEncoding:NSUTF8StringEncoding];
       varValue = [varValue substringWithRange:NSMakeRange(1, varValue.length - 1)];
+      if (data) {
+        id value = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        if ([value isKindOfClass:[NSString class]]) {
+          varValue = value;
+        }
+      }
     }
     if (varValue.length == 0) {
       return;
@@ -250,7 +272,6 @@ void __setupProcessEnv() {
   
   _suspendTaskId = UIBackgroundTaskInvalid;
 }
-
 
 #pragma mark - LSSupportsOpeningDocumentsInPlace
 

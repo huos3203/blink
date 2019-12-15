@@ -59,7 +59,7 @@ class KBView: UIView {
   private var _onModifiersSet: Set<KBKeyView> = []
   private var _untrackedModifiersSet: Set<KBKeyView> = []
   
-  weak var keyInput: TermInput? = nil
+  weak var keyInput: SmarterTermInput? = nil
   
   var lang: String = "" {
     didSet {
@@ -354,6 +354,22 @@ extension KBView: KBKeyViewDelegate {
       traits.toggle(value, on: .ctrlOn , off: .ctrlOff)
     default: break
     }
+    
+    _reportModifiers()
+  }
+  
+  func _reportModifiers() {
+    keyInput?.reportToolbarModifierFlags(traits.modifierFlags)
+  }
+  
+  func reset() {
+    stopRepeats()
+    turnOffUntracked()
+    traits.toggle(false, on: .cmdOn , off: .cmdOff)
+    traits.toggle(false, on: .altOn , off: .altOff)
+    traits.toggle(false, on: .escOn , off: .escOff)
+    traits.toggle(false, on: .ctrlOn , off: .ctrlOff)
+    _reportModifiers()
   }
   
   func keyViewTriggered(keyView: KBKeyView, value: KBKeyValue) {
@@ -363,32 +379,36 @@ extension KBView: KBKeyViewDelegate {
     if keyView !== _repeatingKeyView {
       stopRepeats()
     }
-
-    switch value {
-    case .f(let num):
-      var flags = traits.modifierFlags
-      flags.remove(.command)
-      let cmd = UIKeyCommand(input: "\(num)", modifierFlags: flags, action: #selector(TermInput.fkeySeq(_:)))
-      keyInput?.fkeySeq(cmd)
-    case .up, .left, .right, .down:
-      var flags = traits.modifierFlags
-      if let _ = flags.remove(.command) {
-        let cmd = UIKeyCommand(input: value.sequence!, modifierFlags: flags, action: #selector(TermInput.cursorSeq(_:)))
-        keyInput?.cursorSeq(cmd)
-      } else {
-        let cmd = UIKeyCommand(input: value.sequence!, modifierFlags: flags, action: #selector(TermInput.arrowSeq(_:)))
-        keyInput?.arrowSeq(cmd)
-      }
-    default:
-      if let sequence = value.sequence {
-        repeatingSequence = sequence
-        keyInput?.insertText(sequence)
-        repeatingSequence = nil
-      }
+    
+    defer { turnOffUntracked() }
+    
+    guard let keyInput = keyInput
+    else {
+      return
     }
     
+    let keyCode = value.keyCode
+    var keyId = keyCode.id
+    keyId += ":\(value.text)"
     
-    turnOffUntracked()
+    var flags = traits.modifierFlags
+    if keyInput.trackingModifierFlags.contains(.shift) {
+      flags.insert(.shift)
+    }
+    
+    if let input = value.input,
+      flags.rawValue > 0,
+      let (cmd, responder) = keyInput.matchCommand(input: input, flags: flags),
+      let action = cmd.action  {
+      responder.perform(action, with: cmd)
+      return
+    }
+
+    if case .f = value {
+      flags.remove(.command)
+    }
+    
+    keyInput.reportToolbarPress(flags, keyId: keyId)
   }
   
   func keyViewCancelled(keyView: KBKeyView) {
