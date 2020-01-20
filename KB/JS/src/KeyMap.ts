@@ -58,10 +58,10 @@ export function op(op: OpType, args: {}) {
   window.webkit.messageHandlers._kb.postMessage(message);
 }
 
-const ESC = '\x1b'; // Escape
-const CSI = '\x1b['; // Command Start Inidicator
 const SS3 = '\x1bO'; // Single-Shift Three
-const DEL = '\x7f'; // Delete
+export const ESC = '\x1b'; // Escape
+export const CSI = '\x1b['; // Command Start Inidicator
+export const DEL = '\x7f'; // Delete
 
 const ctl = (ch: string) => String.fromCharCode(ch.charCodeAt(0) - 64);
 
@@ -195,29 +195,27 @@ export default class KeyMap {
     add({ keyCode: 122, keyCap: '[F11]',    normal: CSI + '23~',               ctrl: DEFAULT, alt: CSI + '42~', meta: DEFAULT });
     add({ keyCode: 123, keyCap: '[F12]',    normal: CSI + '24~',               ctrl: DEFAULT, alt: CSI + '43~', meta: DEFAULT });
 
-    const onCtrlNum = this._onCtrlNum
-    const onAltNum = this._onAltNum
-    const onMetaNum = this._onMetaNum
-    const onZoom = this._onZoom
+    const onCtrlNum = this._onCtrlNum;
+    const onAltNum = this._onAltNum;
     
     // second row
-    add({ keyCode: 192,  keyCap: '`~',          normal: DEFAULT,       ctrl: sh(ctl('@'), ctl('^')), alt: DEFAULT,  meta: PASS });
-    add({ keyCode: 49,   keyCap: '1!',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: onMetaNum });
-    add({ keyCode: 50,   keyCap: '2@',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: onMetaNum });
-    add({ keyCode: 51,   keyCap: '3#',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: onMetaNum });
-    add({ keyCode: 52,   keyCap: '4$',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: onMetaNum });
-    add({ keyCode: 53,   keyCap: '5%',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: onMetaNum });
-    add({ keyCode: 54,   keyCap: '6^',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: onMetaNum });
-    add({ keyCode: 55,   keyCap: '7&',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: onMetaNum });
-    add({ keyCode: 56,   keyCap: '8*',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: onMetaNum });
-    add({ keyCode: 57,   keyCap: '9(',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: onMetaNum });
-    add({ keyCode: 48,   keyCap: '0)',          normal: DEFAULT,       ctrl: onZoom,                 alt: onAltNum, meta: onZoom });
-    add({ keyCode: 189,  keyCap: '-_',          normal: DEFAULT,       ctrl: sh(onZoom, ctl('_')),   alt: DEFAULT,  meta: onZoom });
-    add({ keyCode: 187,  keyCap: '=+',          normal: DEFAULT,       ctrl: onZoom,                 alt: DEFAULT,  meta: onZoom });
+    add({ keyCode: 192,  keyCap: '`~',          normal: DEFAULT,       ctrl: sh(ctl('@'), ctl('^')), alt: DEFAULT,  meta: DEFAULT });
+    add({ keyCode: 49,   keyCap: '1!',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 50,   keyCap: '2@',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 51,   keyCap: '3#',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 52,   keyCap: '4$',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 53,   keyCap: '5%',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 54,   keyCap: '6^',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 55,   keyCap: '7&',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 56,   keyCap: '8*',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 57,   keyCap: '9(',          normal: DEFAULT,       ctrl: onCtrlNum,              alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 48,   keyCap: '0)',          normal: DEFAULT,       ctrl: DEFAULT,                alt: onAltNum, meta: DEFAULT });
+    add({ keyCode: 189,  keyCap: '-_',          normal: DEFAULT,       ctrl: ctl('_'),               alt: DEFAULT,  meta: DEFAULT });
+    add({ keyCode: 187,  keyCap: '=+',          normal: DEFAULT,       ctrl: DEFAULT,                alt: DEFAULT,  meta: DEFAULT });
     add({ keyCode: 8,    keyCap: '[Backspace]', normal: bs(DEL, '\b'), ctrl: bs('\b', DEL),          alt: DEFAULT,  meta: DEFAULT });
     
     // third row
-    add({ keyCode: 9,   keyCap: '[Tab]', normal: sh('\t', CSI + 'Z'), ctrl: STRIP,        alt: PASS,        meta: DEFAULT });
+    add({ keyCode: 9,   keyCap: '[Tab]', normal: sh('\t', CSI + 'Z'), ctrl: STRIP,        alt: STRIP,       meta: DEFAULT });
     add({ keyCode: 81,  keyCap: 'qQ',    normal: DEFAULT,             ctrl: ctl('Q'),     alt: DEFAULT,     meta: DEFAULT });
     add({ keyCode: 87,  keyCap: 'wW',    normal: sl(DEFAULT),         ctrl: ctl('W'),     alt: sl(DEFAULT), meta: DEFAULT });
     add({ keyCode: 69,  keyCap: 'eE',    normal: DEFAULT,             ctrl: ctl('E'),     alt: DEFAULT,     meta: DEFAULT });
@@ -302,8 +300,8 @@ export default class KeyMap {
     add({ keyCode: 103, keyCap: '[Numpad7]',        normal: DEFAULT, ctrl: DEFAULT, alt: DEFAULT, meta: DEFAULT });
     add({ keyCode: 104, keyCap: '[Numpad8]',        normal: DEFAULT, ctrl: DEFAULT, alt: DEFAULT, meta: DEFAULT });
     add({ keyCode: 105, keyCap: '[Numpad9]',        normal: DEFAULT, ctrl: DEFAULT, alt: DEFAULT, meta: DEFAULT });
-    add({ keyCode: 107, keyCap: '[NumpadAdd]',      normal: DEFAULT, ctrl: onZoom,  alt: DEFAULT, meta: onZoom  });
-    add({ keyCode: 109, keyCap: '[NumpadSubtract]', normal: DEFAULT, ctrl: onZoom,  alt: DEFAULT, meta: onZoom  });
+    add({ keyCode: 107, keyCap: '[NumpadAdd]',      normal: DEFAULT, ctrl: DEFAULT, alt: DEFAULT, meta: DEFAULT });
+    add({ keyCode: 109, keyCap: '[NumpadSubtract]', normal: DEFAULT, ctrl: DEFAULT, alt: DEFAULT, meta: DEFAULT });
     add({ keyCode: 106, keyCap: '[NumpadMultiply]', normal: DEFAULT, ctrl: DEFAULT, alt: DEFAULT, meta: DEFAULT });
     add({ keyCode: 111, keyCap: '[NumpadDivide]',   normal: DEFAULT, ctrl: DEFAULT, alt: DEFAULT, meta: DEFAULT });
     add({ keyCode: 110, keyCap: '[NumpadDicimal]',  normal: DEFAULT, ctrl: DEFAULT, alt: DEFAULT, meta: DEFAULT });
@@ -329,11 +327,12 @@ export default class KeyMap {
       return '';
     }
 
-    let nonPrintable = /^\[\w+\]$/.test(def.keyCap);
+    let keyCap = def.keyCap;
+    let nonPrintable = /^\[\w+\]$/.test(keyCap);
     if (nonPrintable) {
-      return def.keyCap.replace(/[\[\]]/g, '');
+      return keyCap.substr(1, keyCap.length - 2);
     }
-    return def.keyCap.substr(0, 1);
+    return keyCap.substr(0, 1);
   }
 
   // prettier-ignore
@@ -353,10 +352,6 @@ export default class KeyMap {
   };
 
   _onAltNum: KeyActionFunc = (e: KeyDownType, def: KeyDefType) => DEFAULT;
-  _onMetaNum: KeyActionFunc = (e: KeyDownType, def: KeyDefType) => DEFAULT;
-  _onZoom: KeyActionFunc = (e: KeyDownType, def: KeyDefType) => {
-    return CANCEL;
-  };
 
   _onSel: KeyActionFunc = (e: KeyDownType, def: KeyDefType) => {
     let {
@@ -382,50 +377,56 @@ export default class KeyMap {
     } = this._reverseDefs;
 
     const selOp = (arg: {}) => op('selection', arg);
+    const word = 'word';
+    const character = 'character';
+    const left = 'left';
+    const right = 'right';
+    const line = 'line';
+    const copy = {command: 'copy'};
 
     if (def === ArrowLeft || def === h) {
-      let gran = e.shift ? 'word' : 'character';
-      selOp({dir: 'left', gran});
+      let gran = e.shift ? word : character;
+      selOp({dir: left, gran});
     } else if (def === ArrowRight || def === l) {
-      let gran = e.shift ? 'word' : 'character';
-      selOp({dir: 'right', gran});
+      let gran = e.shift ? word : character;
+      selOp({dir: right, gran});
     } else if (def === ArrowUp || def === k) {
-      selOp({dir: 'left', gran: 'line'});
+      selOp({dir: left, gran: line});
     } else if (def === ArrowDown || def === j) {
-      selOp({dir: 'right', gran: 'line'});
+      selOp({dir: right, gran: line});
     } else if (def === o || def === x) {
       selOp({command: 'change'});
     } else if (def === n && e.ctrl) {
-      selOp({dir: 'right', gran: 'line'});
+      selOp({dir: right, gran: line});
     } else if (def === p) {
       if (e.ctrl) {
-        selOp({dir: 'left', gran: 'line'});
+        selOp({dir: left, gran: line});
       } else if (!e.shift && !e.alt && !e.meta) {
         selOp({command: 'paste'});
       }
     } else if (def === b) {
       if (e.ctrl) {
-        selOp({dir: 'left', gran: 'character'});
+        selOp({dir: left, gran: character});
       } else if (e.alt) {
-        selOp({dir: 'left', gran: 'word'});
+        selOp({dir: left, gran: word});
       } else {
         // ???
-        selOp({dir: 'left', gran: 'word'});
+        selOp({dir: left, gran: word});
       }
     } else if (def === w) {
       if (e.alt) {
-        selOp({command: 'copy'});
+        selOp(copy);
       } else {
-        selOp({dir: 'right', gran: 'word'});
+        selOp({dir: right, gran: word});
       }
     } else if (def === f) {
       if (e.ctrl) {
-        selOp({dir: 'right', gran: 'character'});
+        selOp({dir: right, gran: character});
       } else if (e.alt) {
-        selOp({dir: 'right', gran: 'word'});
+        selOp({dir: right, gran: word});
       }
     } else if (def === y) {
-      selOp({command: 'copy'});
+      selOp(copy);
     } else if (def === Escape) {
       selOp({command: 'cancel'});
     }

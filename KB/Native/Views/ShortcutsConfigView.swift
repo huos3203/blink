@@ -98,14 +98,11 @@ struct ShortcutConfigView: View {
       }
     }
     .navigationBarItems(trailing:
-      Button(
-        action: {
-          self.config.shortcuts.removeAll(where: { $0 === self.shortcut })
-          self.nav.navController.popViewController(animated: true)
-          self.config.touch()
-        },
-        label: { Text("Delete") }
-      )
+      Button("Delete") {
+        self.config.shortcuts.removeAll(where: { $0 === self.shortcut })
+        self.nav.navController.popViewController(animated: true)
+        self.config.touch()
+      }
     )
     .listStyle(GroupedListStyle())
     .background(KeyCaptureView(shortcut: shortcut))
@@ -119,8 +116,23 @@ struct ShortcutsConfigView: View {
   var commandsMode: Bool
   
   var body: some View {
+    let list = _list
+    if list.isEmpty {
+      return AnyView(_emptyView())
+    } else {
+      return AnyView(_tableView(list: list))
+    }
+  }
+  
+  private func _emptyView() -> some View {
+    AnyView(VStack {
+      Button("Add shortcut", action: _addAction)
+    })
+  }
+  
+  private func _tableView(list: [KeyShortcut]) -> some View {
     List {
-      ForEach(_list, id: \.id) { shortcut in
+      ForEach(list, id: \.id) { shortcut in
         DefaultRow(title: shortcut.title, description: shortcut.description) {
           ShortcutConfigView(
             config: self.config,
@@ -133,10 +145,7 @@ struct ShortcutsConfigView: View {
     }
     .listStyle(GroupedListStyle())
     .navigationBarItems(
-      trailing: Button(
-        action: _addAction,
-        label: { Text("Add") }
-      )
+      trailing: Button("Add", action: _addAction)
     )
   }
   

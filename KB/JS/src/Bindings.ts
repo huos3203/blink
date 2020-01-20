@@ -31,25 +31,22 @@ export type KeyBinding = {
 };
 
 export default class Bindings {
-  // TODO: match state later
-  _stack: Array<string> = [];
   _map: {[index: string]: BindingAction} = {};
 
   reset() {
-    this._stack = [];
     this._map = {};
   }
 
   match(keyIds: Array<string>): BindingAction | null {
     let keysPath = keyIds.sort().join(':');
-    let action = this._map[keysPath];
-    return action;
+    return this._map[keysPath];
   }
 
   expandFn = (binding: KeyBinding) => {
-    if (binding.keys.length == 0) {
+    if (binding.keys.length === 0) {
       return;
     }
+
     let fns = [
       {
         keyCode: 121,

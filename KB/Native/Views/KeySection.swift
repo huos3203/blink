@@ -37,19 +37,37 @@ struct KeySection: View {
   @ObservedObject var key: KeyConfig
   
   var body: some View {
-    Section(header: Text(title)) {
-      DefaultRow(title: "Down", description: key.down.description) {
-        KeyActionPicker(action: self.$key.down).navigationBarTitle("Down Action")
+    Group {
+      Section(
+        header: Text((title + " Press Send").uppercased()).font(.subheadline),
+        footer: Text(key.press.usageHint).font(.footnote)) {
+        Picker(selection: $key.press, label: Text("")) {
+          Text("None").tag(KeyPress.none)
+          Text("Escape").tag(KeyPress.escape)
+          Text("Escape on Release").tag(KeyPress.escapeOnRelease)
+        }
+        .pickerStyle(SegmentedPickerStyle())
       }
-      DefaultRow(title: "Modifier", description: key.mod.description) {
-        KeyModifierPicker(modifier: self.$key.mod).navigationBarTitle("Modifier")
-      }
-      DefaultRow(title: "Up", description: key.up.description) {
-        KeyActionPicker(action: self.$key.up).navigationBarTitle("Up Action")
+      
+      Section(
+        header: Text((title + " As Modifier").uppercased()).font(.subheadline),
+        footer: Text(key.mod.usageHint).font(.footnote)) {
+        Picker(selection: $key.mod, label: Text("")) {
+          Text("Default").tag(KeyModifier.none)
+          Text("8-bit").tag(KeyModifier.bit8)
+          Text("Ctrl").tag(KeyModifier.control)
+          Text("Esc").tag(KeyModifier.escape)
+//          Text("Meta").tag(KeyModifier.meta)
+          Text("Shift").tag(KeyModifier.shift)
+        }
+        .pickerStyle(SegmentedPickerStyle())
       }
       if key.code.hasAccents {
-        Toggle(isOn: self.$key.ignoreAccents, label: { Text("Ignore Accents") })
+        Section(header: Text((title + " Accents").uppercased()).font(.subheadline)) {
+          Toggle(isOn: self.$key.ignoreAccents, label: { Text("Ignore") })
+        }
       }
+
     }
   }
 }

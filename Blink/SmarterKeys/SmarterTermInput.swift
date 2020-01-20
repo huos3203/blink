@@ -37,6 +37,8 @@ class SmarterTermInput: KBWebView {
   private var _hideSmartKeysWithHKB = !BKUserConfigurationManager.userSettingsValue(forKey: BKUserConfigShowSmartKeysWithXKeyBoard)
   private var _inputAccessoryView: UIView? = nil
   
+  var isHardwareKB: Bool { _kbView.traits.isHKBAttached }
+  
   var device: TermDevice? = nil {
     didSet { reportStateReset() }
   }
@@ -61,12 +63,12 @@ class SmarterTermInput: KBWebView {
     KBSound.isMutted = BKUserConfigurationManager.userSettingsValue(forKey: BKUserConfigMuteSmartKeysPlaySound)
     
     let nc = NotificationCenter.default
-
+    
     nc.addObserver(
       self,
       selector: #selector(_inputModeChanged),
       name: UITextInputMode.currentInputModeDidChangeNotification, object: nil)
-
+    
     nc.addObserver(
       self,
       selector: #selector(_updateSettings),
@@ -83,8 +85,8 @@ class SmarterTermInput: KBWebView {
     
     guard
       let scene = window?.windowScene
-    else {
-      return
+      else {
+        return
     }
     if traitCollection.userInterfaceIdiom == .phone {
       _kbView.traits.isPortrait = scene.interfaceOrientation.isPortrait
@@ -93,7 +95,7 @@ class SmarterTermInput: KBWebView {
   
   override func ready() {
     super.ready()
-    reportLang(_kbView.lang)
+    _reportLang()
     
     device?.focus()
     _kbView.isHidden = false
@@ -102,12 +104,12 @@ class SmarterTermInput: KBWebView {
     disableTextSelectionView()
   }
   
- 
+  
   // overriding chain
   override var next: UIResponder? {
     guard let responder = device?.view?.superview
-    else {
-      return super.next
+      else {
+        return super.next
     }
     return responder
   }
@@ -118,10 +120,14 @@ class SmarterTermInput: KBWebView {
   
   @objc func _inputModeChanged() {
     DispatchQueue.main.async {
-      let lang = self.textInputMode?.primaryLanguage ?? ""
-      self._kbView.lang = lang
-      self.reportLang(lang)
+      self._reportLang()
     }
+  }
+  
+  private func _reportLang() {
+    let lang = self.textInputMode?.primaryLanguage ?? ""
+    _kbView.lang = lang
+    reportLang(lang, isHardwareKB: _kbView.traits.isHKBAttached)
   }
   
   override var inputAssistantItem: UITextInputAssistantItem {
@@ -139,7 +145,7 @@ class SmarterTermInput: KBWebView {
   override func becomeFirstResponder() -> Bool {
     let res = super.becomeFirstResponder()
     disableTextSelectionView()
-
+    
     if !webViewReady {
       return res
     }
@@ -147,7 +153,7 @@ class SmarterTermInput: KBWebView {
     device?.focus()
     _kbView.isHidden = false
     _inputAccessoryView?.isHidden = false
-//    _kbView.invalidateIntrinsicContentSize()
+    //    _kbView.invalidateIntrinsicContentSize()
     _refreshInputViews()
     
     return res
@@ -157,22 +163,27 @@ class SmarterTermInput: KBWebView {
     return contentView()?.isFirstResponder == true
   }
   
+  func reportStateReset() {
+    reportStateReset(false)
+    device?.view?.cleanSelection()
+  }
+  
   private func _refreshInputViews() {
     guard
       traitCollection.userInterfaceIdiom == .pad,
       let assistantItem = contentView()?.inputAssistantItem
-    else {
-      if (_hideSmartKeysWithHKB && _kbView.traits.isHKBAttached) {
-        _removeSmartKeys()
-      }
-      contentView()?.reloadInputViews()
-      _kbView.reset()
-//      _inputAccessoryView?.invalidateIntrinsicContentSize()
-      reportStateReset()
-      return;
+      else {
+        if (_hideSmartKeysWithHKB && _kbView.traits.isHKBAttached) {
+          _removeSmartKeys()
+        }
+        contentView()?.reloadInputViews()
+        _kbView.reset()
+        //      _inputAccessoryView?.invalidateIntrinsicContentSize()
+        reportStateReset()
+        return;
     }
-
-    // Double reload inputs fixes: https://github.com/blinksh/blink/issues/803
+    
+    
     assistantItem.leadingBarButtonGroups = [.init(barButtonItems: [UIBarButtonItem()], representativeItem: nil)]
     reloadInputViews()
     if (_hideSmartKeysWithHKB && _kbView.traits.isHKBAttached) {
@@ -181,6 +192,8 @@ class SmarterTermInput: KBWebView {
     contentView()?.reloadInputViews()
     _kbView.reset()
     reportStateReset()
+    // Double reload inputs fixes: https://github.com/blinksh/blink/issues/803
+    contentView()?.reloadInputViews()
   }
   
   override func resignFirstResponder() -> Bool {
@@ -209,7 +222,7 @@ class SmarterTermInput: KBWebView {
   
   private func _setupAssistantItem() {
     let item = inputAssistantItem
-
+    
     let proxyItem = UIBarButtonItem(customView: KBProxy(kbView: _kbView))
     let group = UIBarButtonItemGroup(barButtonItems: [proxyItem], representativeItem: nil)
     item.leadingBarButtonGroups = []
@@ -219,8 +232,8 @@ class SmarterTermInput: KBWebView {
   private func _removeSmartKeys() {
     _inputAccessoryView = UIView(frame: .zero)
     guard let item = contentView()?.inputAssistantItem
-    else {
-      return
+      else {
+        return
     }
     item.leadingBarButtonGroups = []
     item.trailingBarButtonGroups = []
@@ -234,21 +247,24 @@ class SmarterTermInput: KBWebView {
       let kbFrameEnd = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
       let isLocal = userInfo[UIResponder.keyboardIsLocalUserInfoKey] as? Bool,
       isLocal // we reconfigure kb only for local notifications
-    else {
-      if notification.userInfo?[UIResponder.keyboardIsLocalUserInfoKey] as? Bool == false {
-        self.device?.view?.blur()
-      }
-      return
+      else {
+        if notification.userInfo?[UIResponder.keyboardIsLocalUserInfoKey] as? Bool == false {
+          self.device?.view?.blur()
+        }
+        return
     }
     
     var traits       = _kbView.traits
     let mainScreen   = UIScreen.main
     let screenHeight = mainScreen.bounds.height
     let isIPad       = traitCollection.userInterfaceIdiom == .pad
-    var isOnScreenKB = kbFrameEnd.size.height > 116
+    
+//    var isOnScreenKB: Bool
+    var isOnScreenKB = isIPad ? kbFrameEnd.size.height > 116 : screenHeight >= kbFrameEnd.maxY
+    
     // External screen kb workaround
     if isOnScreenKB && isIPad && device?.view?.window?.screen !== mainScreen {
-       isOnScreenKB = kbFrameEnd.origin.y < screenHeight - 140
+      isOnScreenKB = kbFrameEnd.origin.y < screenHeight - 140
     }
     
     let isFloatingKB = isIPad && kbFrameEnd.origin.x > 0 && kbFrameEnd.origin.y > 0
@@ -300,7 +316,7 @@ class SmarterTermInput: KBWebView {
       self._refreshInputViews()
     }
   }
-
+  
   override func _keyboardDidChangeFrame(_ notification: Notification) {
     super._keyboardDidChangeFrame(notification)
   }
@@ -311,12 +327,12 @@ class SmarterTermInput: KBWebView {
       let userInfo = notification.userInfo,
       let kbFrameEnd = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
       let isLocal = userInfo[UIResponder.keyboardIsLocalUserInfoKey] as? Bool
-    else {
-      return
+      else {
+        return
     }
-        
+    
     var bottomInset: CGFloat = 0
-
+    
     let screenMaxY = UIScreen.main.bounds.size.height
     
     let kbMaxY = kbFrameEnd.maxY
@@ -349,7 +365,12 @@ class SmarterTermInput: KBWebView {
       }
       _kbView.traits.isFloatingKB = isFloating
     }
-
+    
+    if bottomInset == 0 && _kbView.traits.isFloatingKB,
+      let safeInsets = superview?.safeAreaInsets {
+      bottomInset = _kbView.intrinsicContentSize.height + safeInsets.bottom
+    }
+    
     LayoutManager.updateMainWindowKBBottomInset(bottomInset);
   }
   
@@ -371,6 +392,8 @@ class SmarterTermInput: KBWebView {
     super._keyboardDidShow(notification)
     _kbView.invalidateIntrinsicContentSize()
     _keyboardWillChangeFrame(notification)
+    
+    _reportLang()
   }
   
   @objc static let shared = SmarterTermInput()
@@ -384,11 +407,16 @@ extension SmarterTermInput {
       _kbView.turnOffUntracked()
     }
     
-    guard let device = device else {
-      return
+    guard
+      let device = device,
+      let deviceView = device.view,
+      let scene = deviceView.window?.windowScene,
+      scene.activationState == .foregroundActive
+    else {
+        return
     }
     
-    device.view?.displayInput(data)
+    deviceView.displayInput(data)
     
     let ctrlC = "\u{0003}"
     let ctrlD = "\u{0004}"
@@ -402,104 +430,140 @@ extension SmarterTermInput {
   
   override func onCommand(_ command: String) {
     _kbView.turnOffUntracked()
-    if let cmd = Command(rawValue: command) {
-      var n = next
-      while let r = n {
-        if let sc = r as? SpaceController {
-          sc._onCommand(cmd)
-          return
-        }
-        n = r.next
+    guard
+      let device = device,
+      let scene = device.view.window?.windowScene,
+      scene.activationState == .foregroundActive,
+      let cmd = Command(rawValue: command),
+      let spCtrl = spaceController
+    else {
+        return
+    }
+    
+    spCtrl._onCommand(cmd)
+  }
+  
+  var spaceController: SpaceController? {
+    var n = next
+    while let responder = n {
+      if let spCtrl = responder as? SpaceController {
+        return spCtrl
+      }
+      n = responder.next
+    }
+    return nil
+  }
+  
+  override func onSelection(_ args: [AnyHashable : Any]) {
+    if let dir = args["dir"] as? String, let gran = args["gran"] as? String {
+      device?.view?.modifySelection(inDirection: dir, granularity: gran)
+    } else if let op = args["command"] as? String {
+      switch op {
+      case "change": device?.view?.modifySideOfSelection()
+      case "copy": copy(self)
+      case "paste": device?.view?.pasteSelection(self)
+      case "cancel": fallthrough
+      default:  device?.view?.cleanSelection()
       }
     }
   }
   
-  override func onSelection(_ args: [AnyHashable : Any]) {
-     if let dir = args["dir"] as? String, let gran = args["gran"] as? String {
-       device?.view?.modifySelection(inDirection: dir, granularity: gran)
-     } else if let op = args["command"] as? String {
-       switch op {
-       case "change": device?.view?.modifySideOfSelection()
-       case "copy": copy(self)
-       case "paste": device?.view?.pasteSelection(self)
-       case "cancel": fallthrough
-       default:  device?.view?.cleanSelection()
-       }
-     }
-   }
-   
-   override func onMods() {
-     _kbView.stopRepeats()
-   }
-   
-   override func onIME(_ event: String, data: String) {
-     guard let deviceView = device?.view
-     else {
-       return
-     }
-     
-     if event == "compositionstart" && data.isEmpty {
-     } else if event == "compositionend" {
-       _kbView.traits.isIME = false
-       deviceView.setIme("", completionHandler: nil)
-     } else { // "compositionupdate"
-       _kbView.traits.isIME = true
-       deviceView.setIme(data) {  (data, error) in
-         guard
-           error == nil,
-           let resp = data as? [String: Any],
-           let markedRect = resp["markedRect"] as? String
-         else {
-           return
-         }
-         var rect = NSCoder.cgRect(for: markedRect)
-         let maxY = rect.maxY
-         let minY = rect.minY
-         let suggestionsHeight: CGFloat = 44
-         
-         if maxY - suggestionsHeight < 0 {
-           rect.origin.y = maxY
-         } else {
-           rect.origin.y = minY
-         }
-         
-         rect.size.height = 0
-         rect.size.width = 0
-         
-         self.frame = deviceView.convert(rect, to: self.superview)
-       }
-     }
-   }
+  override func onMods() {
+    _kbView.stopRepeats()
+  }
+  
+  override func onIME(_ event: String, data: String) {
+    guard let deviceView = device?.view
+      else {
+        return
+    }
+    
+    if event == "compositionstart" && data.isEmpty {
+    } else if event == "compositionend" {
+      _kbView.traits.isIME = false
+      deviceView.setIme("", completionHandler: nil)
+    } else { // "compositionupdate"
+      _kbView.traits.isIME = true
+      deviceView.setIme(data) {  (data, error) in
+        guard
+          error == nil,
+          let resp = data as? [String: Any],
+          let markedRect = resp["markedRect"] as? String
+        else {
+            return
+        }
+        let webViewFrame = deviceView.webViewFrame()
+        var rect = NSCoder.cgRect(for: markedRect)
+        let maxY = rect.maxY
+        let minY = rect.minY
+        if maxY > webViewFrame.height * 0.3 && maxY < webViewFrame.height * 0.8 {
+          rect.origin.y = minY - 44 - 14
+        } else if maxY > webViewFrame.height * 0.8 {
+          rect.origin.y = minY - 8
+        } else {
+          rect.origin.y = maxY
+        }
+        
+        rect.size.height = 0
+        rect.size.width = 0
+        
+        self.frame = deviceView.convert(rect, to: self.superview)
+      }
+    }
+  }
+  
+  func stuckKey() -> KeyCode? {
+    let mods: UIKeyModifierFlags = [.shift, .control, .alternate, .command]
+    let stuck = mods.intersection(trackingModifierFlags)
+    
+    // Return command key first
+    if stuck.contains(.command) {
+      return KeyCode.commandLeft
+    }
+
+    if stuck.contains(.shift) {
+      return KeyCode.shiftLeft
+    }
+    if stuck.contains(.control) {
+      return KeyCode.controlLeft
+    }
+    
+    if stuck.contains(.alternate) {
+      return KeyCode.optionLeft
+    }
+    
+    return nil
+  }
 }
 // - MARK: Config
 
 extension SmarterTermInput {
   @objc private func _setupStyle() {
-     tintColor = .cyan
-     switch BKDefaults.keyboardStyle() {
-     case .light:
-       overrideUserInterfaceStyle = .light
-     case .dark:
-       overrideUserInterfaceStyle = .dark
-     default:
-       overrideUserInterfaceStyle = .unspecified
-     }
-   }
-
-   @objc private func _updateSettings() {
-     KBSound.isMutted = BKUserConfigurationManager.userSettingsValue(forKey: BKUserConfigMuteSmartKeysPlaySound)
-     let hideSmartKeysWithHKB = !BKUserConfigurationManager.userSettingsValue(forKey: BKUserConfigShowSmartKeysWithXKeyBoard)
-     
-     if hideSmartKeysWithHKB != _hideSmartKeysWithHKB {
-       _hideSmartKeysWithHKB = hideSmartKeysWithHKB
-       if traitCollection.userInterfaceIdiom == .pad {
-         _setupAssistantItem()
-       } else {
-         _setupAccessoryView()
-       }
-       _refreshInputViews()
-     }
-   }
+    tintColor = .cyan
+    switch BKDefaults.keyboardStyle() {
+    case .light:
+      overrideUserInterfaceStyle = .light
+    case .dark:
+      overrideUserInterfaceStyle = .dark
+    default:
+      overrideUserInterfaceStyle = .unspecified
+    }
+  }
+  
+  @objc private func _updateSettings() {
+    KBSound.isMutted = BKUserConfigurationManager.userSettingsValue(forKey: BKUserConfigMuteSmartKeysPlaySound)
+    let hideSmartKeysWithHKB = !BKUserConfigurationManager.userSettingsValue(forKey: BKUserConfigShowSmartKeysWithXKeyBoard)
+    
+    if hideSmartKeysWithHKB != _hideSmartKeysWithHKB {
+      _hideSmartKeysWithHKB = hideSmartKeysWithHKB
+      if traitCollection.userInterfaceIdiom == .pad {
+        _setupAssistantItem()
+      } else {
+        _setupAccessoryView()
+      }
+      _refreshInputViews()
+    }
+  }
 }
 
 
@@ -510,13 +574,16 @@ extension SmarterTermInput {
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
     switch action {
     case #selector(UIResponder.paste(_:)):
-      return true
+      return sender != nil
     case #selector(UIResponder.copy(_:)),
-         #selector(TermView.pasteSelection(_:)):
-      return device?.view?.hasSelection == true
+         #selector(TermView.pasteSelection(_:)),
+         #selector(Self.soSelection(_:)),
+         #selector(Self.googleSelection(_:)),
+         #selector(Self.shareSelection(_:)):
+      return sender != nil && device?.view?.hasSelection == true
     case #selector(Self.copyLink(_:)),
          #selector(Self.openLink(_:)):
-      return device?.view?.detectedLink != nil
+      return sender != nil && device?.view?.detectedLink != nil
     default:
       return super.canPerformAction(action, withSender: sender)
     }
@@ -534,8 +601,8 @@ extension SmarterTermInput {
     guard
       let deviceView = device?.view,
       let url = deviceView.detectedLink
-    else {
-      return
+      else {
+        return
     }
     UIPasteboard.general.url = url
     deviceView.cleanSelection()
@@ -545,8 +612,8 @@ extension SmarterTermInput {
     guard
       let deviceView = device?.view,
       let url = deviceView.detectedLink
-    else {
-      return
+      else {
+        return
     }
     deviceView.cleanSelection()
     
@@ -555,6 +622,45 @@ extension SmarterTermInput {
   
   @objc func pasteSelection(_ sender: Any) {
     device?.view?.pasteSelection(sender)
+  }
+  
+  @objc func googleSelection(_ sender: Any) {
+    guard
+      let deviceView = device?.view,
+      let query = deviceView.selectedText?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed),
+      let url = URL(string: "https://google.com/search?q=\(query)")
+    else {
+        return
+    }
+    
+    blink_openurl(url)
+  }
+  
+  @objc func soSelection(_ sender: Any) {
+    guard
+      let deviceView = device?.view,
+      let query = deviceView.selectedText?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed),
+      let url = URL(string: "https://stackoverflow.com/search?q=\(query)")
+    else {
+        return
+    }
+    
+    blink_openurl(url)
+  }
+  
+  @objc func shareSelection(_ sender: Any) {
+    guard
+      let vc = device?.delegate?.viewController(),
+      let deviceView = device?.view,
+      let text = deviceView.selectedText
+    else {
+        return
+    }
+    
+    let ctrl = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+    ctrl.popoverPresentationController?.sourceView = deviceView
+    ctrl.popoverPresentationController?.sourceRect = deviceView.selectionRect
+    vc.present(ctrl, animated: true, completion: nil)
   }
 }
 

@@ -30,27 +30,45 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-enum KeyModifier: String, Codable {
-  case none       = ""
-  case bit8       = "8-bit"
-  case escape     = "Escape"
-  case shift      = "Shift"
-  case control    = "Control"
-  case meta       = "Meta"
+import SwiftUI
+
+struct StuckView: View {
+  private var _emojies = ["😱", "🤪", "🧐", "🥺", "🤔", "🤭", "🙈", "🙊"]
+  var keyCode: KeyCode
+  var dismissAction: () -> ()
   
-  var description: String { rawValue }
-  
-  var usageHint: String {
-    switch self {
-    case .none: return """
-      A modifier is special state produced by pressing a modifier key. Modifiers don't do anything unless another key is pressed.
-      An example is the shift modifier produced while you hold down a shift key.  Which keys produce which modifiers is controlled by the modifier mapping.
-      """
-    case .bit8: return "Add 128 to the unshifted character as in xterm."
-    case .escape: return "Send an ESC prefix. Modern editors referes to this as ALT."
-    case .shift: return ""
-    case .control: return "Control sequence"
-    case .meta: return "Add modifiers to control sequence"
-    }
+  init(keyCode: KeyCode, dismissAction: @escaping () -> ()) {
+    self.keyCode = keyCode
+    self.dismissAction = dismissAction
   }
+  
+  var body: some View {
+      VStack {
+        HStack {
+          Spacer()
+          Button("Close", action: dismissAction)
+        }.padding()
+        Spacer()
+        Text(_emojies.randomElement() ?? "🤥").font(.system(size: 60)).padding(.bottom, 26)
+        Text("Stuck key detected.").font(.headline).padding(.bottom, 30)
+        Text("Press \(keyCode.fullName) key").font(.system(size: 30))
+        Spacer()
+        HStack {
+          Text("Also, please")
+          Button("file radar.") {
+            let url = URL(string: "https://github.com/blinksh/blink/wiki/Known-Issue:Cmd-key-stuck-while-switching-between-apps-with-Cmd-Tab")!
+            blink_openurl(url)
+          }
+        }.padding()
+      }
+  }
+}
+
+
+struct StuckView_Previews: PreviewProvider {
+    static var previews: some View {
+      StuckView(keyCode: .commandLeft) {
+        
+      }
+    }
 }

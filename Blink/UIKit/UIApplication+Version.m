@@ -30,30 +30,25 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-import SwiftUI
+#include "UIApplication+Version.h"
 
-struct KeyActionPicker: View {
-  @Binding var action: KeyAction
-  @State private var _updatedAt = Date()
+@implementation UIApplication (BlinkVersion)
+
++ (NSString *)blinkVersion {
+  NSString *compileDate = [NSString stringWithUTF8String:__DATE__];
   
-  var body: some View {
-    List {
-      Section {
-        _action(title: "None",   value: .none)
-        _action(title: "Escape", value: .escape)
-        _action(title: "Tab",    value: .tab)
-      }
-    }.listStyle(GroupedListStyle())
-  }
+  NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+  NSString *appDisplayName = [infoDictionary objectForKey:@"CFBundleName"];
   
-  private func _action(title: String, value: KeyAction) -> some View {
-    HStack {
-      Text(title)
-      Spacer()
-      Checkmark(checked: action == value)
-    }.overlay(Button(action: {
-      self.action = value
-      self._updatedAt = Date()
-    }, label: { EmptyView() } ))
-  }
+  return [NSString stringWithFormat:@"%@: %@. %@",
+          appDisplayName, [UIApplication blinkShortVersion], compileDate];
 }
+
++ (NSString *)blinkShortVersion {
+  NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+  NSString *majorVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+  NSString *minorVersion = [infoDictionary objectForKey:@"CFBundleVersion"];
+  return [NSString stringWithFormat:@"v%@.%@", majorVersion, minorVersion];
+}
+
+@end

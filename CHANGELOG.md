@@ -1,3 +1,37 @@
+# Version 13.2
+
+## Changes in Build 206
+
+* Fixed alt+[non letter] on software kbs. #920
+
+## Changes in Build 204
+
+* Improved software kbs. #901, #915
+* Fixed crash in appearance config view.
+* Added JetBrains Mono font.
+* Fixed unmapped CapsLock.
+
+## Changes in Build 202
+
+* Improved safe layout for devices with notch. #911
+* Fixed software kb detection on iPhones.
+* Added Discord to support and feedback screens.
+* Prevent alt-tab to loose focus.
+
+## Changes in Build 201
+
+* Allow to map back `§` with custom presses.
+* Basic support for Korean language. #909
+
+## Changes in Build 200
+
+* New auto lock based on LocalAuthentication.framework
+* Guard private key copy/delete with LocalAuth
+* Fixed disappearing config view
+* New separate font size setting for external displays
+* Improved stuck key view on external displays. #906
+
+
 # Version 13.1
 
 This is a very important release with just a single change. We had to rewrite all our legendary keyboard code so that features like caps as control could continue working on iOS 13. If you use a keyboard in a different language, specially with accents and special characters, we need your help more than ever. Here is what’s new:
@@ -10,8 +44,18 @@ This is a very important release with just a single change. We had to rewrite al
 * You can also assign Ctrl-Space (emacs & tmux mark) to a different sequence within Blink.
 * Accents are now considered too for specific sequences so if you have an international keyboard like French, Danish, etc... let us know how things are looking like.
 
-## Changes in Build 180
+## Changes in Build 195
 
+* Updated libssh to 0.9.3
+* Fixed import of ECDSA keys. #872
+* Improved voice input.
+* Added share option to selection menu. #758, #894, #743
+* Guard stuck key view. #887
+* Simplify keyboard config UI
+* Tune IME placement
+* Added last tab, prev/next tab cycle commands. #641
+* Added mosh UDP port range support. #881
+* Added reset button to kb config.
 * Fixed kb accessory view on phones.
 * Fixed arrows with modifiers. #886
 * Profile file env vars support escapes.

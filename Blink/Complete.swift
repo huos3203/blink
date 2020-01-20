@@ -35,9 +35,21 @@ import Combine
 import ios_system
 
 private let _completionQueue = DispatchQueue(label: "completion.queue")
+private var _showReplHints: Bool = {
+  guard
+    let value = getenv("BLINK_REPL_HINTS")
+  else {
+    return true
+  }
+  
+  if String(cString: value).lowercased() == "false" {
+    return false
+  }
+  
+  return true
+}()
 
 struct Complete {
-  
   struct ForRequest: Codable {
     let id: Int
     let cursor: Int
@@ -114,6 +126,7 @@ struct Complete {
       "diff": "Compare files line by line.",
       "dig": "DNS lookup utility.",
       "du": "Disk usage",
+      "ed": "Line-oriented text editor",
       "echo": "Write arguments to the standard output.",
       "egrep": "Search for a pattern using extended regex.", // https://www.computerhope.com/unix/uegrep.htm
       "env": "Set environment and execute command, or print environment.", // fish
@@ -134,7 +147,7 @@ struct Complete {
       "mkdir": "Make directories.", // fish
       "mosh": "Runs mosh client. 🦄",
       "mv": "Move files and directories.",
-      "nc": "", // TODO
+//      "nc": "", // TODO
       "nslookup": "Query Internet name servers interactively", // fish
       "pbcopy": "Copy to the pasteboard.",
       "pbpaste": "Paste from the pasteboard.",
@@ -197,7 +210,10 @@ struct Complete {
   }
   
   static func _hint(kind: Kind, candidates: [String]) -> String {
-    guard let first = candidates.first else {
+    guard
+      _showReplHints,
+      let first = candidates.first 
+    else {
       return ""
     }
     var result = "";
@@ -251,7 +267,7 @@ struct Complete {
       )
     }
     
-    if token.query.first == "-" {
+    if _showReplHints, token.query.first == "-" {
       let opts = getoptString(cmd) ?? ""
       return (
         kind: .no,

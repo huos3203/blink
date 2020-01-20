@@ -36,7 +36,9 @@ enum Command: String, Codable, CaseIterable {
   case tabNew
   case tabClose
   case tabNext
+  case tabNextCycling
   case tabPrev
+  case tabPrevCycling
   case tab1
   case tab2
   case tab3
@@ -49,48 +51,58 @@ enum Command: String, Codable, CaseIterable {
   case tab10
   case tab11
   case tab12
+  case tabLast
   case tabMoveToOtherWindow
   case zoomIn
   case zoomOut
   case zoomReset
   case clipboardCopy
   case clipboardPaste
+  case selectionGoogle
+  case selectionStackOverflow
+  case selectionShare
   case configShow
   
   var title: String {
     switch self {
-    case .windowNew:            return "New Window"
-    case .windowClose:          return "Close Window"
-    case .windowFocusOther:     return "Focus on other Window"
-    case .tabNew:               return "New tab"
-    case .tabClose:             return "Close tab"
-    case .tabNext:              return "Next tab"
-    case .tabPrev:              return "Previous tab"
-    case .tab1:                 return "Switch to tab 1"
-    case .tab2:                 return "Switch to tab 2"
-    case .tab3:                 return "Switch to tab 3"
-    case .tab4:                 return "Switch to tab 4"
-    case .tab5:                 return "Switch to tab 5"
-    case .tab6:                 return "Switch to tab 6"
-    case .tab7:                 return "Switch to tab 7"
-    case .tab8:                 return "Switch to tab 8"
-    case .tab9:                 return "Switch to tab 9"
-    case .tab10:                return "Switch to tab 10"
-    case .tab11:                return "Switch to tab 11"
-    case .tab12:                return "Switch to tab 12"
-    case .tabMoveToOtherWindow: return "Move tab to other Window"
-    case .zoomIn:               return "Zoom In"
-    case .zoomOut:              return "Zoom Out"
-    case .zoomReset:            return "Zoom Reset"
-    case .clipboardCopy:        return "Copy"
-    case .clipboardPaste:       return "Paste"
-    case .configShow:           return "Show Config"
+    case .windowNew:              return "New Window"
+    case .windowClose:            return "Close Window"
+    case .windowFocusOther:       return "Focus on other Window"
+    case .tabNew:                 return "New tab"
+    case .tabClose:               return "Close tab"
+    case .tabNext:                return "Next tab"
+    case .tabNextCycling:         return "Next tab (cycling)"
+    case .tabPrev:                return "Previous tab"
+    case .tabPrevCycling:         return "Previous tab (cycling)"
+    case .tab1:                   return "Switch to tab 1"
+    case .tab2:                   return "Switch to tab 2"
+    case .tab3:                   return "Switch to tab 3"
+    case .tab4:                   return "Switch to tab 4"
+    case .tab5:                   return "Switch to tab 5"
+    case .tab6:                   return "Switch to tab 6"
+    case .tab7:                   return "Switch to tab 7"
+    case .tab8:                   return "Switch to tab 8"
+    case .tab9:                   return "Switch to tab 9"
+    case .tab10:                  return "Switch to tab 10"
+    case .tab11:                  return "Switch to tab 11"
+    case .tab12:                  return "Switch to tab 12"
+    case .tabLast:                return "Switch to last tab"
+    case .tabMoveToOtherWindow:   return "Move tab to other Window"
+    case .zoomIn:                 return "Zoom In"
+    case .zoomOut:                return "Zoom Out"
+    case .zoomReset:              return "Zoom Reset"
+    case .clipboardCopy:          return "Copy"
+    case .clipboardPaste:         return "Paste"
+    case .selectionGoogle:        return "Google Selection"
+    case .selectionStackOverflow: return "StackOverflow Selection"
+    case .selectionShare:         return "Share Selection"
+    case .configShow:             return "Show Config"
     }
   }
 }
 
 enum KeyBindingAction: Codable, Identifiable {
-  case hex(String)
+  case hex(String, comment: String?)
   case press(KeyCode, mods: Int)
   case command(Command)
   case none
@@ -136,6 +148,9 @@ enum KeyBindingAction: Codable, Identifiable {
       .press(.f10,       []),
       .press(.f11,       []),
       .press(.f12,       []),
+      .hex("3C", comment: "Press <"),
+      .hex("3E", comment: "Press >"),
+      .hex("A7", comment: "Press §"),
     ]
   }
   
@@ -145,7 +160,8 @@ enum KeyBindingAction: Codable, Identifiable {
   
   var title: String {
     switch self {
-    case .hex(let str): return "Hex: (\(str))"
+    case .hex(let str, comment: let comment):
+      return comment ?? "Hex: (\(str))"
     case .press(let keyCode, let mods):
       var sym = UIKeyModifierFlags(rawValue: mods).toSymbols()
       sym += keyCode.symbol
@@ -165,15 +181,17 @@ enum KeyBindingAction: Codable, Identifiable {
     case press
     case mods
     case command
+    case comment
     case none
   }
     
   func encode(to encoder: Encoder) throws {
     var c = encoder.container(keyedBy: Keys.self)
     switch self {
-    case .hex(let str):
+    case .hex(let str, comment: let comment):
       try c.encode(Keys.hex.stringValue, forKey: .type)
       try c.encode(str, forKey: .value)
+      try c.encodeIfPresent(comment, forKey: .comment)
     case .press(let keyCode, let mods):
       try c.encode(Keys.press.stringValue, forKey: .type)
       try c.encode(keyCode, forKey: .key)
@@ -194,7 +212,8 @@ enum KeyBindingAction: Codable, Identifiable {
     switch k {
     case .hex:
       let hex = try c.decode(String.self, forKey: .value)
-      self = .hex(hex)
+      let comment = try c.decodeIfPresent(String.self, forKey: .comment)
+      self = .hex(hex, comment: comment)
     case .press:
       let keyCode = try c.decode(KeyCode.self, forKey: .key)
       let mods    = try c.decode(Int.self,     forKey: .mods)

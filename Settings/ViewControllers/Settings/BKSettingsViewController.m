@@ -29,9 +29,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#import "UIApplication+Version.h"
 #import "BKSettingsViewController.h"
 #import "BKDefaults.h"
-#import "BKTouchIDAuthManager.h"
 #import "BKUserConfigurationManager.h"
 #import "BKiCloudConfigurationViewController.h"
 #import "BKiCloudSyncHandler.h"
@@ -44,6 +44,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *iCloudSyncStatusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *autoLockStatusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *xCallbackStatusLabel;
+@property (nonatomic, weak) IBOutlet UILabel *versionLabel;
 
 @end
 
@@ -84,6 +85,7 @@
   self.iCloudSyncStatusLabel.text = [BKUserConfigurationManager userSettingsValueForKey:BKUserConfigiCloud] ? @"On" : @"Off";
   self.autoLockStatusLabel.text = [BKUserConfigurationManager userSettingsValueForKey:BKUserConfigAutoLock] ? @"On" : @"Off";
   self.xCallbackStatusLabel.text = [BKDefaults isXCallBackURLEnabled] ? @"On" : @"Off";
+  self.versionLabel.text = [UIApplication blinkShortVersion];
   
   // Layout tableview so it will place labels correctly
   [self.tableView layoutIfNeeded];
@@ -103,5 +105,6 @@
     [self.navigationController pushViewController:vc animated:YES];
   }
 }
+
 
 @end

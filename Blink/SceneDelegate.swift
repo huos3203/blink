@@ -31,9 +31,19 @@
 
 
 import Foundation
+import SwiftUI
+
+class DummyVC: UIViewController {
+  override var canBecomeFirstResponder: Bool { true }
+  override var prefersStatusBarHidden: Bool { true }
+  public override var prefersHomeIndicatorAutoHidden: Bool { true }
+}
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   var window: UIWindow? = nil
+  private var _ctrl = DummyVC()
+  private var _lockCtrl: UIViewController? = nil
+  private var _spCtrl = SpaceController()
   
   func scene(
     _ scene: UIScene,
@@ -44,35 +54,127 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       return
     }
     
+    _spCtrl.sceneRole = session.role
+    
     self.window = UIWindow(windowScene: windowScene)
-    let spaceCntrl = SpaceController()
-    spaceCntrl.restoreWith(stateRestorationActivity: session.stateRestorationActivity)
-    window?.rootViewController = spaceCntrl
+    _spCtrl.restoreWith(stateRestorationActivity: session.stateRestorationActivity)
+    window?.rootViewController = _spCtrl
     window?.makeKeyAndVisible()
   }
   
   func sceneDidBecomeActive(_ scene: UIScene) {
-    _spaceController?.currentTerm()?.resumeIfNeeded()
-    _spaceController?.currentTerm()?.view?.setNeedsLayout()
-    let input = SmarterTermInput.shared
-    if
-      _spaceController?.currentTerm()?.termDevice.view?.isFocused() == false,
-      !input.isRealFirstResponder,
-      input.window == self.window {
-      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-        if !SmarterTermInput.shared.isRealFirstResponder && scene.activationState == .foregroundActive {
-          self._spaceController?.focusOnShellAction()
+    guard let window = window else {
+      return
+    }
+    
+    // 1. Local Auth AutoLock Check
+    
+    if LocalAuth.shared.lockRequired {
+      if let lockCtrl = _lockCtrl {
+        if window.rootViewController != lockCtrl {
+          window.rootViewController = lockCtrl
         }
+        
+        return
+      }
+      
+      let unlockAction = scene.session.role == .windowApplication ? LocalAuth.shared.unlock : nil
+      
+      _lockCtrl = UIHostingController(rootView: LockView(unlockAction: unlockAction))
+      window.rootViewController = _lockCtrl
+      
+      unlockAction?()
+
+      return
+    }
+
+    _lockCtrl = nil
+    LocalAuth.shared.stopTrackTime()
+    
+    // 2. Set space controller back and refresh layout
+    
+    let spCtrl = _spCtrl
+    
+    if window.rootViewController != spCtrl {
+      window.rootViewController = spCtrl
+    }
+    
+    guard let term = spCtrl.currentTerm() else {
+      return
+    }
+    
+    term.resumeIfNeeded()
+    term.view?.setNeedsLayout()
+    
+    // We can present config or stuck view. 
+    guard spCtrl.presentedViewController == nil else {
+      return
+    }
+    
+    // 3. Stuck Key Check
+    
+    let input = SmarterTermInput.shared
+    if let key = input.stuckKey() {
+      debugPrint("BK:", "stuck!!!")
+      input.setTrackingModifierFlags([])
+      
+      if input.isHardwareKB && key == .commandLeft {
+        let ctrl = UIHostingController(rootView: StuckView(keyCode: key, dismissAction: {
+          spCtrl.onStuckOpCommand()
+        }))
+        
+        ctrl.modalPresentationStyle = .formSheet
+        spCtrl.stuckKeyCode = key
+        spCtrl.present(ctrl, animated: false)
+
+        return
       }
     }
+    
+    spCtrl.stuckKeyCode = nil
+    
+    // 4. Focus Check
+    
+    if term.termDevice.view?.isFocused() == false,
+      !input.isRealFirstResponder,
+      input.window === window {
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        if scene.activationState == .foregroundActive,
+          !input.isRealFirstResponder {
+          spCtrl.focusOnShellAction()
+        }
+      }
+      
+      return
+    }
+    
+    if input.window === window {
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        if scene.activationState == .foregroundActive,
+          term.termDevice.view?.isFocused() == false {
+          spCtrl.focusOnShellAction()
+        }
+      }
+
+      return
+    }
+    
+    SmarterTermInput.shared.reportStateReset()
   }
   
   func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
-    _spaceController?.stateRestorationActivity()
+    _setDummyVC()
+    return _spCtrl.stateRestorationActivity()
   }
   
-  private var _spaceController: SpaceController? {
-    window?.rootViewController as? SpaceController
+  private func _setDummyVC() {
+    if let _ = _spCtrl.presentedViewController {
+      return
+    }
+    // Trick to reset stick cmd key.
+    _ctrl.view.frame = _spCtrl.view.frame
+    window?.rootViewController = _ctrl
+    _ctrl.view.addSubview(_spCtrl.view)
   }
 
 }

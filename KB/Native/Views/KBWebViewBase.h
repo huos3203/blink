@@ -38,8 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) UIKeyModifierFlags trackingModifierFlags;
 
-- (void)reportStateReset;
-- (void)reportLang:(NSString *) lang;
+- (void)reportStateReset:(BOOL)hasSelection;
+- (void)reportLang:(NSString *) lang isHardwareKB: (BOOL)isHardwareKB;
+- (void)reportHex:(NSString *) hex;
 - (void)reportPress:(UIKeyModifierFlags)mods keyId:(NSString *)keyId;
 - (void)reportToolbarPress:(UIKeyModifierFlags)mods keyId:(NSString *)keyId;
 - (void)reportToolbarModifierFlags:(UIKeyModifierFlags)flags;
@@ -52,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onMods;
 - (void)onOut:(NSString *)data;
 - (void)onIME:(NSString *)event data:(NSString *)data;
-- (void)onCapture:(NSArray<NSString *> *)keys;
+- (void)setTrackingModifierFlags:(UIKeyModifierFlags)trackingModifierFlags;
 
 - (void)_keyboardDidChangeFrame:(NSNotification *)notification;
 - (void)_keyboardWillChangeFrame:(NSNotification *)notification;

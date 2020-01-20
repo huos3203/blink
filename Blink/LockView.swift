@@ -1,8 +1,8 @@
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 //
 // B L I N K
 //
-// Copyright (C) 2016-2018 Blink Mobile Shell Project
+// Copyright (C) 2016-2019 Blink Mobile Shell Project
 //
 // This file is part of Blink.
 //
@@ -29,15 +29,37 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
 
-@interface BKLinkActions : NSObject
+import SwiftUI
 
-+ (void)sendToTwitter;
-+ (void)sendToGitHub:(NSString *)location;
-+ (void)sendToAppStore;
-+ (void)sendToEmailApp;
-+ (void)sendToDiscord;
-+ (void)sendToDiscordSupport;
+struct LockView: View {
+  var unlockAction: (() -> ())?
+  
+  var body: some View {
+    VStack {
+      Spacer()
+      Image(systemName: "lock.shield.fill")
+        .font(.system(size: 70))
+        .accentColor(Color(UIColor.blinkTint))
+        .padding()
+      Text("Autolocked")
+        .font(.headline)
+        .padding()
+      Spacer()
+      Spacer()
+      Spacer()
+      Spacer()
+      if unlockAction != nil {
+        Button("Unlock", action: unlockAction!)
+          .padding()
+          .padding()
+      }
+    }
+  }
+}
 
-@end
+struct LockView_Previews: PreviewProvider {
+    static var previews: some View {
+      LockView(unlockAction: {})
+    }
+}

@@ -33,11 +33,6 @@
 #import "KBWebViewBase.h"
 
 NSString *_encodeString(NSString *str);
-//{
-//  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:str options:NSJSONWritingFragmentsAllowed error:nil];
-//  return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-//}
-
 
 @interface KeyCommand: UIKeyCommand
 @end
@@ -149,8 +144,8 @@ NSString *_encodeString(NSString *str);
   [self report:@"selection" arg:value ? @"true" : @"false"];
 }
 
-- (void)reportLang:(NSString *) lang {
-  [self report:@"lang" arg:[NSString stringWithFormat:@"\"%@\"", lang]];
+- (void)reportLang:(NSString *) lang isHardwareKB: (BOOL)isHardwareKB; {
+  [self report:@"lang" arg:[NSString stringWithFormat:@"\"%@:%@\"", lang, isHardwareKB ? @"hw" : @"sw"]];
 }
 
 - (void)_keyDown:(KeyCommand *)cmd {
@@ -161,8 +156,8 @@ NSString *_encodeString(NSString *str);
   [self report:@"mods-up" arg:@(cmd.modifierFlags)];
 }
 
-- (void)reportStateReset {
-  [self report:@"state-reset" arg: @""];
+- (void)reportStateReset:(BOOL)hasSelection {
+  [self report:@"state-reset" arg: hasSelection ? @"true" : @"false"];
 }
 
 - (void)reportToolbarModifierFlags:(UIKeyModifierFlags)flags {
@@ -179,6 +174,9 @@ NSString *_encodeString(NSString *str);
   [self report:@"press" arg:_encodeString(kid)];
 }
 
+- (void)reportHex:(NSString *)hex {
+  [self report:@"hex" arg:_encodeString(hex)];
+}
 
 // Not sure we need up
 - (void)_imeGuardUp:(KeyCommand *)cmd {
@@ -203,14 +201,6 @@ NSString *_encodeString(NSString *str);
   // leave textfield focused
   // [self report:@"focus" arg: res ? @"false" : @"true"];
   return res;
-}
-
-- (void)setCaptureMode:(BOOL)value {
-  [self report:@"capture" arg: value ? @"true" : @"false"];
-}
-
-- (void)onCapture:(NSArray<NSString *> *)keys {
-  
 }
 
 - (void)onSelection:(NSDictionary *)args {
@@ -294,6 +284,16 @@ NSString *_encodeString(NSString *str);
   }
 }
 
+- (void)setTrackingModifierFlags:(UIKeyModifierFlags)trackingModifierFlags {
+  _trackingModifierFlags = trackingModifierFlags;
+  if (_trackingModifierFlags == 0) {
+    _activeModsCommand = nil;
+  } else {
+    _activeModsCommand = [self _modifiersCommand:_trackingModifierFlags];
+  }
+  [self _rebuildKeyCommands];
+  [self onMods];
+}
 
 - (void)userContentController:(WKUserContentController *)userContentController
       didReceiveScriptMessage:(WKScriptMessage *)message {
@@ -315,14 +315,7 @@ NSString *_encodeString(NSString *str);
     });
   } else if ([@"mods" isEqual:op]) {
     NSNumber *mods = body[@"mods"];
-    _trackingModifierFlags = (UIKeyModifierFlags)mods.integerValue;
-    if (_trackingModifierFlags == 0) {
-      _activeModsCommand = nil;
-    } else {
-      _activeModsCommand = [self _modifiersCommand:_trackingModifierFlags];
-    }
-    [self _rebuildKeyCommands];
-    [self onMods];
+    [self setTrackingModifierFlags:(UIKeyModifierFlags)mods.integerValue];
   } else if ([@"ime" isEqual:op]) {
     NSString *event = body[@"type"];
     NSString *data = body[@"data"];
@@ -347,9 +340,6 @@ NSString *_encodeString(NSString *str);
     [self onCommand: body[@"command"]];
   } else if ([@"selection" isEqual:op]) {
     [self onSelection:body];
-  } else if([@"capture" isEqual: op]) {
-    NSArray<NSString *> *keys = body[@"keys"];
-    [self onCapture:keys];
   }
 }
 

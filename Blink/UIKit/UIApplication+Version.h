@@ -1,8 +1,8 @@
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 //
 // B L I N K
 //
-// Copyright (C) 2016-2018 Blink Mobile Shell Project
+// Copyright (C) 2016-2019 Blink Mobile Shell Project
 //
 // This file is part of Blink.
 //
@@ -29,18 +29,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
+
 #import <UIKit/UIKit.h>
 
-extern const NSNotificationName BKUserAuthenticated;
+@interface UIApplication (BlinkVersion)
 
-@interface BKTouchIDAuthManager : NSObject
-
-@property (nonatomic, strong) UIViewController *rootViewController;
-@property (nonatomic, strong) UIViewController *lockViewController;
-
-+ (instancetype)sharedManager;
-+ (BOOL)requiresTouchAuth;
-- (void)registerforDeviceLockNotif;
++ (NSString *)blinkVersion;
++ (NSString *)blinkShortVersion;
 
 @end
