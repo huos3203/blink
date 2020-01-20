@@ -808,7 +808,6 @@
 				D2A3F4E120690B70006BB305 /* text.framework */,
 				22E1F3342036EE86001FCC5C /* libssh2.framework */,
 				22E1F3332036EE86001FCC5C /* openssl.framework */,
-				07AA06321E08B12E008310B7 /* PasscodeLock */,
 				B700AED71DD0F2C200100EBF /* CloudKit.framework */,
 				076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */,
 				0732F1281D06324200AB5438 /* libcurses.tbd */,
