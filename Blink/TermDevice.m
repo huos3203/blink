@@ -161,7 +161,9 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   
   ViewStream *_outStream;
   ViewStream *_errStream;
-  KBProcessor *_kbProcessor;
+  
+  dispatch_semaphore_t _readlineSema;
+  NSString *_readlineResult;
 }
 
 - (id)init
@@ -197,14 +199,17 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
 
 - (void)write:(NSString *)input
 {
+  if (!_rawMode) {
+    [self.view processKB:input];
+    return;
+  }
+  [self writeInDirectly: input];
+}
+
+- (void)writeInDirectly:(NSString *)input
+{
   NSUInteger len = [input lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
   write(_pinput[1], input.UTF8String, len);
-  if (_echoMode) {
-    if ([input isEqualToString:@"\n"] || [input isEqualToString:@"\r"]) {
-      return;
-    }
-    write(_poutput[1], input.UTF8String, len);
-  }
 }
 
 - (void)writeIn:(NSString *)input
@@ -256,6 +261,42 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   _rawMode = rawMode;
 }
 
+- (void)prompt:(NSString *)prompt secure:(BOOL)secure shell:(BOOL)shell {
+  _readlineResult = nil;
+  _readlineSema = nil;
+  _rawMode = NO;
+  
+  
+  NSDictionary *dict = @{
+    @"prompt": prompt ?: @"",
+    @"secure": @(secure),
+    @"shell": @(shell)
+  };
+  
+  NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:kNilOptions error:nil];
+  NSString *cmd = [NSString stringWithFormat: @"\x1b]1337;BlinkPrompt=%@\x07", [data base64EncodedStringWithOptions:kNilOptions]];
+  
+  fprintf(_stream.out, "%s", cmd.UTF8String);
+}
+
+- (NSString *)readline:(NSString *)prompt secure:(BOOL)secure {
+  [self prompt:prompt secure:secure shell:NO];
+  _readlineSema = dispatch_semaphore_create(0);
+  dispatch_semaphore_wait(_readlineSema, DISPATCH_TIME_FOREVER);
+  _readlineSema = nil;
+  NSString *line = _readlineResult;
+  _readlineResult = nil;
+  return line;
+}
+
+- (void)closeReadline {
+  if (_readlineSema) {
+    _readlineResult = nil;
+    dispatch_semaphore_signal(_readlineSema);
+    _readlineSema = nil;
+  }
+}
+
 - (void)setSecureTextEntry:(BOOL)secureTextEntry
 {
   _secureTextEntry = secureTextEntry;
@@ -292,7 +333,7 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   win.ws_col = cols;
 }
 
-- (void)attachInput:(TermInput *)termInput
+- (void)attachInput:(UIView<TermInput> *)termInput
 {
   _input = termInput;
   if (!_input) {
@@ -305,6 +346,8 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   }
   
   _input.device = self;
+  [_input setHasSelection:_view.hasSelection];
+  
   if (_secureTextEntry != _input.secureTextEntry) {
     _input.secureTextEntry = _secureTextEntry;
     [_input reset];
@@ -315,12 +358,6 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
 - (void)focus {
   [_view focus];
   [_delegate deviceFocused];
-  dispatch_async(dispatch_get_main_queue(), ^{
-    if (![_input isFirstResponder]) {
-      [_input becomeFirstResponder];
-    }
-  });
-  
 }
 
 - (void)blur {
@@ -329,6 +366,14 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
 
 
 #pragma mark - TermViewDeviceProtocol
+
+- (void)viewNotify:(NSDictionary *)data {
+  [_delegate viewNotify:data];
+}
+
+- (void)viewAPICall:(NSString *)api andJSONRequest:(NSString *)request {
+  [_delegate apiCall:api andRequest:request];
+}
 
 - (void)viewIsReady
 {
@@ -352,14 +397,32 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   [_delegate deviceSizeChanged];
 }
 
+- (void)onSubmit:(NSString *)line {
+  if (_readlineSema) {
+    _readlineResult = line;
+    dispatch_semaphore_signal(_readlineSema);
+    _readlineSema = nil;
+    return;
+  }
+  [_delegate lineSubmitted:line];
+}
+
 - (void)viewSendString:(NSString *)data
 {
   [self write:data];
 }
 
+- (void)viewSubmitLine:(NSString *)line {
+  [self onSubmit:line];
+}
+
 - (void)viewCopyString:(NSString *)text
 {
   [[UIPasteboard generalPasteboard] setString:text];
+}
+
+- (void)viewSelectionChanged {
+  [_input setHasSelection:_view.hasSelection];
 }
 
 - (BOOL)handleControl:(NSString *)control

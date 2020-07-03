@@ -40,7 +40,6 @@
 @protocol SessionDelegate
 
 - (void)sessionFinished;
-- (void)indexCommand:(NSString *)cmdLine;
 
 @end
 
@@ -61,6 +60,7 @@
 - (void)executeWithArgs:(NSString *)args;
 - (void)executeAttachedWithArgs:(NSString *)args;
 - (int)main:(int)argc argv:(char **)argv;
+- (void)main_cleanup;
 - (void)sigwinch;
 - (void)kill;
 - (void)suspend;

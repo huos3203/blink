@@ -29,12 +29,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#import "UIApplication+Version.h"
 #import "BKSettingsViewController.h"
 #import "BKDefaults.h"
-#import "BKTouchIDAuthManager.h"
 #import "BKUserConfigurationManager.h"
 #import "BKiCloudConfigurationViewController.h"
 #import "BKiCloudSyncHandler.h"
+#import "Blink-Swift.h"
 
 
 @interface BKSettingsViewController ()
@@ -43,25 +44,19 @@
 @property (nonatomic, weak) IBOutlet UILabel *iCloudSyncStatusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *autoLockStatusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *xCallbackStatusLabel;
+@property (nonatomic, weak) IBOutlet UILabel *versionLabel;
 
 @end
 
 @implementation BKSettingsViewController
 {
-  NSArray *_kbCommands;
+  
 }
 
 - (void)viewDidLoad
 {
   [super viewDidLoad];
   
-  UIKeyModifierFlags modifierFlags = [BKUserConfigurationManager shortCutModifierFlags];
-  
-  _kbCommands = @[
-                  [UIKeyCommand keyCommandWithInput: @"w" modifierFlags: modifierFlags
-                                             action: @selector(_closeConfig:)
-                               discoverabilityTitle: @"Close Settings"]
-                  ];
   
   // Uncomment the following line to preserve selection between presentations.
   // self.clearsSelectionOnViewWillAppear = NO;
@@ -76,10 +71,6 @@
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (NSArray<UIKeyCommand *> *)keyCommands
-{
-  return _kbCommands;
-}
 
 - (BOOL)canBecomeFirstResponder
 {
@@ -94,6 +85,7 @@
   self.iCloudSyncStatusLabel.text = [BKUserConfigurationManager userSettingsValueForKey:BKUserConfigiCloud] ? @"On" : @"Off";
   self.autoLockStatusLabel.text = [BKUserConfigurationManager userSettingsValueForKey:BKUserConfigAutoLock] ? @"On" : @"Off";
   self.xCallbackStatusLabel.text = [BKDefaults isXCallBackURLEnabled] ? @"On" : @"Off";
+  self.versionLabel.text = [UIApplication blinkShortVersion];
   
   // Layout tableview so it will place labels correctly
   [self.tableView layoutIfNeeded];
@@ -102,4 +94,17 @@
 - (IBAction)unwindFromDefaultUser:(UIStoryboardSegue *)sender
 {
 }
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+  return YES;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (indexPath.section == 1 && indexPath.row == 1) {
+    UIViewController *vc = [KBSettingsViewController createWithNav:self.navigationController];
+    [self.navigationController pushViewController:vc animated:YES];
+  }
+}
+
+
 @end

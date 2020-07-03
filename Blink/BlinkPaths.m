@@ -129,6 +129,12 @@ NSString *__iCloudsDriveDocumentsPath = nil;
   return [[self blink] stringByAppendingPathComponent:@"keys"];
 }
 
++ (NSURL *)blinkKBConfigURL
+{
+  return [[self blinkURL] URLByAppendingPathComponent:@"kb.json"];
+}
+
+
 + (NSString *)blinkHostsFile
 {
   return [[self blink] stringByAppendingPathComponent:@"hosts"];
@@ -148,6 +154,11 @@ NSString *__iCloudsDriveDocumentsPath = nil;
 + (NSString *)historyFile
 {
   return [[self blink] stringByAppendingPathComponent:@"history.txt"];
+}
+
++ (NSURL *)historyURL
+{
+  return [NSURL fileURLWithPath:[self historyFile]];
 }
 
 + (NSString *)knownHostsFile

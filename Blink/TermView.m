@@ -32,7 +32,6 @@
 #import "TermView.h"
 #import "TermDevice.h"
 #import "BKDefaults.h"
-#import "BKSettingsNotifications.h"
 #import "BKFont.h"
 #import "BKTheme.h"
 #import "TermJS.h"
@@ -49,45 +48,12 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   return res;
 }
 
-@implementation BKWebView
-
-- (BOOL)canResignFirstResponder
-{
-  return NO;
-}
-
-- (BOOL)becomeFirstResponder
-{
-  return NO;
-}
-
-- (void)_keyboardDidChangeFrame:(id)sender
-{
-}
-
-- (void)_keyboardWillChangeFrame:(id)sender
-{
-}
-
-- (void)_keyboardWillShow:(id)sender
-{
-}
-
-- (void)_keyboardWillHide:(id)sender
-{
-}
-
-
-@end
-
 @interface TermView () <WKScriptMessageHandler>
 @end
 
 @implementation TermView {
-  WKWebView *_webView;
   WKWebViewGesturesInteraction *_gestureInteraction;
   
-  BOOL _focused;
   BOOL _jsIsBusy;
   dispatch_queue_t _jsQueue;
   NSMutableString *_jsBuffer;
@@ -96,6 +62,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   NSTimer *_layoutDebounceTimer;
   
   UIView *_coverView;
+  UIView *_parentScrollView;
 }
 
 
@@ -106,7 +73,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   if (!self) {
     return self;
   }
-  
+  _selectionRect = CGRectZero;
   _layoutDebounceTimer = nil;
   _currentBounds = CGRectZero;
   _jsQueue = dispatch_queue_create(@"TermView.js".UTF8String, DISPATCH_QUEUE_SERIAL);
@@ -117,7 +84,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   [self addSubview:_coverView];
   _coverView.backgroundColor = [UIColor blackColor];
   
-
   return self;
 }
 
@@ -180,6 +146,11 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   return NO;
 }
 
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
+  [super setUserInteractionEnabled:userInteractionEnabled];
+  [_webView setUserInteractionEnabled:userInteractionEnabled];
+}
+
 - (void)_addWebView
 {
   WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
@@ -187,7 +158,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   configuration.defaultWebpagePreferences.preferredContentMode = WKContentModeDesktop;
   [configuration.userContentController addScriptMessageHandler:self name:@"interOp"];
 
-  _webView = [[BKWebView alloc] initWithFrame:[self webViewFrame] configuration:configuration];
+  _webView = [[SmarterTermInput alloc] initWithFrame:[self webViewFrame] configuration:configuration];
   
    _gestureInteraction = [[WKWebViewGesturesInteraction alloc] initWithJsScrollerPath:@"t.scrollPort_.scroller_"];
   [_webView addInteraction:_gestureInteraction];
@@ -276,8 +247,13 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 }
 
 - (void)focus {
-  _focused = YES;
-  [_webView evaluateJavaScript:term_focus() completionHandler:nil];
+  _gestureInteraction.focused = YES;
+//  [_webView evaluateJavaScript:term_focus() completionHandler:nil];
+}
+
+- (void)blur {
+  _gestureInteraction.focused = NO;
+//  [_webView evaluateJavaScript:term_blur() completionHandler:nil];
 }
 
 - (void)reportTouchInPoint:(CGPoint)point
@@ -285,10 +261,13 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   [_webView evaluateJavaScript:term_reportTouchInPoint(point) completionHandler:nil];
 }
 
-- (void)blur
-{
-  _focused = NO;
-  [_webView evaluateJavaScript:term_blur() completionHandler:nil];
+
+- (void)processKB:(NSString *)str {
+  [self _evalJSScript: term_processKB(str)];
+}
+
+- (void)displayInput:(NSString *)input {
+  [self _evalJSScript: term_displayInput(input, BKDefaults.isKeyCastsOn)];
 }
 
 // Write data to terminal control
@@ -359,16 +338,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
     [_device viewWinSizeChanged:__winSizeFromJSON(data)];
   } else if ([operation isEqualToString:@"terminalReady"]) {
     [self _onTerminalReady:data];
-//    for (id interaction in _webView.subviews.firstObject.subviews.firstObject.interactions) {
-//      [_webView.subviews.firstObject.subviews.firstObject removeInteraction:interaction];
-//    }
-//    dispatch_async(dispatch_get_main_queue(), ^{
-    
-    [UIView transitionFromView:_coverView toView:_webView duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
-      [_coverView removeFromSuperview];
-      _coverView = nil;
-    }];
-    
   } else if ([operation isEqualToString:@"fontSizeChanged"]) {
     [_device viewFontSizeChanged:[data[@"size"] integerValue]];
   } else if ([operation isEqualToString:@"copy"]) {
@@ -377,11 +346,18 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
     [_device viewShowAlert:data[@"title"] andMessage:data[@"message"]];
   } else if ([operation isEqualToString:@"sendString"]) {
     [_device viewSendString:data[@"string"]];
+  } else if ([operation isEqualToString:@"line"]) {
+    [_device viewSubmitLine:data[@"text"]];
+  } else if ([operation isEqualToString:@"api"]) {
+    [_device viewAPICall:data[@"name"] andJSONRequest:data[@"request"]];
+  } else if ([operation isEqualToString:@"notify"]) {
+    [_device viewNotify:data];
   }
 }
 
 - (void)_onTerminalReady:(NSDictionary *)data
 {
+  [_webView ready];
   NSArray *bgColor = data[@"bgColor"];
   if (bgColor && bgColor.count == 3) {
     UIColor *color = [UIColor colorWithRed:[bgColor[0] floatValue] / 255.0f
@@ -399,11 +375,22 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   _isReady = YES;
   [_device viewIsReady];
     
-  if (_focused) {
-    [self focus];
+  if (_gestureInteraction.focused) {
+    [_webView evaluateJavaScript:term_focus() completionHandler:nil];
   } else {
-    [self blur];
+    [_webView evaluateJavaScript:term_blur() completionHandler:nil];
   }
+  
+  [UIView transitionFromView:_coverView toView:_webView duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
+    [_coverView removeFromSuperview];
+    _coverView = nil;
+  }];
+  
+  
+}
+
+- (BOOL)isFocused {
+  return _gestureInteraction.focused;
 }
   
 - (NSString *)_menuTitleFromNSURL:(NSURL *)url
@@ -446,8 +433,12 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 {
   _selectedText = data[@"text"];
   _hasSelection = _selectedText.length > 0;
+  _gestureInteraction.hasSelection = _hasSelection;
+  
+  [_device viewSelectionChanged];
   
   if (!_hasSelection) {
+    [[UIMenuController sharedMenuController] hideMenu];
     return;
   }
   
@@ -468,13 +459,16 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
                              [self _menuActionTitleFromNSURL:_detectedLink], urlName];
     [items addObject:[[UIMenuItem alloc] initWithTitle:actionTitle
                                                 action:@selector(openLink:)]];
+  } else {
+    [items addObject:[[UIMenuItem alloc] initWithTitle:@"Search"
+                                                action:@selector(googleSelection:)]];
   }
-
+  [items addObject:[[UIMenuItem alloc] initWithTitle:@"Share"
+  action:@selector(shareSelection:)]];
   
-  CGRect rect = CGRectFromString(data[@"rect"]);
+  _selectionRect = CGRectFromString(data[@"rect"]);
   [menu setMenuItems:items];
-  [menu setTargetRect:rect inView:self];
-  [menu setMenuVisible:YES animated:NO];
+  [menu showMenuFromView:self rect:_selectionRect];
 }
 
 - (void)modifySideOfSelection
@@ -485,6 +479,10 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 - (void)modifySelectionInDirection:(NSString *)direction granularity:(NSString *)granularity
 {
   [_webView evaluateJavaScript:term_modifySelection(direction, granularity) completionHandler:nil];
+}
+
+- (void)apiResponse:(NSString *)name response:(NSString *)response {
+  [_webView evaluateJavaScript:term_apiResponse(name, response) completionHandler:nil];
 }
 
 - (NSURL *)_detectLinkInSelection:(NSDictionary *)data
@@ -528,6 +526,14 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 - (void)yank:(id)sender
 {
 }
+
+- (void)googleSelection:(id)sender {
+  
+}
+
+- (void)soSelection:(id)sender {
+  
+}
   
 - (void)pasteSelection:(id)sender
 {
@@ -540,9 +546,13 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 
 - (void)copy:(id)sender
 {
-  [_webView copy:sender];
+  NSString *text = _selectedText;
+  if (text) {
+    [UIPasteboard generalPasteboard].string = text;
+  }
   UIMenuController * menu = [UIMenuController sharedMenuController];
-  [menu setMenuVisible:NO animated:YES];
+  [menu hideMenuFromView:self];
+  [self cleanSelection];
 }
 
 - (void)paste:(id)sender
@@ -606,7 +616,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   }
   [script addObject:@"};"];
 
-  [script addObject:term_init()];
+  [script addObject:term_init(UIAccessibilityIsVoiceOverRunning())];
 
   return [[WKUserScript alloc] initWithSource:
           [script componentsJoinedByString:@"\n"]
@@ -614,9 +624,12 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
                              forMainFrameOnly:YES];
 }
 
-- (void)setIme:(NSString *)imeText completionHandler:(void (^ _Nullable)(_Nullable id, NSError * _Nullable error))completionHandler
-{
-  [_webView evaluateJavaScript:term_setIme(imeText) completionHandler:completionHandler];
+- (void)applyTheme:(NSString *)themeName {
+  NSString *themeContent = [[BKTheme withName: themeName ?: [BKDefaults selectedThemeName]] content];
+  if (themeContent) {
+    NSString *script = [NSString stringWithFormat:@"(function(){%@})();", themeContent];
+    [_webView evaluateJavaScript:script completionHandler:nil];
+  }
 }
 
 - (void)terminate

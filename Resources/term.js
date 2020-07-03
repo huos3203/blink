@@ -8,6 +8,20 @@ function _postMessage(op, data) {
   window.webkit.messageHandlers.interOp.postMessage({op, data});
 }
 
+hterm.notify = function(params) {
+  var def = (curr, fallback) => curr !== undefined ? curr : fallback;
+  if (params === undefined || params === null) {
+    params = {};
+  }
+
+
+  var title = def(params.title, window.document.title);
+  if (!title)
+    title = 'hterm';
+
+  _postMessage('notify', {title, body: params.body})
+}
+
 hterm.Terminal.prototype.copyStringToClipboard = function(content) {
   if (this.prefs_.get('enable-clipboard-notice')) {
     setTimeout(this.showOverlay.bind(this, hterm.notifyCopyMessage, 500), 200);
@@ -16,9 +30,6 @@ hterm.Terminal.prototype.copyStringToClipboard = function(content) {
   document.getSelection().removeAllRanges();
   _postMessage('copy', {content});
 };
-
-// Speedup a little bit.
-hterm.Screen.prototype.syncSelectionCaret = function() {};
 
 document.addEventListener('selectionchange', function() {
   _postMessage('selectionchange', term_getCurrentSelection());
@@ -58,35 +69,74 @@ function term_setupDefaults() {
   term_set('audible-bell-sound', '');
   term_set('receive-encoding', 'raw'); // we are UTF8
   term_set('allow-images-inline', true); // need to make it work
+  term_set('scroll-wheel-may-send-arrow-keys', true)
 }
 
-function term_setup() {
+function term_processKB(str) {
+  if (!t.prompt) {
+    return;
+  }
+  if (str) {
+    t.prompt.processInput(str);
+  }
+}
+
+function term_displayInput(str, display) {
+  if (!t || !t.accessibilityReader_) {
+    return;
+  }
+  
+  t.accessibilityReader_.hasUserGesture = true;
+  
+  if (!display) {
+    return;
+  }
+  
+  if (str && !t.prompt._secure) {
+    window.KeystrokeVisualizer.processInput(str);
+  }
+}
+
+
+function term_setup(accessibilityEnabled) {
   t = new hterm.Terminal('blink');
 
   t.onTerminalReady = function() {
+    window.installKB(t, t.scrollPort_.screen_);
+    term_setAutoCarriageReturn(true);
     t.setCursorVisible(true);
-
+    
     t.io.onTerminalResize = function(cols, rows) {
       _postMessage('sigwinch', {cols, rows});
+      if (t.prompt) {
+        t.prompt.resize();
+      }
     };
 
     var size = {
       cols: t.screenSize.width,
       rows: t.screenSize.height,
     };
+    
     document.body.style.backgroundColor =
       t.scrollPort_.screen_.style.backgroundColor;
     var bgColor = _colorComponents(t.scrollPort_.screen_.style.backgroundColor);
-    _postMessage('terminalReady', {size, bgColor});
-
+    
     t.keyboard.characterEncoding = 'raw'; // we are UTF8. Fix for #507
     t.uninstallKeyboard();
+    
+    _postMessage('terminalReady', {size, bgColor});
+
+    if (window.KeystrokeVisualizer) {
+      window.KeystrokeVisualizer.enable();
+    }
+    t.setAccessibilityEnabled(accessibilityEnabled);
   };
 
   t.decorate(document.getElementById('terminal'));
 }
 
-function term_init() {
+function term_init(accessibilityEnabled) {
   term_setupDefaults();
   try {
     applyUserSettings();
@@ -101,9 +151,52 @@ function term_init() {
         'Failed to setup theme. Please check syntax of your theme.\n' +
         e.toString(),
     });
-    term_setup();
+    term_setup(accessibilityEnabled);
   }
 }
+
+var _requestId = 0;
+var _requestsMap = {};
+
+class ApiRequest {
+  constructor(name, request) {
+    this.id = _requestId++;
+    request.id = this.id;
+    var self = this;
+    this.promise = new Promise(function(resolve, reject) {
+        self.resolve = resolve;
+        self.reject = reject;
+    });
+    _requestsMap[this.id] = self
+    _postMessage("api", {name, request: JSON.stringify(request)} );
+    
+    this.then = this.promise.then.bind(this.promise);
+    this.catch = this.promise.catch.bind(this.promise);
+  }
+  
+  cancel() {
+    this.resolve(null);
+    delete _requestsMap[this.id];
+  }
+}
+
+function term_apiRequest(name, request) {
+  return new ApiRequest(name, request)
+}
+
+function term_apiResponse(name, response) {
+  var res = JSON.parse(response);
+  var req = _requestsMap[res.requestId];
+  if (!req) {
+    return;
+  }
+  delete _requestsMap[req.id];
+  req.resolve(res)
+}
+
+
+window.term_apiRequest = term_apiRequest;
+window.term_apiResponse = term_apiResponse;
 
 function term_write(data) {
   t.interpret(data);
@@ -134,66 +227,6 @@ function term_clear() {
   t.clear();
 }
 
-function term_setIme(str) {
-  var length = lib.wc.strWidth(str);
-
-  var scrollPort = t.scrollPort_;
-  var ime = t.ime_;
-  ime.textContent = str;
-
-  if (length === 0) {
-    return;
-  }
-
-  ime.style.backgroundColor = lib.colors.setAlpha(t.getCursorColor(), 1);
-  ime.style.color = scrollPort.getBackgroundColor();
-
-  var screenCols = t.screenSize.width;
-  var cursorCol = t.screen_.cursorPosition.column;
-
-  ime.style.bottom = 'auto';
-  ime.style.top = 'auto';
-
-  if (length >= screenCols) {
-    // We are wider than the screen
-    ime.style.left = '0px';
-    ime.style.right = '0px';
-    if (t.screen_.cursorPosition.row < t.screenSize.height * 0.8) {
-      ime.style.top =
-        'calc(var(--hterm-charsize-height) * (var(--hterm-cursor-offset-row) + 1))';
-    } else {
-      ime.style.top =
-        'calc(var(--hterm-charsize-height) * (var(--hterm-cursor-offset-row) - ' +
-        Math.floor(length / (screenCols + 1)) +
-        ' - 1))';
-    }
-  } else if (cursorCol + length <= screenCols) {
-    // we are inlined
-    ime.style.left =
-      'calc(var(--hterm-charsize-width) * var(--hterm-cursor-offset-col))';
-    ime.style.top =
-      'calc(var(--hterm-charsize-height) * var(--hterm-cursor-offset-row))';
-    ime.style.right = 'auto';
-  } else if (t.screen_.cursorPosition.row == 0) {
-    // we are at the end of line but need more space at the bottom
-    ime.style.top =
-      'calc(var(--hterm-charsize-height) * (var(--hterm-cursor-offset-row) + 1))';
-    ime.style.left = 'auto';
-    ime.style.right = '0px';
-  } else {
-    // we are at the end of line but need more space at the top
-    ime.style.top =
-      'calc(var(--hterm-charsize-height) * (var(--hterm-cursor-offset-row) - 1))';
-    ime.style.left = 'auto';
-    ime.style.right = '0px';
-  }
-  var r = ime.getBoundingClientRect();
-
-  const markedRect = `{{${r.x}, ${r.y}},{${r.width},${r.height}}}`;
-
-  return {markedRect};
-}
-
 function term_reset() {
   t.reset();
 }
@@ -208,29 +241,47 @@ function term_blur() {
 
 function _setTermCoordinates(event, x, y) {
   // One based row/column stored on the mouse event.
-  event.terminalRow =
-    parseInt(
-      (y - t.scrollPort_.visibleRowTopMargin) /
-        t.scrollPort_.characterSize.height,
-    ) + 1;
-  event.terminalColumn = parseInt(x / t.scrollPort_.characterSize.width) + 1;
+  var ty = (y / t.scrollPort_.characterSize.height | 0) + 1;
+  var tx = (x / t.scrollPort_.characterSize.width | 0) + 1;
+//  console.log(`x:${x},y: ${y}, col:${tx}, row:${ty}`);
+  event.terminalRow = ty;
+  event.terminalColumn = tx;
 }
 
-function term_reportTapInPoint(x, y) {
-  term_reportMouseEvent('mousedown', x, y, 1);
-  term_reportMouseEvent('mouseup', x, y, 1);
+function term_reportMouseClick(x, y, buttons, display) {
+  if (!t.prompt) {
+    return;
+  }
+
+  var event = new MouseEvent(name, {buttons});
+  _setTermCoordinates(event, x, y);
+  if (!t.prompt.processMouseClick(event)) {
+    term_reportMouseEvent('mousedown', x, y, 1);
+    term_reportMouseEvent('mouseup', x, y, 1);
+  }
+                                  
+  if (display) {
+     term_displayInput("👆", display);
+  }
 }
 
 function term_reportMouseEvent(name, x, y, buttons) {
+  if (!t.prompt) {
+    return;
+  }
+
   var event = new MouseEvent(name, {buttons});
   _setTermCoordinates(event, x, y);
   t.onMouse(event);
 }
 
 function term_reportWheelEvent(name, x, y, deltaX, deltaY) {
-  var event = new WheelEvent(name, {deltaX, deltaY});
-  _setTermCoordinates(event, x, y);
-  t.onMouse(event);
+  if (!t.prompt) {
+    return;
+  }
+
+  var event = new WheelEvent(name, {clientX: x, clientY: y, deltaX, deltaY});
+  t.onMouse_Blink(event);
 }
 
 function term_setWidth(cols) {
@@ -297,7 +348,7 @@ function term_loadFontFromCss(url, name) {
 
 function term_getCurrentSelection() {
   const selection = document.getSelection();
-  if (!selection || selection.rangeCount === 0) {
+    if (!selection || selection.rangeCount === 0 || selection.type === 'Caret') {
     return {base: '', offset: 0, text: ''};
   }
 
@@ -308,7 +359,7 @@ function term_getCurrentSelection() {
   return {
     base: selection.baseNode.textContent,
     offset: selection.baseOffset,
-    text: selection.toString(),
+    text: t.getSelectionText() || "",
     rect,
   };
 }

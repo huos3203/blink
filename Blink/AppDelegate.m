@@ -31,12 +31,12 @@
 
 #import "AppDelegate.h"
 #import "BKiCloudSyncHandler.h"
-#import "BKTouchIDAuthManager.h"
 #import "BlinkPaths.h"
 #import "BKDefaults.h"
 #import "BKPubKey.h"
 #import "BKHosts.h"
 #import <ios_system/ios_system.h>
+#import <UserNotifications/UserNotifications.h>
 #include <libssh/callbacks.h>
 #include "xcall.h"
 #include "Blink-Swift.h"
@@ -44,7 +44,7 @@
 
 @import CloudKit;
 
-@interface AppDelegate ()
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
 @end
 
 @implementation AppDelegate {
@@ -81,8 +81,6 @@ void __setupProcessEnv() {
   dispatch_async(bgQueue, ^{
     [BlinkPaths linkICloudDriveIfNeeded];
   });
-  
-  [[BKTouchIDAuthManager sharedManager] registerforDeviceLockNotif];
 
   sideLoading = false; // Turn off extra commands from iOS system
   initializeEnvironment(); // initialize environment variables for iOS system
@@ -94,16 +92,36 @@ void __setupProcessEnv() {
   NSNotificationCenter *nc = NSNotificationCenter.defaultCenter;
   [nc addObserver:self
          selector:@selector(_onSceneDidEnterBackground:)
-             name:UISceneDidEnterBackgroundNotification object:self];
+             name:UISceneDidEnterBackgroundNotification object:nil];
   [nc addObserver:self
            selector:@selector(_onSceneWillEnterForeground:)
-               name:UISceneWillEnterForegroundNotification object:self];
+               name:UISceneWillEnterForegroundNotification object:nil];
+  [nc addObserver:self
+         selector:@selector(_onSceneDidActiveNotification:)
+             name:UISceneDidActivateNotification object:nil];
   [nc addObserver:self
          selector: @selector(_onScreenConnect)
              name:UIScreenDidConnectNotification object:nil];
+  
+  [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+  
+//  [nc addObserver:self selector:@selector(_logEvent:) name:nil object:nil];
+//  [nc addObserver:self selector:@selector(_active) name:@"UIApplicationSystemNavigationActionChangedNotification" object:nil];
 
+  [UIApplication sharedApplication].applicationSupportsShakeToEdit = NO;
   return YES;
 }
+
+//- (void)_active {
+//  [[SmarterTermInput shared] realBecomeFirstResponder];
+//}
+//- (void)_logEvent:(NSNotification *)n {
+//  NSLog(@"event, %@, %@", n.name, n.userInfo);
+//  if ([n.name isEqualToString:@"UIApplicationSystemNavigationActionChangedNotification"]) {
+//    [[SmarterTermInput shared] realBecomeFirstResponder];
+//  }
+//
+//}
 
 - (void)_loadProfileVars {
   NSCharacterSet *whiteSpace = [NSCharacterSet whitespaceCharacterSet];
@@ -121,7 +139,14 @@ void __setupProcessEnv() {
     [parts removeObjectAtIndex:0];
     NSString *varValue = [[parts componentsJoinedByString:@"="] stringByTrimmingCharactersInSet:whiteSpace];
     if ([varValue hasSuffix:@"\""] || [varValue hasPrefix:@"\""]) {
+      NSData *data =  [varValue dataUsingEncoding:NSUTF8StringEncoding];
       varValue = [varValue substringWithRange:NSMakeRange(1, varValue.length - 1)];
+      if (data) {
+        id value = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        if ([value isKindOfClass:[NSString class]]) {
+          varValue = value;
+        }
+      }
     }
     if (varValue.length == 0) {
       return;
@@ -136,10 +161,7 @@ void __setupProcessEnv() {
   [BKPubKey loadIDS];
   [BKHosts loadHosts];
   [self _loadProfileVars];
-  
-    [[UIView appearance] setTintColor:[UIColor blinkTint]];
-//  [[UIView appearance] setTintColor:[UIColor colorWithRed:10.0/255.0f green:224.0/255.0f blue:240.0f/255.0 alpha:1]];
-//  [[UIView appearance] setTintColor:[UIColor cyanColor]];
+  [[UIView appearance] setTintColor:[UIColor blinkTint]];
   return YES;
 }
 
@@ -157,14 +179,15 @@ void __setupProcessEnv() {
   return YES;
 }
 
-//- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler {
-//    restorationHandler(@[[[ScreenController shared] mainScreenRootViewController]]);
-//    return YES;
-//}
-
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
-//  restorationHandler(@[[[ScreenController shared] mainScreenRootViewController]]);
+  return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier {
+  if ([extensionPointIdentifier isEqualToString: UIApplicationKeyboardExtensionPointIdentifier]) {
+    return ![BKDefaults disableCustomKeyboards];
+  }
   return YES;
 }
 
@@ -248,7 +271,6 @@ void __setupProcessEnv() {
   _suspendTaskId = UIBackgroundTaskInvalid;
 }
 
-
 #pragma mark - LSSupportsOpeningDocumentsInPlace
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
@@ -292,7 +314,9 @@ void __setupProcessEnv() {
 
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
   
+  
   return [UISceneConfiguration configurationWithName:@"main" sessionRole:connectingSceneSession.role];
+  
 }
 
 - (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
@@ -313,8 +337,29 @@ void __setupProcessEnv() {
   [self _cancelApplicationSuspend];
 }
 
+- (void)_onSceneDidActiveNotification:(NSNotification *)notification {
+  [self _cancelApplicationSuspend];
+}
+
 - (void)_onScreenConnect {
   [BKDefaults applyExternalScreenCompensation:BKDefaults.overscanCompensation];
+}
+
+#pragma mark - UNUserNotificationCenterDelegate
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+  UNNotificationPresentationOptions opts = UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge;
+  completionHandler(opts);
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+  SceneDelegate *sceneDelegate = (SceneDelegate *)response.targetScene.delegate;
+  
+  SpaceController *ctrl = sceneDelegate.spaceController;
+  
+  [ctrl moveToShellWithKey:response.notification.request.content.threadIdentifier];
+  
+  completionHandler();
 }
 
 @end

@@ -34,26 +34,30 @@
 
 #include "ios_system/ios_system.h"
 #include "ios_error.h"
+#include "UIApplication+Version.h"
+#include <Blink-Swift.h>
+#include "MCPSession.h"
 
-NSString *__shortVersionString()
-{
-  NSString *compileDate = [NSString stringWithUTF8String:__DATE__];
-  
-  NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-  NSString *appDisplayName = [infoDictionary objectForKey:@"CFBundleName"];
-  NSString *majorVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-  NSString *minorVersion = [infoDictionary objectForKey:@"CFBundleVersion"];
-  
-  return [NSString stringWithFormat:@"%@: v%@.%@. %@",
-          appDisplayName, majorVersion, minorVersion, compileDate];
+void __print_commands() {
+  MCPSession *session = (__bridge MCPSession *)thread_context;
+  if (!session) {
+    return;
+  }
+
+  NSString *formattedCommands = [CompleteClass formattedCommandsWithWidth: session.device.cols];
+  puts(formattedCommands.UTF8String);
 }
 
 
 int help_main(int argc, char *argv[]) {
   
+  if (argc == 2 && [@"list-commands" isEqual: @(argv[1])]) {
+    __print_commands();
+    return 0;
+  }
   NSString *help = [@[
     @"",
-    __shortVersionString(),
+    [UIApplication blinkVersion],
     @"",
     @"Available commands:",
     @"  <tab>: list available UNIX commands.",
@@ -65,12 +69,10 @@ int help_main(int argc, char *argv[]) {
     @"",
     @"Gestures:",
     @"  ✌️ tap -> New Terminal.  ",
-    @"  ✌️ up/down -> Mouse wheel.  ",
     @"  👆 tap -> Mouse click.  ",
-    @"  👆 drag down -> Dismiss keyboard.  ",
     @"  👆 swipe left/right -> Switch Terminals.  ",
     @"  pinch -> Change font size.",
-    @"",
+    UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone ? @"  👆 drag down -> Dismiss keyboard.\n" : @"",
     @"Shortcuts:",
     @"  Press and hold ⌘ on hardware kb to show a list of shortcuts.",
     @"  Run config. Go to Keyboard > Shortcuts for configuration.",

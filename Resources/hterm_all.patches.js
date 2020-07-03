@@ -7,7 +7,7 @@ hterm.Terminal.prototype.onFocusChange__ = function(focused) {
   if (currentState === focused + '') {
     return;
   }
-  
+
   this.cursorNode_.setAttribute('focus', focused);
   this.restyleCursor_();
 
@@ -23,13 +23,8 @@ hterm.Terminal.prototype.overlaySize = function() {};
 
 hterm.Terminal.prototype.onMouse_ = function() {};
 
-var _assertiveAnnounce = hterm.AccessibilityReader.prototype.assertiveAnnounce;
-hterm.AccessibilityReader.prototype.assertiveAnnounce = function(e) {
-  if (e) {
-    _assertiveAnnounce.call(this, e);
-  }
-}
-
+// TODO: Remove our patch. htermjs supports cursorBlinkPause_ option now
+// see https://github.com/chromium/hterm/commit/f57d62de8f91f1fc8923fb000aeace041d063f9f
 hterm.Terminal.prototype.setCursorVisible = function(state) {
   this.options_.cursorVisible = state;
 

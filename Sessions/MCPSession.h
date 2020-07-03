@@ -31,7 +31,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Repl.h"
+
 #import "Session.h"
 #import "SSHClient.h"
 
@@ -40,11 +40,11 @@
 @interface MCPSession : Session
 
 @property (strong) MCPParams *sessionParams;
-@property (strong, readonly) Repl *repl;
 
 - (void)registerSSHClient:(SSHClient *)sshClient;
 - (void)unregisterSSHClient:(SSHClient *)sshClient;
 
+- (void)enqueueCommand:(NSString *)cmd;
 - (bool)isRunningCmd;
 
 - (void)updateAllowedPaths;

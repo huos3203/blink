@@ -30,10 +30,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-import Foundation
 import MBProgressHUD
 
-public class SpaceController: UIViewController {
+class SpaceController: UIViewController {
   
   struct UIState: UserActivityCodable {
     var keys: [UUID] = []
@@ -43,21 +42,24 @@ public class SpaceController: UIViewController {
     static var activityType: String { "space.ctrl.ui.state" }
   }
 
-  private lazy var _viewportsController = UIPageViewController(
+  final private lazy var _viewportsController = UIPageViewController(
     transitionStyle: .scroll,
     navigationOrientation: .horizontal,
     options: [.spineLocation: UIPageViewController.SpineLocation.mid]
   )
   
+  var sceneRole: UISceneSession.Role = UISceneSession.Role.windowApplication
+  
   private var _viewportsKeys = [UUID]()
+  private var _termControllers: Set<TermController> = Set()
   private var _currentKey: UUID? = nil
   
   private var _hud: MBProgressHUD? = nil
+  private let _commandsHUD = CommandsHUGView(frame: .zero)
   
   private var _overlay = UIView()
-  private var _kbdCommands:[UIKeyCommand] = []
-  private var _kbdCommandsWithoutDiscoverability: [UIKeyCommand] = []
   private var _spaceControllerAnimating: Bool = false
+  var stuckKeyCode: KeyCode? = nil
   
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
@@ -93,10 +95,11 @@ public class SpaceController: UIViewController {
     super.viewDidLoad()
     
     view.isOpaque = true
-  
+    
     _viewportsController.view.isOpaque = true
     _viewportsController.dataSource = self
     _viewportsController.delegate = self
+    
     
     addChild(_viewportsController)
     
@@ -114,38 +117,25 @@ public class SpaceController: UIViewController {
     
     _commandsHUD.delegate = self
     _registerForNotifications()
-    _setupKBCommands()
-    
-    _commandsHUD.delegate = self
     
     if _viewportsKeys.isEmpty {
       _createShell(userActivity: nil, animated: false)
     } else if let key = _currentKey {
       let term: TermController = SessionRegistry.shared[key]
       term.delegate = self
+      _termControllers.insert(term)
       term.bgColor = view.backgroundColor ?? .black
-      _viewportsController.setViewControllers([term], direction: .forward, animated: false) { (didComplete) in
-        if SmarterTermInput.shared.device == nil {
-          DispatchQueue.main.async {
-            self._attachInputToCurrentTerm()
-          }
-        }
-      }
+      _viewportsController.setViewControllers([term], direction: .forward, animated: false)
     }
   }
   
-  let _commandsHUD = CommandsHUGView(frame: .zero)
-  
-  public override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    _didBecomeKeyWindow()
-  }
-  
+
   public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     if view.window?.isKeyWindow == true {
       DispatchQueue.main.async {
-        SmarterTermInput.shared.reloadInputViews()
+//        self.currentTerm()?.termDevice.view?.webView?.kbView.reset()
+//        SmarterTermInput.shared.contentView()?.reloadInputViews()
       }
     }
   }
@@ -158,11 +148,6 @@ public class SpaceController: UIViewController {
     let nc = NotificationCenter.default
     
     nc.addObserver(self,
-                   selector: #selector(_focusOnShell),
-                   name: NSNotification.Name.BKUserAuthenticated,
-                   object: nil)
-    
-    nc.addObserver(self,
                    selector: #selector(_didBecomeKeyWindow),
                    name: UIWindow.didBecomeKeyNotification,
                    object: nil)
@@ -170,6 +155,16 @@ public class SpaceController: UIViewController {
     nc.addObserver(self, selector: #selector(_relayout),
                    name: NSNotification.Name(rawValue: LayoutManagerBottomInsetDidUpdate),
                    object: nil)
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    if
+      sceneRole == .windowApplication,
+      let win = self.view.window?.windowScene?.windows.last,
+      win !== self.view.window {
+      self._commandsHUD.attachToWindow(inputWindow: win)
+    }
   }
   
   @objc func _didBecomeKeyWindow() {
@@ -181,32 +176,7 @@ public class SpaceController: UIViewController {
       return
     }
     
-    if SmarterTermInput.shared.superview !== view,
-      window.screen === UIScreen.main {
-      view.addSubview(SmarterTermInput.shared)
-    }
     _focusOnShell()
-    DispatchQueue.main.async {
-      if let win = self.view.window?.windowScene?.windows.last,
-        win !== self.view.window,
-        win.screen === UIScreen.main,
-        self._commandsHUD.superview == nil
-      {
-        self._commandsHUD.attachToWindow(inputWindow: win)
-      }
-    }
-  }
-  
-  @objc func _keyboardFuncTriggerChanged(_ notification: NSNotification) {
-    guard
-      let userInfo = notification.userInfo,
-      let action = userInfo["func"] as? String,
-      action == BKKeyboardFuncCursorTriggers
-    else {
-      return
-    }
-    
-    _setupKBCommands()
   }
   
   func _createShell(
@@ -214,10 +184,11 @@ public class SpaceController: UIViewController {
     animated: Bool,
     completion: ((Bool) -> Void)? = nil)
   {
-    let term = TermController()
+    let term = TermController(sceneRole: sceneRole)
     term.delegate = self
     term.userActivity = userActivity
     term.bgColor = view.backgroundColor ?? .black
+    _termControllers.insert(term)
     
     if let currentKey = _currentKey,
       let idx = _viewportsKeys.firstIndex(of: currentKey)?.advanced(by: 1) {
@@ -228,15 +199,12 @@ public class SpaceController: UIViewController {
     
     SessionRegistry.shared.track(session: term)
     
-    self._currentKey = term.meta.key
+    _currentKey = term.meta.key
+    
     _viewportsController.setViewControllers([term], direction: .forward, animated: animated) { (didComplete) in
-      DispatchQueue.main.async {
-        self._displayHUD()
-        self._attachInputToCurrentTerm()
-        if let completion = completion {
-          completion(didComplete)
-        }
-      }
+      self._displayHUD()
+      self._attachInputToCurrentTerm()
+      completion?(didComplete)
     }
   }
   
@@ -286,22 +254,25 @@ public class SpaceController: UIViewController {
   
   @objc func _focusOnShell() {
     _attachInputToCurrentTerm()
-    let input = SmarterTermInput.shared
-    if !input.isFirstResponder {
-      _ = input.becomeFirstResponder()
-    } else {
-      input.refreshInputViews()
-    }
-    // We should make input window key window
-    if input.window?.isKeyWindow == false {
-      input.window?.makeKeyAndVisible()
-    }
   }
   
-  func _attachInputToCurrentTerm() {
-    if let device = currentDevice {
-      device.attachInput(SmarterTermInput.shared)
-      device.focus()
+  private func _attachInputToCurrentTerm() {
+    guard let device = currentDevice else {
+      return
+    }
+
+    let input = KBTracker.shared.input
+    KBTracker.shared.attach(input: device.view?.webView)
+
+    if !device.view.isReady {
+      return
+    }
+    
+    device.attachInput(device.view.webView)
+    device.view.webView.reportFocus(true)
+    device.focus()
+    if input != KBTracker.shared.input { //&& input?.window != KBTracker.shared.input?.window {
+      input?.reportFocus(false)
     }
   }
   
@@ -309,7 +280,7 @@ public class SpaceController: UIViewController {
     currentTerm()?.termDevice
   }
   
-  func _displayHUD() {
+  private func _displayHUD() {
     _hud?.hide(animated: false)
     
     guard let term = currentTerm() else {
@@ -359,7 +330,7 @@ public class SpaceController: UIViewController {
     hud.hide(animated: true, afterDelay: 1)
     
     view.window?.windowScene?.title = sceneTitle
-    self._commandsHUD.updateHUD()
+    _commandsHUD.updateHUD()
   }
   
 }
@@ -384,7 +355,7 @@ extension SpaceController: UIStateRestorable {
     let registry = SessionRegistry.shared
     sessions.forEach { session in
       guard
-        let uiState = SpaceController.UIState(userActivity: session.stateRestorationActivity)
+        let uiState = UIState(userActivity: session.stateRestorationActivity)
       else {
         return
       }
@@ -431,6 +402,7 @@ extension SpaceController: UIPageViewControllerDataSource {
     let newCtrl: TermController = SessionRegistry.shared[newKey]
     newCtrl.delegate = self
     newCtrl.bgColor = view.backgroundColor ?? .black
+    _termControllers.insert(newCtrl)
     return newCtrl
   }
   
@@ -461,7 +433,6 @@ extension SpaceController: TermControlDelegate {
 // MARK: General tunning
 
 extension SpaceController {
-  public override var canBecomeFirstResponder: Bool { true }
   public override var prefersStatusBarHidden: Bool { true }
   public override var prefersHomeIndicatorAutoHidden: Bool { true }
 }
@@ -469,62 +440,103 @@ extension SpaceController {
 
 // MARK: Commands
 
+
 extension SpaceController {
+  
+  var foregroundActive: Bool {
+    view.window?.windowScene?.activationState == UIScene.ActivationState.foregroundActive
+  }
+  
   public override var keyCommands: [UIKeyCommand]? {
-    return _kbdCommands
+    guard
+      let input = KBTracker.shared.input,
+      foregroundActive
+    else {
+      return []
+    }
+    
+    if let keyCode = stuckKeyCode {
+      return [UIKeyCommand(input: "", modifierFlags: keyCode.modifierFlags, action: #selector(onStuckOpCommand))]
+    }
+    
+    return input.blinkKeyCommands
   }
   
-  // simple helper
-  private func _cmd(_ title: String, _ action: Selector, _ input: String, _ flags: UIKeyModifierFlags) -> UIKeyCommand {
-    return UIKeyCommand(
-      title: title,
-      image: nil,
-      action: action,
-      input: input,
-      modifierFlags: flags,
-      propertyList: nil
-    )
+  @objc func onStuckOpCommand() {
+    stuckKeyCode = nil
+    presentedViewController?.dismiss(animated: true)
+    _focusOnShell()
   }
   
-  private func _setupKBCommands() {
-    let modifierFlags = BKUserConfigurationManager.shortCutModifierFlags()
-    let prevNextShellModifierFlags = BKUserConfigurationManager.shortCutModifierFlagsForNextPrevShell()
-    
-    let right = UIKeyCommand.inputRightArrow
-    let left = UIKeyCommand.inputLeftArrow
-    
-    _kbdCommands = [
-      _cmd("New Window",     #selector(_newWindowAction),   "t", prevNextShellModifierFlags),
-      _cmd("Close Window",   #selector(_closeWindowAction), "w", prevNextShellModifierFlags),
-    
-      _cmd("New Shell",      #selector(newShellAction),   "t", modifierFlags),
-      _cmd("Close Shell",    #selector(closeShellAction), "w", modifierFlags),
-      
-      _cmd("Next Shell",     #selector(_nextShellAction), "]", prevNextShellModifierFlags),
-      _cmd("Previous Shell", #selector(_prevShellAction), "[", prevNextShellModifierFlags),
-    
-      // Alternative key commands for keyboard layouts having problems to access
-      // some of the default ones (e.g. the German keyboard layout)
-      _cmd("Next Shell",     #selector(_nextShellAction),  right, prevNextShellModifierFlags),
-      _cmd("Previous Shell", #selector(_prevShellAction),  left,  prevNextShellModifierFlags),
-      
-      // Font size
-      _cmd("Zoom In",    #selector(_increaseFontSizeAction), "+",  modifierFlags),
-      _cmd("Zoom Out",   #selector(_decreaseFontSizeAction), "-",  modifierFlags),
-      _cmd("Zoom Reset", #selector(_resetFontSizeAction),    "=",  modifierFlags),
-      
-      // Screens
-      _cmd("Focus Other Window",         #selector(_focusOtherWindowAction),  "o", modifierFlags),
-      _cmd("Move shell to other Window", #selector(_moveToOtherWindowAction), "o", prevNextShellModifierFlags),
-      
-      // Misc
-      _cmd("Show Config",    #selector(_showConfigAction), ",", modifierFlags),
-    ]
+  @objc func _onBlinkCommand(_ cmd: BlinkCommand) {
+    guard foregroundActive,
+      let input = currentDevice?.view?.webView else {
+      return
+    }
+
+    input.reportStateReset()
+    switch cmd.bindingAction {
+    case .hex(let hex, comment: _):
+      input.reportHex(hex)
+      break;
+    case .press(let keyCode, mods: let mods):
+      input.reportPress(UIKeyModifierFlags(rawValue: mods), keyId: keyCode.id)
+      break;
+    case .command(let c):
+      _onCommand(c)
+    default:
+      break;
+    }
+  }
+  
+  func _onCommand(_ cmd: Command) {
+    guard foregroundActive else {
+      return
+    }
+
+    switch cmd {
+    case .configShow: showConfigAction()
+    case .tab1: _moveToShell(idx: 0)
+    case .tab2: _moveToShell(idx: 1)
+    case .tab3: _moveToShell(idx: 2)
+    case .tab4: _moveToShell(idx: 3)
+    case .tab5: _moveToShell(idx: 4)
+    case .tab6: _moveToShell(idx: 5)
+    case .tab7: _moveToShell(idx: 6)
+    case .tab8: _moveToShell(idx: 7)
+    case .tab9: _moveToShell(idx: 8)
+    case .tab10: _moveToShell(idx: 9)
+    case .tab11: _moveToShell(idx: 10)
+    case .tab12: _moveToShell(idx: 11)
+    case .tabClose: _closeCurrentSpace()
+    case .tabMoveToOtherWindow: _moveToOtherWindowAction()
+    case .tabNew: newShellAction()
+    case .tabNext: _advanceShell(by: 1)
+    case .tabPrev: _advanceShell(by: -1)
+    case .tabNextCycling: _advanceShellCycling(by: 1)
+    case .tabPrevCycling: _advanceShellCycling(by: -1)
+    case .tabLast: _moveToLastShell()
+    case .windowClose: _closeWindowAction()
+    case .windowFocusOther: _focusOtherWindowAction()
+    case .windowNew: _newWindowAction()
+    case .clipboardCopy: KBTracker.shared.input?.copy(self)
+    case .clipboardPaste: KBTracker.shared.input?.paste(self)
+    case .selectionGoogle: KBTracker.shared.input?.googleSelection(self)
+    case .selectionStackOverflow: KBTracker.shared.input?.soSelection(self)
+    case .selectionShare: KBTracker.shared.input?.shareSelection(self)
+    case .zoomIn: currentTerm()?.termDevice.view?.increaseFontSize()
+    case .zoomOut: currentTerm()?.termDevice.view?.decreaseFontSize()
+    case .zoomReset: currentTerm()?.termDevice.view?.resetFontSize()
+    }
   }
   
   @objc func focusOnShellAction() {
-    SmarterTermInput.shared.reset()
+    KBTracker.shared.input?.reset()
     _focusOnShell()
+  }
+  
+  @objc public func scaleWithPich(_ pinch: UIPinchGestureRecognizer) {
+    currentTerm()?.scaleWithPich(pinch)
   }
   
   @objc func newShellAction() {
@@ -535,19 +547,48 @@ extension SpaceController {
     _closeCurrentSpace()
   }
   
-  
-  
-  @objc func _focusOtherWindowAction() {
-    let sessions = _activeSessions()
+  func cleanupControllers() {
+    for c in _termControllers {
+      if c.view?.superview == nil {
+        if c.removeFromContainer() {
+          _termControllers.remove(c)
+        }
+      }
+      if c.view?.window != view.window {
+        _termControllers.remove(c)
+      }
+    }
+  }
+
+  private func _focusOtherWindowAction() {
+    
+    var sessions = _activeSessions()
     
     guard
       sessions.count > 1,
       let session = view.window?.windowScene?.session,
       let idx = sessions.firstIndex(of: session)?.advanced(by: 1)
     else  {
-      _ = SmarterTermInput.shared.resignFirstResponder()
+      if currentTerm()?.termDevice.view?.isFocused() == true {
+        _ = currentTerm()?.termDevice.view?.webView?.resignFirstResponder()
+      } else {
+        _focusOnShell()
+      }
       return
     }
+
+    if
+      let shadowWindow = ShadowWindow.shared,
+      let shadowScene = shadowWindow.windowScene,
+      let window = self.view.window,
+      shadowScene == window.windowScene,
+      shadowWindow !== window {
+      shadowWindow.makeKeyAndVisible()
+      shadowWindow.spaceController._focusOnShell()
+      return
+    }
+          
+    sessions = sessions.filter { $0.role != .windowExternalDisplay }
     
     let nextSession: UISceneSession
     if idx < sessions.endIndex {
@@ -561,7 +602,8 @@ extension SpaceController {
       let delegate = scene.delegate as? SceneDelegate,
       let window = delegate.window,
       let spaceCtrl = window.rootViewController as? SpaceController {
-      if nextSession.role == .windowExternalDisplay || window.isKeyWindow {
+
+      if window.isKeyWindow {
         spaceCtrl._focusOnShell()
       } else {
         window.makeKeyAndVisible()
@@ -571,8 +613,8 @@ extension SpaceController {
     }
   }
   
-  @objc func _moveToOtherWindowAction() {
-    let sessions = _activeSessions()
+  private func _moveToOtherWindowAction() {
+    var sessions = _activeSessions()
     
     guard
       sessions.count > 1,
@@ -583,6 +625,21 @@ extension SpaceController {
     else  {
         return
     }
+    
+    if
+      let shadowWindow = ShadowWindow.shared,
+      let shadowScene = shadowWindow.windowScene,
+      let window = self.view.window,
+      shadowScene == window.windowScene,
+      shadowWindow !== window {
+      
+      _removeCurrentSpace(attachInput: false)
+      shadowWindow.makeKey()
+      shadowWindow.spaceController._addTerm(term: term)
+      return
+    }
+          
+    sessions = sessions.filter { $0.role != .windowExternalDisplay }
     
     let nextSession: UISceneSession
     if idx < sessions.endIndex {
@@ -601,16 +658,10 @@ extension SpaceController {
       return
     }
     
+
     _removeCurrentSpace(attachInput: false)
     nextSpaceCtrl._addTerm(term: term)
-  }
-
-  @objc private func _nextShellAction() {
-    _advanceShell(by: 1)
-  }
-  
-  @objc private func _prevShellAction() {
-    _advanceShell(by: -1)
+    nextWindow.makeKey()
   }
   
   func _activeSessions() -> [UISceneSession] {
@@ -635,6 +686,10 @@ extension SpaceController {
     else {
       return
     }
+    
+    // try to focus on other session before closing
+    _focusOtherWindowAction()
+    
     UIApplication
       .shared
       .requestSceneSessionDestruction(session,
@@ -642,20 +697,15 @@ extension SpaceController {
                                       errorHandler: nil)
   }
   
-  @objc func _increaseFontSizeAction() {
-    currentDevice?.view?.increaseFontSize()
-  }
-  
-  @objc func _decreaseFontSizeAction() {
-    currentDevice?.view?.decreaseFontSize()
-  }
-  
-  @objc func _resetFontSizeAction() {
-    currentDevice?.view?.resetFontSize()
-  }
-  
-  @objc func _showConfigAction() {
-    if view.window?.windowScene?.session.role == .windowExternalDisplay {
+  @objc func showConfigAction() {
+    if let shadowWindow = ShadowWindow.shared,
+      view.window == shadowWindow {
+      
+      _ = currentDevice?.view?.webView.resignFirstResponder()
+      
+      let spCtrl = shadowWindow.windowScene?.windows.first?.rootViewController as? SpaceController
+      spCtrl?.showConfigAction()
+      
       return
     }
     
@@ -666,9 +716,10 @@ extension SpaceController {
     }
   }
   
-  func _addTerm(term: TermController, animated: Bool = true) {
+  private func _addTerm(term: TermController, animated: Bool = true) {
     SessionRegistry.shared.track(session: term)
     term.delegate = self
+    _termControllers.insert(term)
     _viewportsKeys.append(term.meta.key)
     _moveToShell(key: term.meta.key, animated: animated)
   }
@@ -682,7 +733,20 @@ extension SpaceController {
     
     _moveToShell(key: key, animated: animated)
   }
-
+  
+  private func _moveToLastShell(animated: Bool = true) {
+    _moveToShell(idx: _viewportsKeys.count - 1)
+  }
+  
+  @objc func moveToShell(key: String?) {
+    guard
+      let key = key,
+      let uuidKey = UUID(uuidString: key)
+    else {
+      return
+    }
+    _moveToShell(key: uuidKey, animated: true)
+  }
   
   private func _moveToShell(key: UUID, animated: Bool = true) {
     guard
@@ -716,6 +780,23 @@ extension SpaceController {
     _moveToShell(idx: idx, animated: animated)
   }
   
+  private func _advanceShellCycling(by: Int, animated: Bool = true) {
+    guard
+      let currentKey = _currentKey,
+      _viewportsKeys.count > 1
+    else {
+      return
+    }
+    
+    if let idx = _viewportsKeys.firstIndex(of: currentKey)?.advanced(by: by),
+      idx >= 0 && idx < _viewportsKeys.count {
+      _moveToShell(idx: idx, animated: animated)
+      return
+    }
+    
+    _moveToShell(idx: by > 0 ? 0 : _viewportsKeys.count - 1, animated: animated)
+  }
+  
 }
 
 extension SpaceController: CommandsHUDViewDelegate {
@@ -726,7 +807,5 @@ extension SpaceController: CommandsHUDViewDelegate {
     return nil
   }
   
-  @objc func spaceController() -> SpaceController? {
-    return self
-  }
+  @objc func spaceController() -> SpaceController? { self }
 }

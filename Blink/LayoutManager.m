@@ -32,6 +32,7 @@
 
 #import "LayoutManager.h"
 #import "DeviceInfo.h"
+#import <Blink-Swift.h>
 
 
 CGFloat __mainWindowKBBottomInset = 0;
@@ -75,19 +76,16 @@ NSTimer *__debounceTimer = nil;
 
 
 + (UIEdgeInsets) buildSafeInsetsForController:(UIViewController *)ctrl andMode:(BKLayoutMode) mode {
+  UIWindow *window = ctrl.view.window;
+  
+  if (window == ShadowWindow.shared || window.windowScene.session.role == UIWindowSceneSessionRoleExternalDisplay) {
+    // we are on external monitor, so we use device margins to accomodate overscan and ignore mode
+    // it is like BKLayoutModeSafeFit mode
+    return ShadowWindow.shared.refWindow.safeAreaInsets;
+  }
   
   UIScreen *mainScreen = UIScreen.mainScreen;
-  UIWindow *window = ctrl.view.window;
   UIEdgeInsets deviceMargins = window.safeAreaInsets;// UIEdgeInsetsZero;// ctrl.viewDeviceSafeMargins;
-  BOOL isMainScreen = window.screen == mainScreen;
-  
-  
-  
-  // we are on external monitor, so we use device margins to accomodate overscan and ignore mode
-  // it is like BKLayoutModeSafeFit mode
-  if (!isMainScreen) {
-    return  deviceMargins;
-  }
   
   BOOL fullScreen = CGRectEqualToRect(mainScreen.bounds, window.bounds);
   CGFloat slideOverVerticalMargin = (mainScreen.bounds.size.height - window.bounds.size.height) * 0.5;
@@ -123,15 +121,15 @@ NSTimer *__debounceTimer = nil;
         break;
       }
       
-      UIDeviceOrientation orientation = UIDevice.currentDevice.orientation;
+      UIInterfaceOrientation orientation = window.windowScene.interfaceOrientation;
       
-      if (UIDeviceOrientationIsPortrait(orientation)) {
+      if (UIInterfaceOrientationIsPortrait(orientation)) {
         result.top = deviceMargins.top - 10;
         result.bottom = deviceMargins.bottom - 10;
         break;
       }
       
-      if (orientation == UIDeviceOrientationLandscapeLeft) {
+      if (orientation == UIInterfaceOrientationLandscapeRight) {
         result.left = deviceMargins.left - 4; // notch
         result.right = 10;
         result.top = 10;
@@ -139,7 +137,7 @@ NSTimer *__debounceTimer = nil;
         break;
       }
       
-      if (orientation == UIDeviceOrientationLandscapeRight) {
+      if (orientation == UIInterfaceOrientationLandscapeLeft) {
         result.right = deviceMargins.right - 4;  // notch
         result.left = 10;
         result.top = 10;

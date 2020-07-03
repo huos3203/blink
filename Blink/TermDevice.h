@@ -32,8 +32,20 @@
 #import <Foundation/Foundation.h>
 #import "TermStream.h"
 #import "TermView.h"
-#import "TermInput.h"
 #include <sys/ioctl.h>
+
+@class TermDevice;
+
+@protocol TermInput <NSObject>
+
+@property (weak) TermDevice *device;
+@property BOOL secureTextEntry;
+
+- (void)setHasSelection:(BOOL)value;
+- (void)reset;
+
+@end
+
 
 @protocol TermDeviceDelegate
 
@@ -41,7 +53,10 @@
 - (void)deviceSizeChanged;
 - (void)viewFontSizeChanged:(NSInteger)size;
 - (BOOL)handleControl:(NSString *)control;
+- (void)lineSubmitted:(NSString *)line;
 - (void)deviceFocused;
+- (void)apiCall:(NSString *)api andRequest:(NSString *)request;
+- (void)viewNotify:(NSDictionary *)data;
 - (UIViewController *)viewController;
 
 @end
@@ -52,22 +67,27 @@
 
 @property (readonly) TermStream *stream;
 @property (readonly) TermView *view;
-@property (readonly) TermInput *input;
+@property (readonly) UIView<TermInput> *input;
 @property id<TermDeviceDelegate> delegate;
 @property (nonatomic) BOOL rawMode;
-@property (nonatomic) BOOL echoMode;
 @property (nonatomic) BOOL secureTextEntry;
 @property (nonatomic) NSInteger rows;
 @property (nonatomic) NSInteger cols;
 
-- (void)attachInput:(TermInput *)termInput;
+- (void)attachInput:(UIView<TermInput> *)termInput;
 - (void)attachView:(TermView *)termView;
+
+- (void)onSubmit:(NSString *)line;
+- (void)prompt:(NSString *)prompt secure:(BOOL)secure shell:(BOOL)shell;
+- (NSString *)readline:(NSString *)prompt secure:(BOOL)secure;
+- (void)closeReadline;
 
 - (void)focus;
 - (void)blur;
 
 - (void)write:(NSString *)input;
 - (void)writeIn:(NSString *)input;
+- (void)writeInDirectly:(NSString *)input;
 - (void)writeOut:(NSString *)output;
 - (void)writeOutLn:(NSString *)output;
 - (void)close;

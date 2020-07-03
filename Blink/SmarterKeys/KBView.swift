@@ -59,7 +59,7 @@ class KBView: UIView {
   private var _onModifiersSet: Set<KBKeyView> = []
   private var _untrackedModifiersSet: Set<KBKeyView> = []
   
-  weak var keyInput: UIKeyInput? = nil
+  weak var keyInput: SmarterTermInput? = nil
   
   var lang: String = "" {
     didSet {
@@ -104,9 +104,6 @@ class KBView: UIView {
     addSubview(_scrollViewLeftBorder)
     addSubview(_scrollViewRightBorder)
     
-//    _scrollViewLeftBorder.backgroundColor = UIColor.gray.withAlphaComponent(0.45)
-//    _scrollViewRightBorder.backgroundColor = UIColor.gray.withAlphaComponent(0.45)
-    
     if traitCollection.userInterfaceStyle == .light {
       _scrollViewLeftBorder.backgroundColor = UIColor.separator.withAlphaComponent(0.15)
       _scrollViewRightBorder.backgroundColor = UIColor.separator.withAlphaComponent(0.15)
@@ -114,11 +111,6 @@ class KBView: UIView {
       _scrollViewLeftBorder.backgroundColor = UIColor.separator.withAlphaComponent(0.45)
       _scrollViewRightBorder.backgroundColor = UIColor.separator.withAlphaComponent(0.45)
     }
-//    _scrollViewLeftBorder.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.5)
-//    _scrollViewRightBorder.backgroundColor = UIColor.tertiarySystemBackground.withAlphaComponent(0.5)
-    
-//    addSubview(_indicatorLeft)
-//    addSubview(_indicatorRight)
     
     _indicatorLeft.backgroundColor = UIColor.blue.withAlphaComponent(0.45)
     _indicatorRight.backgroundColor = UIColor.orange.withAlphaComponent(0.45)
@@ -237,16 +229,12 @@ class KBView: UIView {
     _scrollView.contentSize = CGSize(width: x, height: height)
     _scrollView.isHidden = strictSpace
     
-//    var borderFrame = CGRect(x: middleLeft - 1, y: 7, width: 1, height: height - 15)
     var borderFrame = CGRect(x: middleLeft - 1, y: 9, width: 1, height: height - 19)
     _scrollViewLeftBorder.frame = borderFrame
     borderFrame.origin.x = middleRight - 1
     _scrollViewRightBorder.frame = borderFrame
     
     _updateScrollViewBorders()
-    
-//    _indicatorLeft.frame = CGRect(x: 0, y: 0, width: safeBarWidth, height:55)
-//    _indicatorRight.frame = CGRect(x: frame.width - safeBarWidth, y: 0 , width: safeBarWidth, height:55)
   }
   
   func _updateScrollViewBorders() {
@@ -366,6 +354,22 @@ extension KBView: KBKeyViewDelegate {
       traits.toggle(value, on: .ctrlOn , off: .ctrlOff)
     default: break
     }
+    
+    _reportModifiers()
+  }
+  
+  func _reportModifiers() {
+    keyInput?.reportToolbarModifierFlags(traits.modifierFlags)
+  }
+  
+  func reset() {
+    stopRepeats()
+    turnOffUntracked()
+    traits.toggle(false, on: .cmdOn , off: .cmdOff)
+    traits.toggle(false, on: .altOn , off: .altOff)
+    traits.toggle(false, on: .escOn , off: .escOff)
+    traits.toggle(false, on: .ctrlOn , off: .ctrlOff)
+    _reportModifiers()
   }
   
   func keyViewTriggered(keyView: KBKeyView, value: KBKeyValue) {
@@ -375,14 +379,36 @@ extension KBView: KBKeyViewDelegate {
     if keyView !== _repeatingKeyView {
       stopRepeats()
     }
-
-    if let sequence = value.sequence {
-      repeatingSequence = sequence
-      keyInput?.insertText(sequence)
-      repeatingSequence = nil
+    
+    defer { turnOffUntracked() }
+    
+    guard let keyInput = keyInput
+    else {
+      return
     }
     
-    turnOffUntracked()
+    let keyCode = value.keyCode
+    var keyId = keyCode.id
+    keyId += ":\(value.text)"
+    
+    var flags = traits.modifierFlags
+    if keyInput.trackingModifierFlags.contains(.shift) {
+      flags.insert(.shift)
+    }
+    
+    if let input = value.input,
+      flags.rawValue > 0,
+      let (cmd, responder) = keyInput.matchCommand(input: input, flags: flags),
+      let action = cmd.action  {
+      responder.perform(action, with: cmd)
+      return
+    }
+
+    if case .f = value {
+      flags.remove(.command)
+    }
+    
+    keyInput.reportToolbarPress(flags, keyId: keyId)
   }
   
   func keyViewCancelled(keyView: KBKeyView) {

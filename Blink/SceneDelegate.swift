@@ -31,57 +31,280 @@
 
 
 import Foundation
+import SwiftUI
 
-class BlinkWindow: UIWindow {
-  override func becomeKey() {
-    super.becomeKey()
+class ExternalWindow: UIWindow {
+  var shadowWindow: UIWindow? = nil
+}
+
+@objc class ShadowWindow: UIWindow {
+  private let _refWindow: UIWindow
+  private let _spCtrl: SpaceController
+  
+  var spaceController: SpaceController { _spCtrl }
+  @objc var refWindow: UIWindow { _refWindow }
+  
+  init(windowScene: UIWindowScene, refWindow: UIWindow, spCtrl: SpaceController) {
+    _refWindow = refWindow
+    _spCtrl = spCtrl
+    
+    super.init(windowScene: windowScene)
+    
+    frame = _refWindow.frame
+    rootViewController = _spCtrl
+    self.clipsToBounds = false
   }
   
-  override func resignKey() {
-    super.resignKey()
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
-  override func sendEvent(_ event: UIEvent) {
-    super.sendEvent(event)
-//    debugPrint(event)
+  override var frame: CGRect {
+    get { _refWindow.frame }
+    set { super.frame = _refWindow.frame }
   }
+  
+  
+  @objc static var shared: ShadowWindow? = nil
+}
+
+class DummyVC: UIViewController {
+  override var canBecomeFirstResponder: Bool { true }
+  override var prefersStatusBarHidden: Bool { true }
+  public override var prefersHomeIndicatorAutoHidden: Bool { true }
 }
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   var window: UIWindow? = nil
+  private var _ctrl = DummyVC()
+  private var _lockCtrl: UIViewController? = nil
+  private var _spCtrl = SpaceController()
+  
+  func sceneDidDisconnect(_ scene: UIScene) {
+    if scene == ShadowWindow.shared?.refWindow.windowScene {
+      ShadowWindow.shared?.layer.removeFromSuperlayer()
+      ShadowWindow.shared?.windowScene = nil
+      ShadowWindow.shared = nil
+    } else if scene == ShadowWindow.shared?.windowScene {
+      // We need to move it
+      ShadowWindow.shared?.windowScene = UIApplication.shared.connectedScenes.activeAppScene(exclude: scene)
+    }
+  }
   
   func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
     options connectionOptions: UIScene.ConnectionOptions)
   {
+    _ = KBTracker.shared
+    
     guard let windowScene = scene as? UIWindowScene else {
       return
     }
     
-    self.window = BlinkWindow(windowScene: windowScene)
-    let spaceCntrl = SpaceController()
-    spaceCntrl.restoreWith(stateRestorationActivity: session.stateRestorationActivity)
-    window?.rootViewController = spaceCntrl
-    window?.makeKeyAndVisible()
+    let conditions = scene.activationConditions
+    
+    conditions.canActivateForTargetContentIdentifierPredicate = NSPredicate(value: true)
+    conditions.prefersToActivateForTargetContentIdentifierPredicate = NSPredicate(format: "SELF == 'blink://open-scene/\(scene.session.persistentIdentifier)'")
+    
+    _spCtrl.sceneRole = session.role
+    _spCtrl.restoreWith(stateRestorationActivity: session.stateRestorationActivity)
+    
+    if session.role == .windowExternalDisplay,
+      let mainScene = UIApplication.shared.connectedScenes.activeAppScene() {
+      
+      if BKDefaults.overscanCompensation() == .BKBKOverscanCompensationMirror {
+        return
+      }
+      
+      let window = ExternalWindow(windowScene: windowScene)
+      self.window = window
+    
+      let shadowWin = ShadowWindow(windowScene: mainScene, refWindow: window, spCtrl: _spCtrl)
+      defer { ShadowWindow.shared = shadowWin }
+      
+      window.shadowWindow = shadowWin
+      
+      shadowWin.makeKeyAndVisible()
+      
+      window.rootViewController = UIViewController()
+      window.layer.addSublayer(shadowWin.layer)
+      
+//      window.makeKeyAndVisible()
+      window.isHidden = false
+      shadowWin.windowLevel = .init(rawValue: UIWindow.Level.normal.rawValue - 1)
+      
+      return
+    }
+    
+    let window = UIWindow(windowScene: windowScene)
+    self.window = window
+    
+    window.rootViewController = _spCtrl
+    window.isHidden = false
   }
   
   func sceneDidBecomeActive(_ scene: UIScene) {
-//    SmarterTermInput.shared.refreshInputViews()
-    _spaceController?.currentTerm()?.resumeIfNeeded()
-    _spaceController?.currentTerm()?.view?.setNeedsLayout()
-  }
-  
-  func sceneWillResignActive(_ scene: UIScene) {
-    debugPrint("sceneWillResignActive")
+    
+    guard let window = window else {
+      return
+    }
+    
+    if (scene.session.role == .windowExternalDisplay) {
+      if LocalAuth.shared.lockRequired {
+        if let lockCtrl = _lockCtrl {
+          if window.rootViewController != lockCtrl {
+            window.rootViewController = lockCtrl
+          }
+          
+          return
+        }
+
+        
+        _lockCtrl = UIHostingController(rootView: LockView(unlockAction: nil))
+        window.rootViewController = _lockCtrl
+        return
+      }
+      if window.rootViewController == _lockCtrl {
+        window.rootViewController = UIViewController()
+      }
+      _lockCtrl = nil
+      
+      if let shadowWin = ShadowWindow.shared {
+        window.layer.addSublayer(shadowWin.layer)
+      }
+      
+      return
+    }
+    
+    
+    // 1. Local Auth AutoLock Check
+    
+    if LocalAuth.shared.lockRequired {
+      if let lockCtrl = _lockCtrl {
+        if window.rootViewController != lockCtrl {
+          window.rootViewController = lockCtrl
+        }
+        
+        return
+      }
+      
+      let unlockAction = scene.session.role == .windowApplication ? LocalAuth.shared.unlock : nil
+      
+      _lockCtrl = UIHostingController(rootView: LockView(unlockAction: unlockAction))
+      window.rootViewController = _lockCtrl
+      
+      unlockAction?()
+
+      return
+    }
+
+    _lockCtrl = nil
+    LocalAuth.shared.stopTrackTime()
+    
+    if let shadowWindow = ShadowWindow.shared,
+      shadowWindow.windowScene == scene,
+      let refScene = shadowWindow.refWindow.windowScene {
+      ShadowWindow.shared?.refWindow.windowScene?.delegate?.sceneDidBecomeActive?(refScene)
+    }
+    
+    // 2. Set space controller back and refresh layout
+    
+    let spCtrl = _spCtrl
+    
+    if window.rootViewController != spCtrl {
+      window.rootViewController = spCtrl
+    }
+    
+    guard let term = spCtrl.currentTerm() else {
+      return
+    }
+    
+    term.resumeIfNeeded()
+    term.view?.setNeedsLayout()
+    
+    // We can present config or stuck view. 
+    guard spCtrl.presentedViewController == nil else {
+      return
+    }
+    
+    // 3. Stuck Key Check
+    
+    let input = KBTracker.shared.input
+    if let key = input?.stuckKey() {
+      debugPrint("BK:", "stuck!!!")
+      input?.setTrackingModifierFlags([])
+      
+      if input?.isHardwareKB == true && key == .commandLeft {
+        let ctrl = UIHostingController(rootView: StuckView(keyCode: key, dismissAction: {
+          spCtrl.onStuckOpCommand()
+        }))
+        
+        ctrl.modalPresentationStyle = .formSheet
+        spCtrl.stuckKeyCode = key
+        spCtrl.present(ctrl, animated: false)
+
+        return
+      }
+    }
+    
+    spCtrl.stuckKeyCode = nil
+    
+    // 4. Focus Check
+    
+    if input == nil {
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        if KBTracker.shared.input == nil {
+          window.makeKey()
+          spCtrl.focusOnShellAction()
+          KBTracker.shared.input?.reportFocus(true)
+        }
+      }
+      return
+    }
+    
+    if term.termDevice.view?.isFocused() == false,
+      input?.isRealFirstResponder == false,
+      input?.window === window {
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        if scene.activationState == .foregroundActive,
+          input?.isRealFirstResponder == false {
+          spCtrl.focusOnShellAction()
+        }
+      }
+      
+      return
+    }
+    
+    if input?.window === window {
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        if scene.activationState == .foregroundActive,
+          term.termDevice.view?.isFocused() == false {
+          spCtrl.focusOnShellAction()
+        }
+      }
+
+      return
+    }
+    
+    input?.reportStateReset()
   }
   
   func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
-    _spaceController?.stateRestorationActivity()
+    _setDummyVC()
+    return _spCtrl.stateRestorationActivity()
   }
   
-  private var _spaceController: SpaceController? {
-    window?.rootViewController as? SpaceController
+  private func _setDummyVC() {
+    if let _ = _spCtrl.presentedViewController {
+      return
+    }
+    // Trick to reset stick cmd key.
+    _ctrl.view.frame = _spCtrl.view.frame
+    window?.rootViewController = _ctrl
+    _ctrl.view.addSubview(_spCtrl.view)
   }
+  
+  @objc var spaceController: SpaceController { _spCtrl }
 
 }
