@@ -91,8 +91,22 @@ class SpaceController: UIViewController {
     view.setNeedsLayout()
   }
   
+  @objc private func _setupAppearance() {
+    self.view.tintColor = .cyan
+    switch BKDefaults.keyboardStyle() {
+    case .light:
+      overrideUserInterfaceStyle = .light
+    case .dark:
+      overrideUserInterfaceStyle = .dark
+    default:
+      overrideUserInterfaceStyle = .unspecified
+    }
+  }
+  
   public override func viewDidLoad() {
     super.viewDidLoad()
+    
+    _setupAppearance()
     
     view.isOpaque = true
     
@@ -127,6 +141,7 @@ class SpaceController: UIViewController {
       term.bgColor = view.backgroundColor ?? .black
       _viewportsController.setViewControllers([term], direction: .forward, animated: false)
     }
+    
   }
   
 
@@ -138,6 +153,13 @@ class SpaceController: UIViewController {
 //        SmarterTermInput.shared.contentView()?.reloadInputViews()
       }
     }
+  }
+  
+  override var editingInteractionConfiguration: UIEditingInteractionConfiguration {
+    DispatchQueue.main.async {
+      self._attachHUD()
+    }
+    return .default
   }
   
   deinit {
@@ -155,15 +177,19 @@ class SpaceController: UIViewController {
     nc.addObserver(self, selector: #selector(_relayout),
                    name: NSNotification.Name(rawValue: LayoutManagerBottomInsetDidUpdate),
                    object: nil)
+    
+    nc.addObserver(self, selector: #selector(_setupAppearance),
+                   name: NSNotification.Name(rawValue: BKAppearanceChanged),
+                   object: nil)
+    
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  private func _attachHUD() {
     if
       sceneRole == .windowApplication,
-      let win = self.view.window?.windowScene?.windows.last,
-      win !== self.view.window {
-      self._commandsHUD.attachToWindow(inputWindow: win)
+      let win = view.window?.windowScene?.windows.last,
+      win !== view.window {
+      _commandsHUD.attachToWindow(inputWindow: win)
     }
   }
   

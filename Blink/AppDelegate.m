@@ -51,6 +51,7 @@
   NSTimer *_suspendTimer;
   UIBackgroundTaskIdentifier _suspendTaskId;
   BOOL _suspendedMode;
+  BOOL _enforceSuspension;
 }
   
 void __on_pipebroken_signal(int signum){
@@ -195,6 +196,15 @@ void __setupProcessEnv() {
 
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application
 {
+  // If a scene is not yet in the background, then await for it to suspend
+  NSArray * scenes = UIApplication.sharedApplication.connectedScenes.allObjects;
+  for (UIScene *scene in scenes) {
+    if (scene.activationState == UISceneActivationStateForegroundActive || scene.activationState == UISceneActivationStateForegroundInactive) {
+      _enforceSuspension = true;
+      return;
+    }
+  }
+
   [self _suspendApplicationOnProtectedDataWillBecomeUnavailable];
 }
 
@@ -211,9 +221,7 @@ void __setupProcessEnv() {
   
   UIApplication *application = [UIApplication sharedApplication];
   
-  if (_suspendTaskId != UIBackgroundTaskInvalid) {
-    [application endBackgroundTask:_suspendTaskId];
-  }
+  [self _cancelApplicationSuspendTask];
   
   _suspendTaskId = [application beginBackgroundTaskWithName:@"Suspend" expirationHandler:^{
     [self _suspendApplicationWithExpirationHandler];
@@ -228,13 +236,21 @@ void __setupProcessEnv() {
                                                   repeats:NO];
 }
 
-- (void)_cancelApplicationSuspend {
+- (void)_cancelApplicationSuspendTask {
   [_suspendTimer invalidate];
-  _suspendedMode = NO;
   if (_suspendTaskId != UIBackgroundTaskInvalid) {
     [[UIApplication sharedApplication] endBackgroundTask:_suspendTaskId];
   }
   _suspendTaskId = UIBackgroundTaskInvalid;
+}
+
+- (void)_cancelApplicationSuspend {
+  [self _cancelApplicationSuspendTask];
+  
+  // We can't resume if we don't have access to protected data
+  if (UIApplication.sharedApplication.isProtectedDataAvailable) {
+    _suspendedMode = NO;
+  }
 }
 
 // Simple wrappers to get the reason of failure from call stack
@@ -256,6 +272,8 @@ void __setupProcessEnv() {
 
 - (void)_suspendApplication {
   [_suspendTimer invalidate];
+
+  _enforceSuspension = false;
   
   if (_suspendedMode) {
     return;
@@ -263,51 +281,7 @@ void __setupProcessEnv() {
   
   [[SessionRegistry shared] suspend];
   _suspendedMode = YES;
-  
-  if (_suspendTaskId != UIBackgroundTaskInvalid) {
-    [[UIApplication sharedApplication] endBackgroundTask:_suspendTaskId];
-  }
-  
-  _suspendTaskId = UIBackgroundTaskInvalid;
-}
-
-#pragma mark - LSSupportsOpeningDocumentsInPlace
-
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  if ([url.host isEqualToString:@"run"]) {
-    if (![BKDefaults isXCallBackURLEnabled]) {
-      return NO;
-    }
-    
-    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
-    NSArray * items = components.queryItems;
-    NSURLQueryItem *keyItem = [[items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"key"]] firstObject];
-    
-    NSString *urlKey = [BKDefaults xCallBackURLKey];
-
-    if (!keyItem.value) {
-      return NO;
-    }
-    
-    if (![keyItem.value isEqual:urlKey]) {
-      return NO;
-    }
-    
-    NSURLQueryItem *cmdItem = [[items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"cmd"]] firstObject];
-    NSString *cmd = cmdItem.value ?: @"help";
-    
-    return NO;
-
-//    NSUserActivity * activity = [[NSUserActivity alloc] initWithActivityType:BKUserActivityTypeCommandLine];
-//    activity.eligibleForPublicIndexing = NO;
-//    [activity setTitle:[NSString stringWithFormat:@"run: %@ ", cmd]];
-//    [activity setUserInfo:@{BKUserActivityCommandLineKey: cmd}];
-//    [[[ScreenController shared] mainScreenRootViewController] restoreUserActivityState:activity];
-    return YES;
-  }
-  blink_handle_url(url);
-  // What we can do useful?
-  return YES;
+  [self _cancelApplicationSuspendTask];
 }
 
 #pragma mark - Scenes
@@ -330,7 +304,11 @@ void __setupProcessEnv() {
       return;
     }
   }
-  [self _startMonitoringForSuspending];
+  if (_enforceSuspension) {
+    [self _suspendApplication];
+  } else {
+    [self _startMonitoringForSuspending];
+  }
 }
 
 - (void)_onSceneWillEnterForeground:(NSNotification *)notification {

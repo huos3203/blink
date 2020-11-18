@@ -6,7 +6,7 @@ Blink is a shell that allows you to connect to remote machines, use Mosh and has
 
 ## Using Blink Shell
 
-Using Blink Shell is similar to most other terminals - you simply type commands and hit the `RETURN` key. Just like in Bash or similar UNIX shells you can press the up arrow to access the history of previous commands. You can type the `help` comamnd to access Blink’s online help, `mosh` to access the mosh mobile shell, `ssh` to connect via SSH or `ssh-copy-id` to copy SSH keys.
+Using Blink Shell is similar to most other terminals - you simply type commands and hit the `RETURN` key. Just like in Bash or similar UNIX shells you can press the up arrow to access the history of previous commands. You can type the `help` command to access Blink’s online help, `mosh` to access the mosh mobile shell, `ssh` to connect via SSH or `ssh-copy-id` to copy SSH keys.
 
 ![img](navigation/navigating-blink-shell-image1.gif)
 
@@ -20,9 +20,15 @@ To connect to your desktop computer or Raspberry Pi (assuming `192.168.1.5` is t
 
 ## Blink Shell Gestures
 
-You can use a variety of finger gestures with Blink Shell. To create a new shell, you can tap the screen with two fingers. Swiping with one finger from side to side will move between active shells. You can control the size of your terminal by pinching the screen. Finally, tapping the screen with three fingers will open a contextual menu where you can close a shell and to configure the display modes for the current one.
+Gestures are very important inside Blink. Thanks to them we can enjoy a full screen terminal, while being fast and convenient to control. You can use a variety of finger gestures:
 
-![img](navigation/navigating-blink-shell-image2.gif)
+* To create a new shell, you can tap the window with two fingers.
+* Swiping with one finger from side to side will move between active shells.
+* You can control the size of your terminal by pinching the screen.
+* Tapping with three fingers will open a contextual menu where you can close a shell or configure display modes.
+* Tapping and scrolling with a single finger will move the focus to that window and scroll it. If the application supports mouse control, then you will be able to control the pointer that way.
+* Long presses will start selection mode, just as you are used to everywhere else.
+* Don't be afraid to drag your selection to another app, or to drop content inside Blink, we will paste it right where your cursor is placed.
 
 ## Blink Shell Keyboard Shortcuts
 

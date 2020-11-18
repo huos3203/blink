@@ -1,3 +1,24 @@
+# Version 13.5.8
+
+- Added support for iPad Air 4 and iPhone 12
+
+# Version 13.5.7
+
+- Fixed 3f menu on iPhones
+- Fixed keyboard appearance style
+
+# Version 13.5.6
+
+- Improved mosh restore. #1048
+
+# Version 13.5.5
+
+- Restored iCloud sync
+- Fixes for new iOS. #1071, #1065, #1056, #1055, #1053, #1049
+- Blink now opens ssh:// links
+- SSH keys import from Files.app. #1057
+- Restored x-callback-url, #827
+
 # Version 13.5.2
 
 - Fixed 3f menu on new OS versions. #1049
