@@ -1,3 +1,14 @@
+# Version 13.5.10
+
+- Added action for KeyCast toggle. #1180
+- Fixed display of images. #1170
+- Configuration for notify and bell. 
+- Fixed key import from files. #1106
+- Improved error handling in ssh.
+- Added `--experimental-remote-ip={remote|local}` flag to mosh command. #1127
+
+Many thanks to @DilumAluthge
+
 # Version 13.5.8
 
 - Added support for iPad Air 4 and iPhone 12

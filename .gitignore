@@ -4,6 +4,7 @@
 
 ## Build generated
 build/
+.build
 DerivedData/
 
 ## Various settings
@@ -49,3 +50,4 @@ Frameworks/openssl.framework
 
 ## Fonts
 Resources/Fonts/Pragmata*
+.swiftpm
