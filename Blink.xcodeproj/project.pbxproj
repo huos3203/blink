@@ -400,6 +400,8 @@
 		84DA8FD7231CBEEA00E8F59E /* FastlaneSwiftRunner.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FastlaneSwiftRunner.xcodeproj; path = fastlane/swift/FastlaneSwiftRunner/FastlaneSwiftRunner.xcodeproj; sourceTree = "<group>"; };
 		85A34303200A837A009324F1 /* webfontloader.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = webfontloader.js; sourceTree = "<group>"; };
 		85A34308200A8FAF009324F1 /* term.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = term.css; sourceTree = "<group>"; };
+		B3DA558825C5A88700B6AA57 /* get_frameworks.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = get_frameworks.sh; sourceTree = SOURCE_ROOT; };
+		B3DA558925C5AC6A00B6AA57 /* get_sources.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = get_sources.sh; path = Frameworks/ios_system/get_sources.sh; sourceTree = SOURCE_ROOT; };
 		B75112CB1DE4A7B10040C693 /* BKiCloudConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKiCloudConfigurationViewController.h; sourceTree = "<group>"; };
 		B75112CC1DE4A7B10040C693 /* BKiCloudConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKiCloudConfigurationViewController.m; sourceTree = "<group>"; };
 		B752EE291DFEF19D00E305C8 /* BKUserConfigurationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKUserConfigurationManager.h; sourceTree = "<group>"; };
@@ -913,6 +915,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B3DA558125C5A85000B6AA57 /* pre-action */ = {
+			isa = PBXGroup;
+			children = (
+				B3DA558825C5A88700B6AA57 /* get_frameworks.sh */,
+				B3DA558925C5AC6A00B6AA57 /* get_sources.sh */,
+			);
+			path = "pre-action";
+			sourceTree = "<group>";
+		};
 		B75112C71DE4A7680040C693 /* UserConfiguration */ = {
 			isa = PBXGroup;
 			children = (
@@ -1354,6 +1365,7 @@
 		EA0BA1821C0CC57B00719C1A = {
 			isa = PBXGroup;
 			children = (
+				B3DA558125C5A85000B6AA57 /* pre-action */,
 				D2C243F7238E44960082C69C /* KB */,
 				C9B2E0031D6B612300B89F69 /* Settings */,
 				D265FBBB2317DD3C0017EAC4 /* BlinkTests */,
@@ -2035,7 +2047,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				HEADER_SEARCH_PATHS = "$SOURCE_ROOT/Frameworks/include";
+				HEADER_SEARCH_PATHS = $SOURCE_ROOT/Frameworks/include;
 				INFOPLIST_FILE = Blink/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2079,7 +2091,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
-				HEADER_SEARCH_PATHS = "$SOURCE_ROOT/Frameworks/include";
+				HEADER_SEARCH_PATHS = $SOURCE_ROOT/Frameworks/include;
 				INFOPLIST_FILE = Blink/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

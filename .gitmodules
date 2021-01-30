@@ -1,9 +1,9 @@
 [submodule "Frameworks/UICKeyChainStore"]
 	path = Frameworks/UICKeyChainStore
-	url = https://github.com/kishikawakatsumi/UICKeyChainStore.git
+	url = https://hub.fastgit.org/kishikawakatsumi/UICKeyChainStore.git
 [submodule "Frameworks/ios_system"]
 	path = Frameworks/ios_system
-	url = https://github.com/holzschu/ios_system.git
+	url = https://hub.fastgit.org/holzschu/ios_system.git
 [submodule "Frameworks/MBProgressHUD"]
 	path = Frameworks/MBProgressHUD
-	url = https://github.com/blinksh/MBProgressHUD.git
+	url = https://hub.fastgit.org/blinksh/MBProgressHUD.git

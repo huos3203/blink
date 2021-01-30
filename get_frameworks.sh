@@ -4,7 +4,7 @@ set -e
 
 DEPS_VERSION="1.4.0"
 
-GHROOT="https://github.com/blinksh"
+GHROOT="https://hub.fastgit.org/blinksh"
 
 (
 
