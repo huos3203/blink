@@ -2058,7 +2058,7 @@
 				);
 				MARKETING_VERSION = 13.5.9;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jinher.iBlink;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jinher.Blink;
 				PRODUCT_NAME = Blink;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -2102,7 +2102,7 @@
 				);
 				MARKETING_VERSION = 13.5.9;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jinher.iBlink;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jinher.Blink;
 				PRODUCT_NAME = Blink;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_STYLE = "non-global";
